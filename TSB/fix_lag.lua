@@ -13,8 +13,8 @@ bulb = srv"Lighting"
 
 local plr, token, ui, items
 plr = plrs.LocalPlayer
-token = git("HoangHienXScripts/Projekts/refs/heads/main/TSB/token") or ""
-ui = loadstring(git("HoangHienXScripts/Shieru/refs/heads/main/MODULES/Items_List.lua?token=" .. token))()
+--token = git("HoangHienXScripts/Projekts/refs/heads/main/TSB/token") or "" -- vô dụng
+ui = loadstring(git("HoangHienXScripts/Modules/refs/heads/main/btns_list.lua"))()
 items = {
   ignore = {"Part", "MeshPart", "WedgePart"},
   delay = 0.01, btns = {}, confuse_u = {
