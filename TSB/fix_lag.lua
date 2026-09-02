@@ -5,7 +5,7 @@ function des(t) return t:GetDescendants() end
 function tmc(t, m) return t.Text:lower():match(m) end
 function spt(t) return t.Text:split(" ") end
 
-local ws, plrs, reps, bulb, statr, tps, rs
+local ws, plrs, reps, bulb, statr, tps, rs, txs
 ws = srv"Workspace"
 plrs = srv"Players"
 reps = srv"ReplicatedStorage"
@@ -13,11 +13,13 @@ bulb = srv"Lighting"
 statr = srv"StarterGui"
 tps = srv"TeleportService"
 rs = srv"RunService"
+txs = srv"TextChatService"
 
-local plr, id, job, token, ui, items
+local plr, id, job, chatv, token, ui, items
 plr = plrs.LocalPlayer
 id = game.PlaceId
 job = game.JobId
+chatv = txs.ChatVersion == Enum.ChatVersion.LegacyChatService
 token = git("HoangHienXScripts/Projekts/refs/heads/main/TSB/token") or "0"
 ui = loadstring(git("HoangHienXScripts/Modules/refs/heads/main/btns_list.lua"))()
 items = {
@@ -25,10 +27,18 @@ items = {
   delay = 0.01, btns = {}, confuse_u = {
     shadows = true, l_trash = false, d_call = 5
   }, version = token, call = false
-}
+} loadstring(git("HoangHienXScripts/Modules/refs/heads/main/sds.lua"))()
+repeat wait() until ws:FindFirstChild("HHxScripts")
 
 if ui and type(ui) == "table" then
-  function ntf(m)
+  function ntfc(m)
+    m = tostring(m)
+    if not chatv then
+      txs.TextChannels.RBXGeneral:SendAsync(m)
+    else
+      reps.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(m, "All")
+    end
+  end function ntf(m)
     statr:SetCore("SendNotification", {Title = "HHxScripts", Text = m, Duration = 1.25})
   end function no_shadows()
     local ins_f = 0
@@ -39,15 +49,18 @@ if ui and type(ui) == "table" then
       end
     end ntf("Đã hủy hiệu ứng đổ bóng cho "..tostring(ins_f).." vật thể.")
   end function no_debris()
-    local trash = ws:FindFirstChild"Thrown"
-    if trash and #chd(trash) > 0 then
-      for _, ins in next, chd(trash) do
-        if ins then
-          ins:Destroy()
-          task.wait(items.delay)
-        end
-      end
+    local trst = ws:FindFirstChild("Thrown")
+    local wout = bulb:FindFirstChild("Whiteout")
+    if trst then trst:Destroy()
+    else if wout then wout:Destroy() end
     end
+  end
+  -- play musiccccc --
+  local music_start = ws.HHxScripts.Assets.Audios["Arknights_OST"]
+  if music_start then
+    music_start.Volume = 2
+    music_start:Play()
+    ntfc("<< Đã chơi "..music_start.Name.." >>")
   end
   -- create ui --
   ui.add_button("Loại bỏ cây cối...", function()
@@ -82,11 +95,13 @@ if ui and type(ui) == "table" then
   rs.RenderStepped:Connect(function()
     if not items.call then items.call = true
       token = git("HoangHienXScripts/Projekts/refs/heads/main/TSB/token") or "0"
+      print("["..tostring(tick()).."]: "..token)
       if tonumber(items.version) < tonumber(token) then
         local ss, err = pcall(function() tps:TeleportToPlaceInstance(id, job, plr) end)
-        if ss then ntf("Đang update script...") else ntf("Lỗi " .. err) end
+        if ss then ntfc("<< Đang update script... >>") else ntf("Lỗi " .. err) end
       end task.wait(items.confuse_u.d_call)
       items.call = false
     end
-  end)
+  end) ntfc("<< Fix Lag bởi HHxScripts >>")
+  ntfc("<< Phiên bản "..token.." >>")
 end
