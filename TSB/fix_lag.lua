@@ -58,9 +58,9 @@ if ui and type(ui) == "table" then
   -- play musiccccc --
   local music_start = ws.HHxScripts.Assets.Audios["Arknights_OST"]
   if music_start then
-    music_start.Volume = 2
+    music_start.Volume = 4
     music_start:Play()
-    ntfc("<< Đã chơi "..music_start.Name.." >>")
+    ntfc("<< Đang chơi nhạc "..music_start.Name.." >>")
   end
   -- create ui --
   ui.add_button("Loại bỏ cây cối...", function()
