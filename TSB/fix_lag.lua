@@ -84,7 +84,7 @@ if ui and type(ui) == "table" then
     end
   end
   -- play musiccccc --
-  local music_start = ws.HHxScripts.Assets.Audios["Arknights_OST"]
+  local music_start = ws.HHxScripts.Assets.Audios["Endfield_42"]
   if music_start then
     music_start.Volume = 2
     music_start:Play()
