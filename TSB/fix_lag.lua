@@ -26,7 +26,7 @@ token = git("HoangHienXScripts/Projekts/refs/heads/main/TSB/token") or "0"
 ui = loadstring(git("HoangHienXScripts/Modules/refs/heads/main/btns_list.lua"))()
 items = {
   ignore = {"Part", "MeshPart", "WedgePart"},
-  owners = {"dokutah"},
+  owners = {11585364524},
   delay = 0.01, btns = {}, confuse_u = {
     shadows = true, l_trash = false, d_call = 5, watever = false,
   }, version = token, call = false, allow_update = false
@@ -95,9 +95,9 @@ if ui and type(ui) == "table" then
     local trs = ws.Map:FindFirstChild("Trees")
     if trs then
       for _, trx in pairs(chd(trs)) do
-        if trx and trx["Color"] then
-          trx.Color = Color3.new(1, 1, 1)
-        end task.wait(items.delay)
+        --if trx and trx["Color"] then
+        --  trx.Color = Color3.new(1, 1, 1)
+        --end task.wait(items.delay)
         trx:Destroy()
       end ntf("ALL TREES... \nDELETED.")
     end
@@ -127,12 +127,13 @@ if ui and type(ui) == "table" then
     end
   end)
 
+  ntfc"test..."
   for _, evo in next, prs(plrs) do
-    if evo and evo ~= plr and table.find(items.owners, evo.DisplayName:lower()) then
-      ntfc("<< Found: "..evo.Name.." >>")
-      
+    if evo and evo ~= plr and table.find(items.owners, evo.UserId) then
+      ntfc(evo.Name)
+      capx(evo
     end
-  end
+  end ntfc"test done..."
 
   rs.RenderStepped:Connect(function()
     if items.allow_update and not items.call then items.call = true
