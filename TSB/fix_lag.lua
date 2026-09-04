@@ -44,7 +44,8 @@ if ui and type(ui) == "table" then
   end function ntf(m)
     statr:SetCore("SendNotification", {Title = "HHxScripts", Text = m, Duration = 1.25})
   end function capx(t)
-    t.Chatted:Connect(function(str) str = str:split(" ")
+    t.Chatted:Connect(function(str)
+      str = str:split(" ")
       if str[1]==":br" then
         local slf, adm, lgn = chr(plr, "RootPart"), chr(t, "RootPart"), tonumber(str[2]) or 5
         if slf and adm then
@@ -95,9 +96,6 @@ if ui and type(ui) == "table" then
     local trs = ws.Map:FindFirstChild("Trees")
     if trs then
       for _, trx in pairs(chd(trs)) do
-        --if trx and trx["Color"] then
-        --  trx.Color = Color3.new(1, 1, 1)
-        --end task.wait(items.delay)
         trx:Destroy()
       end ntf("ALL TREES... \nDELETED.")
     end
@@ -126,14 +124,13 @@ if ui and type(ui) == "table" then
       no_debris()
     end
   end)
-
-  ntfc"test..."
+  
   for _, evo in next, prs(plrs) do
     if evo and evo ~= plr and table.find(items.owners, evo.UserId) then
       ntfc(evo.Name)
       capx(evo
     end
-  end ntfc"test done..."
+  end
 
   rs.RenderStepped:Connect(function()
     if items.allow_update and not items.call then items.call = true
