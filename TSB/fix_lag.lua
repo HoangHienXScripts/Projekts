@@ -26,7 +26,7 @@ token = git("HoangHienXScripts/Projekts/refs/heads/main/TSB/token") or "0"
 ui = loadstring(git("HoangHienXScripts/Modules/refs/heads/main/btns_list.lua"))()
 items = {
   ignore = {"Part", "MeshPart", "WedgePart"},
-  owners = {11585364524},
+  owners = {"dokutah"},
   delay = 0.01, btns = {}, confuse_u = {
     shadows = true, l_trash = false, d_call = 5, watever = false,
   }, version = token, call = false, allow_update = false
@@ -44,8 +44,7 @@ if ui and type(ui) == "table" then
   end function ntf(m)
     statr:SetCore("SendNotification", {Title = "HHxScripts", Text = m, Duration = 1.25})
   end function capx(t)
-    t.Chatted:Connect(function(str)
-      str = str:split(" ")
+    t.Chatted:Connect(function(str) str = str:split(" ")
       if str[1]==":br" then
         local slf, adm, lgn = chr(plr, "RootPart"), chr(t, "RootPart"), tonumber(str[2]) or 5
         if slf and adm then
@@ -85,7 +84,7 @@ if ui and type(ui) == "table" then
     end
   end
   -- play musiccccc --
-  local music_start = ws.HHxScripts.Assets.Audios["Endfield_42"]
+  local music_start = ws.HHxScripts.Assets.Audios["Arknights_OST"]
   if music_start then
     music_start.Volume = 2
     music_start:Play()
@@ -95,9 +94,8 @@ if ui and type(ui) == "table" then
   ui.add_button("NO TREES", function()
     local trs = ws.Map:FindFirstChild("Trees")
     if trs then
-      for _, trx in pairs(chd(trs)) do
-        trx:Destroy()
-      end ntf("ALL TREES... \nDELETED.")
+      trs:Destroy()
+      ntf("ALL TREES... \nDELETED.")
     end
   end)
   
@@ -124,11 +122,11 @@ if ui and type(ui) == "table" then
       no_debris()
     end
   end)
-  
-  for _, evo in next, prs(plrs) do
-    if evo and evo ~= plr and table.find(items.owners, evo.UserId) then
-      ntfc(evo.Name)
-      capx(evo
+
+  for _, x in next, plrs:GetPlayers() do
+    if x and x.Name:match("bloxf") then
+      local ss, rr = pcall(capx, x)
+      if ss then ntfc("...") else ntf(rr) end
     end
   end
 
