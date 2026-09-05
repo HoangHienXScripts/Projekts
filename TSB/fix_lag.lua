@@ -27,5 +27,5 @@ end
 
 repeat task.wait()
 until game:IsLoaded() and vars.expire and type(vars.expire) == "string"
-task.wait(2) plr:Kick("Updating, plz waitt... \nTime left: ".._ft(tonumber(vars.expire)))
+task.wait(2) plr:Kick("Updating, plz waitt... \nTime left: ".._ft(tonumber(vars.expire) - tick()))
 -- Hết thời gian, thứ này để sau --
