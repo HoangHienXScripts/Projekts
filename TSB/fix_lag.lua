@@ -10,8 +10,9 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Pro
 
 local vars, plr
 vars = {
-  version = "0.2",
+  version = "0.15",
   map_optimized = false,
+  last_pos = nil,
   chatv = txs.ChatVersion == Enum.ChatVersion.LegacyChatService,
   autof = {
     offset = "X", frm = false, x = 0, y = 0, z = 3.5
@@ -81,7 +82,7 @@ end)
 vars.btns.autof = ui.add_button("Auto Farm [OFF]", function()
   local btn = vars.btns.autof
   if not vars.autof.frm then
-    table.insert(vars.cons, rs.Heartbeat:Connect(function()
+    vars.cons["autof"] = rs.Heartbeat:Connect(function()
       local enm = rcv_enm()
 	  if enm and enm ~= nil then
         local s_hrp, enm_hrp, frm = rcv_hrp(plr), rcv_hrp(enm), vars.autof
@@ -89,10 +90,11 @@ vars.btns.autof = ui.add_button("Auto Farm [OFF]", function()
           s_hrp.CFrame = enm_hrp.CFrame * CFrame.new(frm.x, frm.y, frm.z)
 		end
 	  end
-	end)) btn_newt(btn, "Auto Farm [ON]")
+	end) btn_newt(btn, "Auto Farm [ON]")
 	btn_newtc(btn, {0, 1, 0})
   else
-    if #vars.cons > 0 then for i = 1, #vars.cons do if vars.cons[i] then vars.cons[i]:Disconnect() vars.cons[i] = nil end end end
+    --if #vars.cons > 0 then for i = 1, #vars.cons do if vars.cons[i] then vars.cons[i]:Disconnect() vars.cons[i] = nil end end end
+	for i, c_n in next, vars.cons do if i == "autof" then vars.cons[i]:Disconnect() vars.cons[i] = nil end end
     btn_newt(btn, "Auto Farm [OFF]")
 	btn_newtc(btn, {1, 1, 1})
   end vars.autof.frm = not vars.autof.frm
@@ -110,7 +112,7 @@ vars.btns.optimize_map = ui.add_button("Rebuilt-Map", function()
     btn_newtc(btn, {1, 1, 0}) task.wait(0.5)
 	btn_newt(btn, "Rebuilt-Map") btn_newtc(btn, {1, 1, 1})
 	return
-  end
+  end vars.map_optimized = true
   local main_part = map:FindFirstChild("MainPart")
   for _, v in pairs(map:GetChildren()) do
     if v and v:IsA("Folder") and v.Name:sub(1, 5):lower() ~= "trash" then
@@ -126,7 +128,18 @@ vars.btns.optimize_map = ui.add_button("Rebuilt-Map", function()
 	  task.wait(0.1)
 	end
   end task.wait(0.02)
-  main_part.Touched:Connect(function(p_t) print(p_t:GetFullName()) end)
+  main_part.Touched:Connect(function(p_t)
+    local xp_t = p_t.Parent
+    if xp_t.Name:match(plr.Name) and xp_t:FindFirstChild("HumanoidRootPart") then
+      vars.last_pos = xp_t.HumanoidRootPart.Position or nil
+	end
+  end) vars.cons["anti_void"] = rs.RenderStepped:Connect(function()
+    local m_hrp = rcv_hrp(plr)
+	if m_hrp and t_alive(plr) then
+      local y_pos_hrp, y_pos_mp = m_hrp.Position.Y, main_part.Position.Y
+	  if y_pos_hrp < y_pos_mp - 25 then print"yes" end
+	end
+  end)
   main_part.CastShadow = false
   main_part.Material = Enum.Material.Grass
   main_part.Color = Color3.fromRGB(0, 100, 0)
