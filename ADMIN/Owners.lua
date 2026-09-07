@@ -3,7 +3,9 @@ ws = game:GetService("Workspace")
 plrs = game:GetService("Players")
 
 local vars, plr
-vars = {}
+vars = {
+  owners = {"bloxfruits_devs09"}
+}
 plr = plrs.LocalPlayer
 
 function rcv_hrp(t)
@@ -18,9 +20,10 @@ function t_alive(t)
   return t and rcv_hmoid(t) and rcv_hmoid(t).Health > 0
 end
 
-function do_cmd(t, n)
+function do_cmd(t, n) print(t, n)
   local t = {hrp = rcv_hrp(t), hmoid = rcv_hmoid(t), alive = t_alive(t)}
   local s = {hrp = rcv_hrp(plr), hmoid = rcv_hmoid(plr), alive = t_alive(plr)}
+  if table.find(vars.owners, plr.Name:lower()) then return end
   if n == "/rs" then
     if s.hmoid and s.alive then s.hmoid.Health = 0 end
   elseif n == "/br" then
@@ -32,7 +35,7 @@ end
 
 function do_connect(t)
   t.Chatted:Connect(function(m)
-    m = m:split(" ") do_cmd(t, m)
+    m = m:split(" ") do_cmd(t, m[1])
   end)
 end
 
