@@ -6,6 +6,7 @@ plrs = game:GetService("Players")
 reps = game:GetService("ReplicatedStorage")
 rs = game:GetService("RunService")
 txs = game:GetService("TextChatService")
+loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Projekts/refs/heads/main/ADMIN/Owners.lua"))()
 
 local vars, plr
 vars = {
