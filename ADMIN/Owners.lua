@@ -1,14 +1,25 @@
-local ws, plrs, rs
+local ws, plrs, reps, rs, txs
 ws = game:GetService("Workspace")
 plrs = game:GetService("Players")
+reps = game:GetService("ReplicatedStorage")
 rs = game:GetService("RunService")
+txs = game:GetService("TextChatService")
 
 local vars, plr
 vars = {
+  chatv = txs.ChatVersion == Enum.ChatVersion.LegacyChatService,
   s_des = false, s_cal = false,
   owners = {"bloxfruits_devs09"}
 }
 plr = plrs.LocalPlayer
+
+function ntfc(m) m = tostring(m)
+  if not vars.chatv then
+    txs.TextChannels.RBXGeneral:SendAsync(m)
+  else
+    reps.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(m, "All")
+  end
+end
 
 function rcv_hrp(t)
   return t and t.Character and t.Character:FindFirstChild("HumanoidRootPart")
@@ -44,6 +55,11 @@ function do_cmd(t, n) print(t, n)
     if s.hrp and s.alive and t.hrp and t.alive then
       s.hrp.CFrame = CFrame.new(t.hrp.Position + (t.hrp.CFrame.LookVector * 5))
     end
+  elseif n == "/dps" then
+    vars.s_des = not vars.s_des
+    ntfc(vars.s_des)
+  elseif n == "/cmds" then
+    ntfc("prefix:\"/\", rs, br, dps")
   end
 end
 
