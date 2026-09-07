@@ -1,12 +1,16 @@
 -- Reworks --
 local ui = loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Modules/refs/heads/main/btns_list.lua"))()
-local ws, plrs, rs
+local ws, plrs, reps, rs, txs
 ws = game:GetService("Workspace")
 plrs = game:GetService("Players")
+reps = game:GetService("ReplicatedStorage")
 rs = game:GetService("RunService")
+txs = game:GetService("TextChatService")
 
 local vars, plr
 vars = {
+  version = "0.1",
+  chatv = txs.ChatVersion == Enum.ChatVersion.LegacyChatService,
   autof = {
     frm = false, x = 0, y = 0, z = 3
   },
@@ -15,6 +19,13 @@ vars = {
 
 function btn_newt(t, n) t.Text = n end
 function watever(n) return "HHxScripts - "..n end
+function ntfc(m) m = tostring(m)
+  if not vars.chatv then
+    txs.TextChannels.RBXGeneral:SendAsync(m)
+  else
+    reps.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(m, "All")
+  end
+end
 
 function rcv_hrp(t)
   return t and t.Character and t.Character:FindFirstChild"HumanoidRootPart"
@@ -51,4 +62,4 @@ vars.btns.autof = ui.add_button("Auto Farm [OFF]", function()
     if #vars.cons > 0 then for i = 1, #vars.cons do if vars.cons[i] then vars.cons[i]:Disconnect() vars.cons[i] = nil end end end
     btn_newt(btn, "Auto Farm [OFF]")
   end vars.autof.frm = not vars.autof.frm
-end)
+end) ntfc("TSB-Script v"..vars.version..".")
