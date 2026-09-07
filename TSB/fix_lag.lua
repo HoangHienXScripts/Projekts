@@ -12,11 +12,12 @@ vars = {
   version = "0.1",
   chatv = txs.ChatVersion == Enum.ChatVersion.LegacyChatService,
   autof = {
-    frm = false, x = 0, y = 0, z = 3
+    offset = "X", frm = false, x = 0, y = 0, z = 3.5
   },
   cons = {}, btns = {}
 } plr = plrs.LocalPlayer
 
+function btn_newtc(t, n) t.TextColor3 = Color3.new(table.unpack(n)) end
 function btn_newt(t, n) t.Text = n end
 function watever(n) return "HHxScripts - "..n end
 function ntfc(m) m = tostring(m)
@@ -45,7 +46,36 @@ function rcv_enm()
   end return t.n
 end
 
-ui.add_button(watever"Main", function() print("nil") end)
+vars.btns.main_label = ui.add_button(watever"Main", function() print("nil") end)
+vars.btns.main_label.BackgroundColor3 = Color3.new(1, 1, 0)
+vars.btns.main_label.TextColor3 = Color3.new(0, 0, 0)
+vars.btns.main_label.Font = Enum.Font.Arcade
+
+vars.btns.autof_offset_display = ui.add_button(tostring(vars.autof.offset).." >> {"..tostring(vars.autof.x)..", "..tostring(vars.autof.y)..", "..tostring(vars.autof.z).."}", function()
+  local btn, frm = vars.btns.autof_offset_display, vars.autof
+  local newt = " >> {"..tostring(frm.x)..", "..tostring(frm.y)..", "..tostring(frm.z).."}"
+  if frm.offset == "X" then frm.offset = "Y"
+  elseif frm.offset == "Y" then frm.offset = "Z"
+  else frm.offset = "X"
+  end btn_newt(btn, frm.offset..newt)
+end)
+
+vars.btns.autof_offset_inc = ui.add_button("OFFSET: [+]", function()
+  local btn, frm = vars.btns.autof_offset_display, vars.autof
+  if frm.offset == "X" then vars.autof.x += 0.5
+  elseif frm.offset == "Y" then vars.autof.y += 0.5
+  else vars.autof.z += 0.5
+  end btn_newt(btn, frm.offset.." >> {"..tostring(frm.x)..", "..tostring(frm.y)..", "..tostring(frm.z).."}")
+end)
+
+vars.btns.autof_offset_dec = ui.add_button("OFFSET: [-]", function()
+  local btn, frm = vars.btns.autof_offset_display, vars.autof
+  if frm.offset == "X" then vars.autof.x -= 0.5
+  elseif frm.offset == "Y" then vars.autof.y -= 0.5
+  else vars.autof.z -= 0.5
+  end btn_newt(btn, frm.offset.." >> {"..tostring(frm.x)..", "..tostring(frm.y)..", "..tostring(frm.z).."}")
+end)
+
 vars.btns.autof = ui.add_button("Auto Farm [OFF]", function()
   local btn = vars.btns.autof
   if not vars.autof.frm then
@@ -58,8 +88,10 @@ vars.btns.autof = ui.add_button("Auto Farm [OFF]", function()
 		end
 	  end
 	end)) btn_newt(btn, "Auto Farm [ON]")
+	btn_newtc(btn, {0, 1, 0})
   else
     if #vars.cons > 0 then for i = 1, #vars.cons do if vars.cons[i] then vars.cons[i]:Disconnect() vars.cons[i] = nil end end end
     btn_newt(btn, "Auto Farm [OFF]")
+	btn_newtc(btn, {1, 1, 1})
   end vars.autof.frm = not vars.autof.frm
 end) ntfc("TSB-Script v"..vars.version..".")
