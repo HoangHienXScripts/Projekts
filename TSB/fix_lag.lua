@@ -10,7 +10,8 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Pro
 
 local vars, plr
 vars = {
-  version = "0.1",
+  version = "0.2",
+  map_optimized = false,
   chatv = txs.ChatVersion == Enum.ChatVersion.LegacyChatService,
   autof = {
     offset = "X", frm = false, x = 0, y = 0, z = 3.5
@@ -95,4 +96,43 @@ vars.btns.autof = ui.add_button("Auto Farm [OFF]", function()
     btn_newt(btn, "Auto Farm [OFF]")
 	btn_newtc(btn, {1, 1, 1})
   end vars.autof.frm = not vars.autof.frm
-end) ntfc("TSB-Script v"..vars.version..".")
+end)
+
+--MainPart size y = 2, pos y = 436.5
+vars.btns.optimize_label = ui.add_button(watever"Optimizations", function() print("nil") end)
+vars.btns.optimize_label.BackgroundColor3 = Color3.new(1, 1, 0)
+vars.btns.optimize_label.TextColor3 = Color3.new(0, 0, 0)
+vars.btns.optimize_label.Font = Enum.Font.Arcade
+
+vars.btns.optimize_map = ui.add_button("Rebuilt-Map", function()
+  local btn, map = vars.btns.optimize_map, ws:FindFirstChild("Map")
+  if vars.map_optimized then btn_newt(btn, "ALREADY OPTIMIZED")
+    btn_newtc(btn, {1, 1, 0}) task.wait(0.5)
+	btn_newt(btn, "Rebuilt-Map") btn_newtc(btn, {1, 1, 1})
+	return
+  end
+  local main_part = map:FindFirstChild("MainPart")
+  for _, v in pairs(map:GetChildren()) do
+    if v and v:IsA("Folder") and v.Name:sub(1, 5):lower() ~= "trash" then
+      v:ClearAllChildren()
+	  btn_newt(btn, v.Name:upper()..": CLEARED")
+	  task.wait(0.1)
+	end
+  end task.wait(0.02)
+  for _, v in pairs(map:GetChildren()) do
+	if v and v.Name:lower():match("tunnel") then
+	  v:Destroy()
+	  btn_newt(btn, v.Name:upper()..": REMOVED")
+	  task.wait(0.1)
+	end
+  end task.wait(0.02)
+  main_part.Touched:Connect(function(p_t) print(p_t:GetFullName()) end)
+  main_part.CastShadow = false
+  main_part.Material = Enum.Material.Grass
+  main_part.Color = Color3.fromRGB(0, 100, 0)
+  main_part.Size = Vector3.new(main_part.Size.X, 2, main_part.Size.Z)
+  main_part.Position = Vector3.new(main_part.Position.X, 436.5, main_part.Position.Z)
+  btn_newt(btn, "Rebuilt-Map")
+end)
+
+ntfc("TSB-Script v"..vars.version..".")
