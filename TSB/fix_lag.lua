@@ -10,7 +10,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Pro
 
 local vars, plr
 vars = {
-  version = "0.15",
+  version = "0.2",
   map_optimized = false,
   last_pos = nil,
   chatv = txs.ChatVersion == Enum.ChatVersion.LegacyChatService,
@@ -137,7 +137,9 @@ vars.btns.optimize_map = ui.add_button("Rebuilt-Map", function()
     local m_hrp = rcv_hrp(plr)
 	if m_hrp and t_alive(plr) then
       local y_pos_hrp, y_pos_mp = m_hrp.Position.Y, main_part.Position.Y
-	  if y_pos_hrp < y_pos_mp - 25 then print"yes" end
+	  if vars.last_pos and y_pos_hrp < y_pos_mp - 25 then
+	    m_hrp.CFrame = CFrame.new(vars.last_pos + Vector3.new(0, 2, 0))
+	  end
 	end
   end)
   main_part.CastShadow = false
