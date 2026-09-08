@@ -21,9 +21,10 @@ vars = {
     ["Samurai-Cutscene"] = {-54, 1636, 25249},
 	["Map-Edge"] = {-281, 440, 478}
   },
-  cons = {}, btns = {}, sorts = {}
+  cons = {}, btns = {}, sorts = {}, tp_btns = {}
 } plr = plrs.LocalPlayer
 
+function btn_newbc(t, n) t.BackgroundColor3 = Color3.new(table.unpack(n)) end
 function btn_newtc(t, n) t.TextColor3 = Color3.new(table.unpack(n)) end
 function btn_newt(t, n) t.Text = n end
 function watever(n) return "HHxScripts - "..n end
@@ -118,6 +119,25 @@ vars.btns.autof = ui.add_button("Auto Farm [OFF]", function()
 	btn_newtc(btn, {1, 1, 1})
   end vars.autof.frm = not vars.autof.frm
 end)
+
+vars.btns.mod_map_label = ui.add_button(watever"Map", function() print("nil") end)
+vars.btns.mod_map_label.BackgroundColor3 = Color3.new(1, 1, 0)
+vars.btns.mod_map_label.TextColor3 = Color3.new(0, 0, 0)
+vars.btns.mod_map_label.Font = Enum.Font.Arcade
+
+for lc_name, lc_pos in next, vars.locations do
+  table.insert(vars.tp_btns, ui.add_button("🔒: "..lc_name, function()
+    local m_hrp = rcv_hrp(plr)
+	if m_hrp and t_alive(plr) and vars.map_optimized then
+      m_hrp.CFrame = CFrame.new(Vector3.new(unpack(lc_pos)) + Vector3.new(0, 2, 0))
+	else
+	  btn_newbc(vars.btns.optimize_map, {1, 1, 1}) task.wait(0.15)
+	  btn_newbc(vars.btns.optimize_map, {1, 1, 0}) task.wait(0.15)
+	  btn_newbc(vars.btns.optimize_map, {1, 1, 1}) task.wait(0.15)
+	  btn_newbc(vars.btns.optimize_map, {1, 1, 0}) task.wait(0.15)
+	end btn_newbc(vars.btns.optimize_map, {0, 0, 0})
+  end)) --btn:SetAttribute("BTN_LOCKED", true)
+end
 
 --MainPart size y = 2, pos y = 436.5
 vars.btns.optimize_label = ui.add_button(watever"Optimizations", function() print("nil") end)
