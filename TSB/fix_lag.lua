@@ -131,6 +131,15 @@ for lc_name, lc_pos in next, vars.locations do
 	if m_hrp and t_alive(plr) and vars.map_optimized then
       m_hrp.CFrame = CFrame.new(Vector3.new(unpack(lc_pos)) + Vector3.new(0, 2, 0))
 	else
+	  if #vars.tp_btns > 0 then
+        for idx = 1, #vars.tp_btns do
+          local s_btn = vars.tp_btns[idx]
+		  s_btn.Text = s_btn.Text:gsub("🔒", "🔐") task.wait(0.05)
+		  s_btn.Text = s_btn.Text:gsub("🔐", "🔒") task.wait(0.05)
+		  s_btn.Text = s_btn.Text:gsub("🔒", "🔐") task.wait(0.05)
+		  s_btn.Text = s_btn.Text:gsub("🔐", "🔒") task.wait(0.05)
+		end
+	  end
 	  btn_newbc(vars.btns.optimize_map, {1, 1, 1}) task.wait(0.15)
 	  btn_newbc(vars.btns.optimize_map, {1, 1, 0}) task.wait(0.15)
 	  btn_newbc(vars.btns.optimize_map, {1, 1, 1}) task.wait(0.15)
