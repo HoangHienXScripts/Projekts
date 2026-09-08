@@ -10,7 +10,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Pro
 
 local vars, plr
 vars = {
-  version = "0.2",
+  version = "0.25".." [BETA]",
   map_optimized = false,
   last_pos = nil,
   chatv = txs.ChatVersion == Enum.ChatVersion.LegacyChatService,
@@ -23,12 +23,26 @@ vars = {
 function btn_newtc(t, n) t.TextColor3 = Color3.new(table.unpack(n)) end
 function btn_newt(t, n) t.Text = n end
 function watever(n) return "HHxScripts - "..n end
+function new_cnt(n, t) if n and type(n) == "string" then vars.cons[n] = t end end
 function ntfc(m) m = tostring(m)
   if not vars.chatv then
     txs.TextChannels.RBXGeneral:SendAsync(m)
   else
     reps.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(m, "All")
   end
+end
+
+function exit_cnt(n)
+  local found = false
+  for idx, _ in next, vars.cons do
+    if idx == n then vars.cons[idx]:Disconnect()
+	  vars.cons[idx] = nil
+	  found = true
+	  break
+	end
+  end if found then found = "[-]: disconnect successful."
+  else found = "[!]: name mismatch."
+  end return found
 end
 
 function rcv_hrp(t)
@@ -82,7 +96,7 @@ end)
 vars.btns.autof = ui.add_button("Auto Farm [OFF]", function()
   local btn = vars.btns.autof
   if not vars.autof.frm then
-    vars.cons["autof"] = rs.Heartbeat:Connect(function()
+    new_cnt("autof", rs.Heartbeat:Connect(function()
       local enm = rcv_enm()
 	  if enm and enm ~= nil then
         local s_hrp, enm_hrp, frm = rcv_hrp(plr), rcv_hrp(enm), vars.autof
@@ -90,11 +104,12 @@ vars.btns.autof = ui.add_button("Auto Farm [OFF]", function()
           s_hrp.CFrame = enm_hrp.CFrame * CFrame.new(frm.x, frm.y, frm.z)
 		end
 	  end
-	end) btn_newt(btn, "Auto Farm [ON]")
+	end)) btn_newt(btn, "Auto Farm [ON]")
 	btn_newtc(btn, {0, 1, 0})
   else
     --if #vars.cons > 0 then for i = 1, #vars.cons do if vars.cons[i] then vars.cons[i]:Disconnect() vars.cons[i] = nil end end end
-	for i, c_n in next, vars.cons do if i == "autof" then vars.cons[i]:Disconnect() vars.cons[i] = nil end end
+	--for i, c_n in next, vars.cons do if i == "autof" then vars.cons[i]:Disconnect() vars.cons[i] = nil end end
+	exit_cnt("autof")
     btn_newt(btn, "Auto Farm [OFF]")
 	btn_newtc(btn, {1, 1, 1})
   end vars.autof.frm = not vars.autof.frm
@@ -133,7 +148,7 @@ vars.btns.optimize_map = ui.add_button("Rebuilt-Map", function()
     if xp_t.Name:match(plr.Name) and xp_t:FindFirstChild("HumanoidRootPart") then
       vars.last_pos = xp_t.HumanoidRootPart.Position or nil
 	end
-  end) vars.cons["anti_void"] = rs.RenderStepped:Connect(function()
+  end) new_cnt("anti_void", rs.RenderStepped:Connect(function()
     local m_hrp = rcv_hrp(plr)
 	if m_hrp and t_alive(plr) then
       local y_pos_hrp, y_pos_mp = m_hrp.Position.Y, main_part.Position.Y
@@ -141,8 +156,7 @@ vars.btns.optimize_map = ui.add_button("Rebuilt-Map", function()
 	    m_hrp.CFrame = CFrame.new(vars.last_pos + Vector3.new(0, 2, 0))
 	  end
 	end
-  end)
-  main_part.CastShadow = false
+  end)) main_part.CastShadow = false
   main_part.Material = Enum.Material.Grass
   main_part.Color = Color3.fromRGB(0, 100, 0)
   main_part.Size = Vector3.new(main_part.Size.X, 2, main_part.Size.Z)
