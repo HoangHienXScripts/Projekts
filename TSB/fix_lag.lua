@@ -17,7 +17,11 @@ vars = {
   autof = {
     offset = "X", frm = false, x = 0, y = 0, z = 3.5
   },
-  cons = {}, btns = {}
+  locations = {
+    ["Samurai-Cutscene"] = {-54, 1636, 25249},
+	["Map-Edge"] = {-281, 440, 478}
+  },
+  cons = {}, btns = {}, sorts = {}
 } plr = plrs.LocalPlayer
 
 function btn_newtc(t, n) t.TextColor3 = Color3.new(table.unpack(n)) end
