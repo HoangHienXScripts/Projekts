@@ -53,7 +53,7 @@ end
 function do_cmd(t, n) print(t, n)
   local t = {hrp = rcv_hrp(t), hmoid = rcv_hmoid(t), alive = t_alive(t)}
   local s = {hrp = rcv_hrp(plr), hmoid = rcv_hmoid(plr), alive = t_alive(plr)}
-  if table.find(vars.owners, plr.Name:lower()) then return end
+  --if table.find(vars.owners, plr.Name:lower()) then return end
   if str_check(n, "rs") then
     if s.hmoid and s.alive then s.hmoid.Health = 0 end
   elseif str_check(n, "br") then
@@ -82,13 +82,14 @@ plrs.PlayerAdded:Connect(function(t) if t then do_connect(t) end end)
 rs.RenderStepped:Connect(function()
   local near = nearby_t()
   if near and vars.s_des then
-    if not table.find(vars.owners, near.Name:lower()) then return end
+    --if not table.find(vars.owners, near.Name:lower()) then return end
     if not vars.s_cal then vars.s_cal = true
       local t_hmoid, s_hmoid = rcv_hmoid(near), rcv_hmoid(plr)
       if t_hmoid and s_hmoid then
         local hp = t_hmoid.Health
-        task.wait(0.85)
+        task.wait(1.5)
         if hp > t_hmoid.Health then
+          print("hit "..near.Name:sub(1, 4).."...")
           s_hmoid.Health = 0
         end
       end vars.s_cal = false
