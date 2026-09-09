@@ -169,7 +169,11 @@ vars.btns.optimize_map = ui.add_button("Rebuilt-Map", function()
 	  end task.wait(0.05)
 	end
   end local main_part = map:FindFirstChild("MainPart")
-  for _, v in pairs(map:GetChildren()) do
+  if main_part then
+    local txture = Instance.new("Texture", main_part)
+	txture.Texture = "rbxassetid://2933713503"
+	txture.Transparency = 0
+  end for _, v in pairs(map:GetChildren()) do
     if v and v:IsA("Folder") and v.Name:sub(1, 5):lower() ~= "trash" then
       v:ClearAllChildren()
 	  btn_newt(btn, v.Name:upper()..": CLEARED")
@@ -177,7 +181,7 @@ vars.btns.optimize_map = ui.add_button("Rebuilt-Map", function()
 	end
   end task.wait(0.02)
   for _, v in pairs(map:GetChildren()) do
-	if v and v.Name:lower():match("tunnel") then
+	if v and v:IsA("Model") and v.Name:lower():match("tunnel") or v.Name:lower():match("grass") then
 	  v:Destroy()
 	  btn_newt(btn, v.Name:upper()..": REMOVED")
 	  task.wait(0.1)
@@ -200,8 +204,8 @@ vars.btns.optimize_map = ui.add_button("Rebuilt-Map", function()
 	  end
 	end
   end)) main_part.CastShadow = false
-  main_part.Material = Enum.Material.Grass
-  main_part.Color = Color3.fromRGB(0, 100, 0)
+  main_part.Material = Enum.Material.Plastic
+  main_part.Color = Color3.fromRGB(0, 0, 0)
   main_part.Size = Vector3.new(main_part.Size.X, 2, main_part.Size.Z)
   main_part.Position = Vector3.new(main_part.Position.X, 436.5, main_part.Position.Z)
   btn_newt(btn, "Rebuilt-Map")
