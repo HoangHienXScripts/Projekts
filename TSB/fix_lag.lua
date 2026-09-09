@@ -12,7 +12,7 @@ local vars, plr
 vars = {
   version = "0.3".." [BETA]",
   map_optimized = false,
-  last_pos = nil,
+  last_pos = nil, last_pos_called = false,
   chatv = txs.ChatVersion == Enum.ChatVersion.LegacyChatService,
   autof = {
     offset = "X", frm = false, x = 0, y = 0, z = 3.5
@@ -134,10 +134,10 @@ for lc_name, lc_pos in next, vars.locations do
 	  if #vars.tp_btns > 0 then
         for idx = 1, #vars.tp_btns do
           local s_btn = vars.tp_btns[idx]
-		  btn_newt(s_btn, s_btn.Text:gsub("🔒", "🔐")) task.wait(0.05)
-		  btn_newt(s_btn, s_btn.Text:gsub("🔐", "🔒")) task.wait(0.05)
-		  btn_newt(s_btn, s_btn.Text:gsub("🔒", "🔐")) task.wait(0.05)
-		  btn_newt(s_btn, s_btn.Text:gsub("🔐", "🔒")) task.wait(0.05)
+		  btn_newt(s_btn, s_btn.Text:gsub("🔒", "🔐")) task.wait(0.2)
+		  btn_newt(s_btn, s_btn.Text:gsub("🔐", "🔒")) task.wait(0.2)
+		  btn_newt(s_btn, s_btn.Text:gsub("🔒", "🔐")) task.wait(0.2)
+		  btn_newt(s_btn, s_btn.Text:gsub("🔐", "🔒")) task.wait(0.2)
 		end
 	  end
 	  btn_newbc(vars.btns.optimize_map, {1, 1, 1}) task.wait(0.15)
@@ -186,7 +186,10 @@ vars.btns.optimize_map = ui.add_button("Rebuilt-Map", function()
   main_part.Touched:Connect(function(p_t)
     local xp_t = p_t.Parent
     if xp_t.Name:match(plr.Name) and xp_t:FindFirstChild("HumanoidRootPart") then
-      vars.last_pos = xp_t.HumanoidRootPart.Position or nil
+      if not vars.last_pos_called then vars.last_pos_called = true
+	    vars.last_pos = xp_t.HumanoidRootPart.Position or nil
+		task.wait(0.5) vars.last_pos_called = false
+	  end
 	end
   end) new_cnt("anti_void", rs.RenderStepped:Connect(function()
     local m_hrp = rcv_hrp(plr)
