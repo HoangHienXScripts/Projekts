@@ -10,12 +10,12 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Pro
 
 local vars, plr
 vars = {
-  version = "0.3".." [BETA]",
+  version = "0.35".." [BETA]",
   map_optimized = false,
   last_pos = nil, last_pos_called = false,
   chatv = txs.ChatVersion == Enum.ChatVersion.LegacyChatService,
   autof = {
-    offset = "X", frm = false, x = 0, y = 0, z = 3.5
+    direction = "customize", offset = "X", frm = false, under_pos_rcvd = false, x = 0, y = 0, z = 3.5, under_pos = 0
   },
   locations = {
     ["Samurai-Cutscene"] = {-54, 1636, 25249},
@@ -98,6 +98,13 @@ vars.btns.autof_offset_dec = ui.add_button("OFFSET: [-]", function()
   end btn_newt(btn, frm.offset.." >> {"..tostring(frm.x)..", "..tostring(frm.y)..", "..tostring(frm.z).."}")
 end)
 
+vars.btns.autof_direction = ui.add_button("DIR: "..tostring(vars.autof.direction):upper(), function()
+  local btn, frm = vars.btns.autof_direction, vars.autof
+  if frm.direction == "customize" then vars.autof.direction = "below"
+  else vars.autof.direction = "customize"
+  end btn_newt(btn, "DIR: "..tostring(frm.direction):upper())
+end)
+
 vars.btns.autof = ui.add_button("Auto Farm [OFF]", function()
   local btn = vars.btns.autof
   if not vars.autof.frm then
@@ -106,12 +113,18 @@ vars.btns.autof = ui.add_button("Auto Farm [OFF]", function()
 	  if enm and enm ~= nil then
         local s_hrp, enm_hrp, frm = rcv_hrp(plr), rcv_hrp(enm), vars.autof
 	    if s_hrp and enm_hrp then
-          s_hrp.CFrame = enm_hrp.CFrame * CFrame.new(frm.x, frm.y, frm.z)
+		  if not vars.autof.under_pos_rcvd then vars.autof.under_pos_rcvd = true
+            vars.autof.under_pos = s_hrp.Position.Y - 6
+		  end if vars.autof.direction == "customize" then
+		    s_hrp.CFrame = enm_hrp.CFrame * CFrame.new(frm.x, frm.y, frm.z)
+		  else
+            s_hrp.CFrame = CFrame.new(Vector3.new(enm_hrp.Position.X, vars.autof.under_pos, enm_hrp.Position.Z)) * CFrame.Angles(math.rad(90), 0, math.rad(90))
+		  end
 		end
 	  end
 	end)) btn_newt(btn, "Auto Farm [ON]")
 	btn_newtc(btn, {0, 1, 0})
-  else
+  else vars.autof.under_pos_rcvd = false
     --if #vars.cons > 0 then for i = 1, #vars.cons do if vars.cons[i] then vars.cons[i]:Disconnect() vars.cons[i] = nil end end end
 	--for i, c_n in next, vars.cons do if i == "autof" then vars.cons[i]:Disconnect() vars.cons[i] = nil end end
 	exit_cnt("autof")
