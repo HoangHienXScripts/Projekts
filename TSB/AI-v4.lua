@@ -1,7 +1,4 @@
--- Test: 4 --
-local ui = loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Scripts/refs/heads/main/modules/quickbuttons.lua"))()
-ui.set_configs({saving_state = false})
-
+-- built by HHxScripts --
 local ws, plrs, txcs, reps, runs, bulls
 ws = game:GetService("Workspace")
 plrs = game:GetService("Players")
