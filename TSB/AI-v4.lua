@@ -1,10 +1,8 @@
 -- built by HHxScripts --
-local ws, plrs, txcs, reps, runs, bulls
+local ws, plrs, reps, bulls
 ws = game:GetService("Workspace")
 plrs = game:GetService("Players")
-txcs = game:GetService("TextChatService")
 reps = game:GetService("ReplicatedStorage")
-runs = game:GetService("RunService")
 bulls = game:GetService("Lighting")
 
 local plr, anim_inst_object
@@ -18,18 +16,12 @@ local vars, ignore_anims = {
   retreat_dist = 35,
   escape_dist = 60,
   ai_walkspeed = 125,
-  oldest_str = "",
   oldest_char = "",
   oldest_position = Vector3.new(0, 9999, 0),
-  spawned_pos = Vector3.new(0, 450, 0),
-  current_void_position = 350,
-  can_spam_target_lock = false,
-  chat_func = false,
-  is_low_health = false,
-  is_legacy_chat = txcs.ChatVersion == Enum.ChatVersion.LegacyChatService
+  is_low_health = false
 }, {"rbxassetid://18435303746", "rbxassetid://13376962659", "rbxassetid://12684185971", "rbxassetid://13501296372", "rbxassetid://15983615423", "rbxassetid://106755459092436", "http://www.roblox.com/asset/?id=14516273501", "rbxassetid://13723174078", "rbxassetid://14701242661", "rbxassetid://14900168720", "rbxassetid://13499771836", "rbxassetid://14004235777", "rbxassetid://14299135500", "rbxassetid://16708190748", "rbxassetid://14719290328", "rbxassetid://13633468484", "rbxassetid://14516273501", "rbxassetid://18435383478", "rbxassetid://16139708727", "rbxassetid://14048285180", "rbxassetid://14705929107", "rbxassetid://17278415853", "rbxassetid://14046756619", "rbxassetid://12832505612", "rbxassetid://14967219354", "rbxassetid://13881335713", "rbxassetid://13365849295", "rbxassetid://12684390285", "rbxassetid://15146348738", "rbxassetid://15290930205", "rbxassetid://13497875049", "http://www.roblox.com/asset/?id=180436148", "rbxassetid://16571909908", "rbxassetid://96865367566704", "rbxassetid://13639700348", "rbxassetid://15520132233", "rbxassetid://16737255386", "rbxassetid://15676072469", "rbxassetid://119325239112989", "rbxassetid://15391323441", "rbxassetid://120992533725535", "rbxassetid://13083332742", "rbxassetid://17838006839", "rbxassetid://15271263467", "rbxassetid://15295895753", "rbxassetid://14351441234", "rbxassetid://12618271998", "rbxassetid://13643152947", "rbxassetid://13146710762", "rbxassetid://17838619895", "rbxassetid://7815618175", "rbxassetid://14357943487", "http://www.roblox.com/asset/?id=125750702", "rbxassetid://16515850153", "rbxassetid://13379404053", "rbxassetid://16597322398", "rbxassetid://16597912086", "rbxassetid://7807831448", "rbxassetid://14003607057", "rbxassetid://13376869471", "rbxassetid://13377153603", "rbxassetid://14357997687", "rbxassetid://13876406148", "rbxassetid://15957361339"}
 
-local characters, skill_check = {
+local characters, skill_check, module = {
   ["Ninja"] = {"Flash Strike", "Whirlwind Kick", "Scatter", "Explosive Shuriken", "Twinblade Rush", "Straight On", "Carnage", "Fourfold Flashstrike"},
   ["Cyborg"] = {"Machine Gun Blows", "Ignition Burst", "Blitz Shot", "Jet Dive", "Incinerate", "Speedblitz Dropkick", "Thunder Kick", "Flamewave Cannon"},
   ["Purple"] = {"Bullet Barrage", "Vanishing Kick", "Whirlwind Drop", "Head First", "Grand Fissure", "Twin Fangs", "Earth Splitting Strike", "Last Breath"},
@@ -44,7 +36,7 @@ local characters, skill_check = {
   ["Homerun"] = true, ["Beatdown"] = false, ["Grand Slam"] = false, ["Foul Ball"] = true, ["Savage Tornado"] = true, ["Brutal Beatdown"] = false, ["Strength Difference"] = false, ["Death Blow"] = true,
   ["Crushing Pull"] = false, ["Windstorm Fury"] = false, ["Stone Coffin"] = false, ["Expulsive Push"] = false, ["Cosmic Strike"] = true, ["Psychic Ricochet"] = true, ["Terrible Tornado"] = false, ["Sky Snatcher"] = false,
   ["Quick Slice"] = false, ["Atmos Cleave"] = true, ["Pinpoint Cut"] = false, ["Split Second Counter"] = true, ["Sunset"] = false, ["Solar Cleave"] = false, ["Sunrise"] = false, ["Atomic Slash"] = true
-}
+}, {}
 
 function _has_dc(t)
   if not t then return false end
@@ -165,7 +157,7 @@ function _dash(p1, p2)
   end
 end
 
-function _main_init()
+function module.main_init()
   local target = ws.Live:FindFirstChild(_find_plr().Name)
   local hmoid = plr and plr.Character and plr.Character:FindFirstChild("Humanoid")
   if plr and plr.Character and target and hmoid and hmoid.Health > 0 then
@@ -223,7 +215,7 @@ function _main_init()
   end
 end
 
-function _no_lags()
+function module.fix_lags()
   local dbrs = ws:FindFirstChild("Thrown")
   local wout = bulls:FindFirstChild("Whiteout")
   if dbrs then
@@ -234,3 +226,6 @@ function _no_lags()
     end
   end
 end
+
+print("[AI-v4.lua module loaded.]\n[by: HHxScripts]")
+return module
