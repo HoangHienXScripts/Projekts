@@ -83,18 +83,6 @@ function _play_anim()
   end
 end
 
-function _chat_str(str)
-  str = tostring(str)
-  if str ~= vars.oldest_str and vars.chat_func then
-    vars.oldest_str = str
-    if not vars.is_legacy_chat then
-      txcs.TextChannels.RBXGeneral:SendAsync(str)
-    else
-      reps.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(str, "All")
-    end
-  end
-end
-
 function _look_at(t)
   local target_hrp = t:FindFirstChild("HumanoidRootPart")
   local hrp = plr and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
@@ -112,11 +100,6 @@ function _tpto(usr, pos)
     if _old_health > hmoid.Health then
       hrp.CFrame = CFrame.new(pos)
       _play_anim()
-      local bait = plrs[usr.Name].DisplayName:sub(1, 4)
-      local content = ({
-        "I'm behind you AX", "Not that way AX, I'm here...", "Hehehe...", "Tele-por-ted. AX", "Just kidding AX..."
-      })[math.random(1, 5)]:gsub("AX", bait)
-      _chat_str(content)
     end
   end
 end
@@ -163,7 +146,6 @@ function _use_ult()
   local ult = tonumber(plr:GetAttribute("Ultimate")) == 100
   if comm and ult then
     comm:FireServer({Goal = "KeyPress", Key = Enum.KeyCode.G})
-    _chat_str("IT'S ULT TIME...")
   end
 end
 
@@ -191,9 +173,6 @@ function _main_init()
     if mech_on then
       mech_on:Destroy()
     end
-    if not vars.is_low_health and vars.can_spam_target_lock then
-      print("[AI]: Khoá mục tiêu " .. target.Name:sub(1, 4):upper() .. ".")
-    end
   if hmoid and hmoid.Health < 35 and hmoid.Health > 0 then
     local char = plr and plr.Character or nil
     if not vars.is_low_health then vars.is_low_health = true
@@ -203,12 +182,9 @@ function _main_init()
         vars.oldest_position = target:GetBoundingBox().Position
       end
       _normal_tpto(Vector3.new(0, 2000000, 0))
-      _chat_str("Healing time... it's pretty low rn!")
     end
   else if vars.is_low_health and hmoid and hmoid.Health > 65 then vars.is_low_health = false
       _normal_tpto(vars.oldest_position + Vector3.new(0, 3.5, 0))
-      _chat_str("Healing complete... now back to the battlefield!")
-      _chat_str("Y'all better one shotted me or else... Uno reverse.")
     end
     local target_hrp = target:FindFirstChild("HumanoidRootPart")
     local hrp = plr and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
@@ -218,10 +194,6 @@ function _main_init()
       anim = anim_inst.Animation.AnimationId
     end
     if target_hrp and hrp then _look_at(target)
-      if vars.oldest_str == "Healing complete... now back to the battlefield!" then
-        vars.oldest_str = ""
-        hrp.Velocity = Vector3.new(0, 0, 0)
-      end
       local distance = (target_hrp.Position - hrp.Position).magnitude
       local retreat_pos = hrp.Position + (hrp.CFrame.LookVector * -10)
       local behind_target = (target_hrp.Position + Vector3.new(0, 3.5, 0)) + (target_hrp.CFrame.LookVector * -5)
@@ -262,45 +234,3 @@ function _no_lags()
     end
   end
 end
-
-local hrp = plr and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
-if hrp then
-  vars.spawned_pos = hrp.Position
-  vars.current_void_position = hrp.Position.Y - 200
-end
-
-vars.chat_func = true
-_chat_str("==== AI auto battle ready to fight ====")
-_chat_str("=== Press Start ===")
-vars.chat_func = false
-
-runs.RenderStepped:Connect(function()
-  local char = plr and plr.Character
-  local hmoid = char and char:FindFirstChild("Humanoid")
-  if char and hmoid and hmoid.Health > 0 then
-    if char:GetBoundingBox().Position.Y < vars.current_void_position then
-      _normal_tpto(vars.spawned_pos)
-      _chat_str("Somehow i'm was falling into the void... so i teleport back!")
-    end _no_lags()
-  end
-end)
-
-plr.Chatted:Connect(function(keywords)
-  local star = keywords:split(" ")
-  if star[1] == "/disable" then
-    vars.can_spam_target_lock = false
-    _chat_str("[Can spam: Disabled]")
-  elseif star[1] == "ai_speed" then
-    if #star == 2 and star[2]:match("%d+") then
-      vars.ai_walkspeed = tonumber(star[2])
-    end
-  elseif star[1] == "esc_range" then
-    if #star == 2 and star[2]:match("%d+") then
-      vars.escape_dist = tonumber(star[2])
-    end
-  elseif star[1] == "?" then
-    print("cmds:\nai_speed <numbers>, esc_range <numbers>")
-  end
-end)
-
-ui.add_toggle("Start", "Code", {255, 255, 255}, {0.35, 0, 0, 0}, 0.2, _main_init, "AI_Enabled")
