@@ -1,5 +1,6 @@
 -- Reworks --
 local ui = loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Modules/refs/heads/main/btns_list.lua"))()
+local ai = loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Projekts/refs/heads/main/TSB/AI-v4.lua"))()
 local ws, plrs, reps, rs, txs
 ws = game:GetService("Workspace")
 plrs = game:GetService("Players")
@@ -108,9 +109,14 @@ end)
 vars.btns.afk_ai = ui.add_button("AFK AI [OFF]", function()
   local btn = vars.btns.afk_ai
   if not vars.autof.afk then
-    btn_newt(btn, "AFK AI [ON]")
+	new_cnt("battle_ai", rs.Heartbeat:Connect(function()
+      if ai.main_init and type(ai.main_init) == "function" then
+        ai.main_init()
+	  end ai.fix_lags()
+	end)) btn_newt(btn, "AFK AI [ON]")
 	btn_newtc(btn, {0, 1, 0})
   else
+	exit_cnt("battle_ai")
     btn_newt(btn, "AFK AI [OFF]")
 	btn_newtc(btn, {1, 1, 1})
   end vars.autof.afk = not vars.autof.afk
