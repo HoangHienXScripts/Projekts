@@ -105,6 +105,17 @@ vars.btns.autof_direction = ui.add_button("DIR: "..tostring(vars.autof.direction
   end btn_newt(btn, "DIR: "..tostring(frm.direction):upper())
 end)
 
+vars.btns.afk_ai = ui.add_button("AFK AI [OFF]", function()
+  local btn = vars.btns.afk_ai
+  if not vars.autof.afk then
+    btn_newt(btn, "AFK AI [ON]")
+	btn_newtc(btn, {0, 1, 0})
+  else
+    btn_newt(btn, "AFK AI [OFF]")
+	btn_newtc(btn, {1, 1, 1})
+  end vars.autof.afk = not vars.autof.afk
+end)
+
 vars.btns.autof = ui.add_button("Auto Farm [OFF]", function()
   local btn = vars.btns.autof
   if not vars.autof.frm then
