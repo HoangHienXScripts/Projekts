@@ -226,4 +226,4 @@ function module.fix_lags()
   end
 end
 
-return module, "AI-v4 [BETA]"
+return module, "v0.4"
