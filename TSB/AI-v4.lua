@@ -226,5 +226,4 @@ function module.fix_lags()
   end
 end
 
-print("[AI-v4.lua module loaded.]\n[by: HHxScripts]")
-return module
+return module, "AI-v4 [BETA]"
