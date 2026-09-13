@@ -1,6 +1,8 @@
+*** Just Note ***
+
 ### Script
 ```lua
-  loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Projekts/refs/heads/main/TSB/fix_lags.lua"))()
+  loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Projekts/refs/heads/main/TSB/fix_lag.lua"))()
 ```
 
 ### Spawn Character Model
