@@ -206,7 +206,7 @@ vars.btns.optimize_map = ui.add_button("Rebuilt-Map", function()
 	txture.StudsPerTileU = 40
 	txture.StudsPerTileV = 40
 	txture.Transparency = 0.25
-	txture.Color = Color3.fromRGB(0, 200, 200)
+	txture.Color3 = Color3.fromRGB(0, 200, 200)
   end for _, v in pairs(map:GetChildren()) do
     if v and v:IsA("Folder") and v.Name:sub(1, 5):lower() ~= "trash" then
       v:ClearAllChildren()
