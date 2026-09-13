@@ -117,7 +117,7 @@ vars.btns.afk_ai = ui.add_button("AFK AI ("..ai_version_info..") [OFF]", functio
 	btn_newtc(btn, {0, 1, 0})
   else
 	exit_cnt("battle_ai")
-    btn_newt(btn, "AFK AI ("..ai_version_info") [OFF]")
+    btn_newt(btn, "AFK AI ("..ai_version_info..") [OFF]")
 	btn_newtc(btn, {1, 1, 1})
   end vars.autof.afk = not vars.autof.afk
 end)
@@ -150,7 +150,7 @@ vars.btns.autof = ui.add_button("Auto Farm [OFF]", function()
   end vars.autof.frm = not vars.autof.frm
 end)
 
-vars.btns.mod_map_label = ui.add_button(watever"Map", function() print("nil") end)
+vars.btns.mod_map_label = ui.add_button(watever"Teleport", function() print("nil") end)
 vars.btns.mod_map_label.BackgroundColor3 = Color3.new(1, 1, 0)
 vars.btns.mod_map_label.TextColor3 = Color3.new(0, 0, 0)
 vars.btns.mod_map_label.Font = Enum.Font.Arcade
@@ -243,6 +243,22 @@ vars.btns.optimize_map = ui.add_button("Rebuilt-Map", function()
   main_part.Size = Vector3.new(main_part.Size.X, 2, main_part.Size.Z)
   main_part.Position = Vector3.new(main_part.Position.X, 436.5, main_part.Position.Z)
   btn_newt(btn, "Rebuilt-Map")
+end)
+
+vars.btns.m_mods_label = ui.add_button(watever"Mods", function() print("nil") end)
+vars.btns.m_mods_label.BackgroundColor3 = Color3.new(1, 1, 0)
+vars.btns.m_mods_label.TextColor3 = Color3.new(0, 0, 0)
+vars.btns.m_mods_label.Font = Enum.Font.Arcade
+
+vars.btns.spawn_model = ui.add_button("cute", function()
+  local a, b, c
+  local hrp = rcv_hrp(plr)
+  a, b = pcall(function() c = plrs:CreateHumanoidModelFromUserIdAsync(plrs:GetUserIdFromNameAsync("noizybubnny")) end)
+  if c and hrp then
+    c.Name = "Creator"
+	c.Parent = ws.Live
+	c:PivotTo(hrp.CFrame)
+  end
 end)
 
 ntfc("TSB-Script v"..vars.version..".")
