@@ -1,2 +1,2 @@
 ### Executor Link Download
-I trusted [Delta](deltaexploits.gg).
+I trusted [Delta](https://deltaexploits.gg).
