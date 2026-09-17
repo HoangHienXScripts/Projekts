@@ -11,9 +11,9 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Pro
 
 local vars, plr
 vars = {
-  version = "0.35".." [BETA]",
+  version = "0.4".." [TESTING]",
   map_optimized = false,
-  last_pos = nil, last_pos_called = false,
+  last_pos = nil, stand_base_texture = nil, last_pos_called = false,
   chatv = txs.ChatVersion == Enum.ChatVersion.LegacyChatService,
   autof = {
     direction = "customize", offset = "X", afk = false, frm = false, under_pos_rcvd = false, x = 0, y = 0, z = 3.5, under_pos = 0
@@ -27,6 +27,7 @@ vars = {
 
 function btn_newbc(t, n) t.BackgroundColor3 = Color3.new(table.unpack(n)) end
 function btn_newtc(t, n) t.TextColor3 = Color3.new(table.unpack(n)) end
+function btn_newtc_rgb(t, n) t.TextColor3 = Color3.fromRGB(table.unpack(n)) end
 function btn_newt(t, n) t.Text = n end
 function watever(n) return "HHxScripts - "..n end
 function new_cnt(n, t) if n and type(n) == "string" then vars.cons[n] = t end end
@@ -213,6 +214,7 @@ vars.btns.optimize_map = ui.add_button("Rebuilt-Map", function()
 	txture.StudsPerTileV = 40
 	txture.Transparency = 0.25
 	txture.Color3 = Color3.fromRGB(0, 200, 200)
+	vars.stand_base_texture = txture
   end for _, v in pairs(map:GetChildren()) do
     if v and v:IsA("Folder") and v.Name:sub(1, 5):lower() ~= "trash" then
       v:ClearAllChildren()
@@ -256,8 +258,14 @@ vars.btns.m_mods_label.BackgroundColor3 = Color3.new(1, 1, 0)
 vars.btns.m_mods_label.TextColor3 = Color3.new(0, 0, 0)
 vars.btns.m_mods_label.Font = Enum.Font.Arcade
 
-vars.btns.change_base_color = ui.add_button("Re-Color Batteground", function()
-  local btn = vars.btns.change_base_color
+vars.btns.change_base_color = ui.add_button("Base:Re-Color 0, 255, 255", function()
+  local btn, txture = vars.btns.change_base_color, vars.stand_base_texture
+  if btn and txture then
+    local r, g, b = math.random(1, 255), math.random(1, 255), math.random(1, 255)
+	txture.Color3 = Color3.fromRGB(r, g, b)
+	btn_newtc_rgb(btn, {r, g, b})
+	btn_newt(btn, "Base:Re-Color "..tostring(r)..", "..tostring(g)..", "..tostring(b))
+  end
 end)
 
 vars.btns.spawn_model = ui.add_button("Summon Owner", function()
