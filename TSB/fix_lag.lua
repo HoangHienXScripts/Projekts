@@ -16,7 +16,7 @@ vars = {
   last_pos = nil, last_pos_called = false,
   chatv = txs.ChatVersion == Enum.ChatVersion.LegacyChatService,
   autof = {
-    direction = "customize", offset = "X", frm = false, under_pos_rcvd = false, x = 0, y = 0, z = 3.5, under_pos = 0
+    direction = "customize", offset = "X", afk = false, frm = false, under_pos_rcvd = false, x = 0, y = 0, z = 3.5, under_pos = 0
   },
   locations = {
     ["Samurai-Cutscene"] = {-54, 1636, 25249},
@@ -255,6 +255,10 @@ vars.btns.m_mods_label = ui.add_button(watever"Mods", function() print("nil") en
 vars.btns.m_mods_label.BackgroundColor3 = Color3.new(1, 1, 0)
 vars.btns.m_mods_label.TextColor3 = Color3.new(0, 0, 0)
 vars.btns.m_mods_label.Font = Enum.Font.Arcade
+
+vars.btns.change_base_color = ui.add_button("Re-Color Batteground", function()
+  local btn = vars.btns.change_base_color
+end)
 
 vars.btns.spawn_model = ui.add_button("Summon Owner", function()
   local a, b, c
