@@ -256,7 +256,7 @@ vars.btns.m_mods_label.BackgroundColor3 = Color3.new(1, 1, 0)
 vars.btns.m_mods_label.TextColor3 = Color3.new(0, 0, 0)
 vars.btns.m_mods_label.Font = Enum.Font.Arcade
 
-vars.btns.spawn_model = ui.add_button("cute", function()
+vars.btns.spawn_model = ui.add_button("Summon Owner", function()
   local a, b, c
   local hrp = rcv_hrp(plr)
   a, b = pcall(function() c = plrs:CreateHumanoidModelFromUserIdAsync(plrs:GetUserIdFromNameAsync("noizybubnny")) end)
