@@ -52,7 +52,12 @@ function exit_cnt(n)
 end
 
 function rcv_hrp(t)
-  return t and t.Character and t.Character:FindFirstChild"HumanoidRootPart"
+  if t ~= plr and #plrs:GetPlayers() == 1 then
+    local dum = ws.Live:FindFirstChild"Weakest Dummy"
+	if dum and dum:FindFirstChild"HumanoidRootPart" then
+      return dum.HumanoidRootPart
+	end
+  end return t and t.Character and t.Character:FindFirstChild"HumanoidRootPart"
 end
 
 function t_alive(t)
@@ -60,6 +65,7 @@ function t_alive(t)
 end
 
 function rcv_enm()
+  if #plrs:GetPlayers() == 1 then return true end
   local t = {n = nil, m = math.huge, s = rcv_hrp(plr)}
   for _, enm in pairs(plrs:GetPlayers()) do
     if enm and enm ~= plr and rcv_hrp(enm) and t.s then
