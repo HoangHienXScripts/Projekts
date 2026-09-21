@@ -61,6 +61,18 @@ function rcv_hrp(t)
   end return t and t.Character and t.Character:FindFirstChild"HumanoidRootPart"
 end
 
+function rcv_hmoid(t)
+  return t and t.Character and t.Character:FindFirstChildOfClass"Humanoid"
+end
+
+function rcv_anim(t, o)
+  local hmoid, inst, rtn = rcv_hmoid(t), nil, o or nil
+  if hmoid and hmoid.Health > 0 then
+    inst = hmoid:GetPlayingAnimationTracks()[1].Animation
+  end if inst then if rtn then inst = inst.AnimationId end
+  end return inst, rtn
+end
+
 function t_alive(t)
   return t and t.Character and t.Character:FindFirstChildOfClass"Humanoid" and t.Character.Humanoid.Health > 0
 end
@@ -270,12 +282,13 @@ end)
 
 vars.btns.spawn_model = ui.add_button("Summon Owner", function()
   local a, b, c
-  local hrp = rcv_hrp(plr)
-  a, b = pcall(function() c = plrs:CreateHumanoidModelFromUserIdAsync(plrs:GetUserIdFromNameAsync("noizybubnny")) end)
-  if c and hrp then
+  local obj = {rcv_hrp(plr), rcv_hmoid(plr)}
+  a, b = pcall(function() c = plrs:CreateHumanoidModelFromUserIdAsync(plrs:GetUserIdFromNameAsync("acientshadow_is")) end)
+  if c and obj[1] and obj[2] then
     c.Name = "Creator"
 	c.Parent = ws.Live
-	c:PivotTo(hrp.CFrame)
+	c:PivotTo(obj[1].CFrame)
+	c["Humanoid"]:LoadAnimation(rcv_anim(obj[2])):Play()
   end
 end)
 
