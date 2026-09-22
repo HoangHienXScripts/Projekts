@@ -7,3 +7,6 @@ I trusted [Delta](https://deltaexploits.gg).
 • [ai script](TSB/AI-v4.lua)
 
 • [admin control](ADMIN/Owners.lua)
+
+### Learning
+• [Players](https://create.roblox.com/docs/vi-vn/reference/engine/classes/Players)
