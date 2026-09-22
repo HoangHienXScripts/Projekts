@@ -8,6 +8,7 @@ ___
 
 | Name | Source |
 | :--- | :--- |
-| Players | 1234-Value |
+| Workspace | https://create.roblox.com/docs/reference/engine/classes/Workspace |
+| Players | https://create.roblox.com/docs/reference/engine/classes/Players |
 
 ### Markdown [Tutorial](https://github.com/lucthienphong1120/Markdown-syntax/blob/main/README.md?plain=1).
