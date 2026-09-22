@@ -6,10 +6,8 @@ ___
 ___
 ### PLZ Don't mind this
 
-| Cột 1 | Cột 2 | Cột 3 | Cột 4 |
-| :--- | :--- | :--- | :--- |
-| A | B | C | D |
-| E | F | G | H |
-| I | K | L | M |
+| Name | Source |
+| :--- | :--- |
+| Players | 1234-Value |
 
 ### Markdown [Tutorial](https://github.com/lucthienphong1120/Markdown-syntax/blob/main/README.md?plain=1).
