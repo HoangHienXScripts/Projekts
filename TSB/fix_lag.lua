@@ -283,7 +283,7 @@ end)
 vars.btns.spawn_model = ui.add_button("Summon Owner", function()
   local a, b, c
   local obj = {rcv_hrp(plr), rcv_hmoid(plr)}
-  a, b = pcall(function() c = plrs:CreateHumanoidModelFromUserIdAsync(plrs:GetUserIdFromNameAsync("acientshadow_is")) end)
+  a, b = pcall(function() c = plrs:CreateHumanoidModelFromUserIdAsync(plrs:GetUserIdFromNameAsync("acientshadow_is"), Enum.HumanoidRigType.R6) end)
   if c and obj[1] and obj[2] then
     c.Name = "Creator"
 	c.Parent = ws.Live
