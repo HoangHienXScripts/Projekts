@@ -282,13 +282,15 @@ end)
 
 vars.btns.spawn_model = ui.add_button("Summon Owner", function()
   local a, b, c
-  local obj = {rcv_hrp(plr), rcv_hmoid(plr)}
-  a, b = pcall(function() c = plrs:CreateHumanoidModelFromUserIdAsync(plrs:GetUserIdFromNameAsync("acientshadow_is"), Enum.HumanoidRigType.R6) end)
-  if c and obj[1] and obj[2] then
+  local hrp = rcv_hrp(plr)
+  a, b = pcall(function() c = plrs:CreateHumanoidModelFromUserIdAsync(plrs:GetUserIdFromNameAsync("acientshadow_is")) end)
+  if c and hrp then
     c.Name = "Creator"
 	c.Parent = ws.Live
-	c:PivotTo(obj[1].CFrame)
-	c["Humanoid"]:LoadAnimation(rcv_anim(obj[2])):Play()
+	c:PivotTo(hrp.CFrame)
+	c.Humanoid.RigType = Enum.HumanoidRigType.R6
+	task.wait(0.75)
+	c.Humanoid:LoadAnimation(rcv_anim(plr)):Play()
   end
 end)
 
