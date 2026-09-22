@@ -169,7 +169,7 @@ vars.btns.autof = ui.add_button("Auto Farm [OFF]", function()
   end vars.autof.frm = not vars.autof.frm
 end)
 
-vars.btns.mod_map_label = ui.add_button(watever"Teleport", function() print("nil") end)
+vars.btns.mod_map_label = ui.add_button("Teleport", function() print("nil") end)
 vars.btns.mod_map_label.BackgroundColor3 = Color3.new(1, 1, 0)
 vars.btns.mod_map_label.TextColor3 = Color3.new(0, 0, 0)
 vars.btns.mod_map_label.Font = Enum.Font.Arcade
@@ -198,7 +198,7 @@ for lc_name, lc_pos in next, vars.locations do
 end
 
 --MainPart size y = 2, pos y = 436.5
-vars.btns.optimize_label = ui.add_button(watever"Optimizations", function() print("nil") end)
+vars.btns.optimize_label = ui.add_button("Optimizations", function() print("nil") end)
 vars.btns.optimize_label.BackgroundColor3 = Color3.new(1, 1, 0)
 vars.btns.optimize_label.TextColor3 = Color3.new(0, 0, 0)
 vars.btns.optimize_label.Font = Enum.Font.Arcade
@@ -265,7 +265,12 @@ vars.btns.optimize_map = ui.add_button("Rebuilt-Map", function()
   btn_newt(btn, "Rebuilt-Map")
 end)
 
-vars.btns.m_mods_label = ui.add_button(watever"Mods", function() print("nil") end)
+vars.btns.sc_settings_label = ui.add_button("Script Settings", function() print("nil") end)
+vars.btns.sc_settings_label.BackgroundColor3 = Color3.new(1, 1, 0)
+vars.btns.sc_settings_label.TextColor3 = Color3.new(0, 0, 0)
+vars.btns.sc_settings_label.Font = Enum.Font.Arcade
+
+vars.btns.m_mods_label = ui.add_button("Mods", function() print("nil") end)
 vars.btns.m_mods_label.BackgroundColor3 = Color3.new(1, 1, 0)
 vars.btns.m_mods_label.TextColor3 = Color3.new(0, 0, 0)
 vars.btns.m_mods_label.Font = Enum.Font.Arcade
