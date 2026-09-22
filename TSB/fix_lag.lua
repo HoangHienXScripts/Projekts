@@ -11,8 +11,9 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Pro
 
 local vars, plr
 vars = {
-  version = "0.4".." [TESTING]",
+  version = "0.45".." [TESTING]",
   map_optimized = false,
+  anti_void_state = true,
   last_pos = nil, stand_base_texture = nil, last_pos_called = false,
   chatv = txs.ChatVersion == Enum.ChatVersion.LegacyChatService,
   autof = {
@@ -251,7 +252,7 @@ vars.btns.optimize_map = ui.add_button("Rebuilt-Map", function()
 	end
   end) new_cnt("anti_void", rs.RenderStepped:Connect(function()
     local m_hrp = rcv_hrp(plr)
-	if m_hrp and t_alive(plr) then
+	if vars.anti_void_state and m_hrp and t_alive(plr) then
       local y_pos_hrp, y_pos_mp = m_hrp.Position.Y, main_part.Position.Y
 	  if vars.last_pos and y_pos_hrp < y_pos_mp - 25 then
 	    m_hrp.CFrame = CFrame.new(vars.last_pos + Vector3.new(0, 2, 0))
@@ -265,10 +266,21 @@ vars.btns.optimize_map = ui.add_button("Rebuilt-Map", function()
   btn_newt(btn, "Rebuilt-Map")
 end)
 
-vars.btns.sc_settings_label = ui.add_button("Script Settings", function() print("nil") end)
+vars.btns.sc_settings_label = ui.add_button("Settings", function() print("nil") end)
 vars.btns.sc_settings_label.BackgroundColor3 = Color3.new(1, 1, 0)
 vars.btns.sc_settings_label.TextColor3 = Color3.new(0, 0, 0)
 vars.btns.sc_settings_label.Font = Enum.Font.Arcade
+
+vars.btns.anti_void_enabled = ui.add_button("Anti-Void: [ON]", function()
+  local btn = vars.btns.anti_void_enabled
+  if not vars.anti_void_state then
+    btn_newt(btn, "Anti-Void: [ON]")
+	btn_newtc(btn, {0, 1, 0})
+  else
+    btn_newt(btn, "Anti-Void: [OFF]")
+	btn_newtc(btn, {0, 0, 0})
+  end vars.anti_void_state = not vars.anti_void_state
+end) btn_newtc(vars.btns.anti_void_enabled, {0, 1, 0})
 
 vars.btns.m_mods_label = ui.add_button("Mods", function() print("nil") end)
 vars.btns.m_mods_label.BackgroundColor3 = Color3.new(1, 1, 0)
