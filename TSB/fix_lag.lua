@@ -13,6 +13,7 @@ local vars, plr
 vars = {
   version = "0.45".." [TESTING]",
   map_optimized = false,
+  rem_debris_enabled = false,
   anti_void_state = true,
   last_pos = nil, stand_base_texture = nil, last_pos_called = false,
   chatv = txs.ChatVersion == Enum.ChatVersion.LegacyChatService,
@@ -132,7 +133,7 @@ vars.btns.afk_ai = ui.add_button("AFK AI ("..ai_version_info..") [OFF]", functio
 	new_cnt("battle_ai", rs.Heartbeat:Connect(function()
       if ai.main_init and type(ai.main_init) == "function" then
         ai.main_init()
-	  end ai.fix_lags()
+	  end if vars.rem_debris_enabled and ai.fix_lags and type(ai.fix_lags) == "function" then ai.fix_lags() end
 	end)) btn_newt(btn, "AFK AI ("..ai_version_info..") [ON]")
 	btn_newtc(btn, {0, 1, 0})
   else
@@ -170,7 +171,7 @@ vars.btns.autof = ui.add_button("Auto Farm [OFF]", function()
   end vars.autof.frm = not vars.autof.frm
 end)
 
-vars.btns.mod_map_label = ui.add_button("Teleport", function() print("nil") end)
+vars.btns.mod_map_label = ui.add_button(watever"Teleport", function() print("nil") end)
 vars.btns.mod_map_label.BackgroundColor3 = Color3.new(1, 1, 0)
 vars.btns.mod_map_label.TextColor3 = Color3.new(0, 0, 0)
 vars.btns.mod_map_label.Font = Enum.Font.Arcade
@@ -199,7 +200,7 @@ for lc_name, lc_pos in next, vars.locations do
 end
 
 --MainPart size y = 2, pos y = 436.5
-vars.btns.optimize_label = ui.add_button("Optimizations", function() print("nil") end)
+vars.btns.optimize_label = ui.add_button(watever"Optimizations", function() print("nil") end)
 vars.btns.optimize_label.BackgroundColor3 = Color3.new(1, 1, 0)
 vars.btns.optimize_label.TextColor3 = Color3.new(0, 0, 0)
 vars.btns.optimize_label.Font = Enum.Font.Arcade
@@ -226,7 +227,7 @@ vars.btns.optimize_map = ui.add_button("Rebuilt-Map", function()
 	txture.StudsPerTileU = 40
 	txture.StudsPerTileV = 40
 	txture.Transparency = 0.25
-	txture.Color3 = Color3.fromRGB(0, 200, 200)
+	txture.Color3 = Color3.fromRGB(244, 194, 90)
 	vars.stand_base_texture = txture
   end for _, v in pairs(map:GetChildren()) do
     if v and v:IsA("Folder") and v.Name:sub(1, 5):lower() ~= "trash" then
@@ -266,10 +267,27 @@ vars.btns.optimize_map = ui.add_button("Rebuilt-Map", function()
   btn_newt(btn, "Rebuilt-Map")
 end)
 
-vars.btns.sc_settings_label = ui.add_button("Settings", function() print("nil") end)
+vars.btns.sc_settings_label = ui.add_button(watever"Settings", function() print("nil") end)
 vars.btns.sc_settings_label.BackgroundColor3 = Color3.new(1, 1, 0)
 vars.btns.sc_settings_label.TextColor3 = Color3.new(0, 0, 0)
 vars.btns.sc_settings_label.Font = Enum.Font.Arcade
+
+vars.btns.rem_debris = ui.add_button("Clear-Debris: [OFF]", function()
+  local btn = vars.btns.rem_debris
+  if not vars.rem_debris_enabled then
+	new_cnt("no_debris", rs.Heartbeat:Connect(function()
+      if vars.rem_debris_enabled and ai.fix_lags and type(ai.fix_lags) == "function" then
+        ai.fix_lags()
+	  end
+	end))
+    btn_newt(btn, "Clear-Debris: [ON]")
+	btn_newtc(btn, {0, 1, 0})
+  else
+	exit_cnt("no_debris")
+    btn_newt(btn, "Clear-Debris: [OFF]")
+	btn_newtc(btn, {1, 1, 1})
+  end vars.rem_debris_enabled = not vars.rem_debris_enabled
+end)
 
 vars.btns.anti_void_enabled = ui.add_button("Anti-Void: [ON]", function()
   local btn = vars.btns.anti_void_enabled
@@ -278,24 +296,24 @@ vars.btns.anti_void_enabled = ui.add_button("Anti-Void: [ON]", function()
 	btn_newtc(btn, {0, 1, 0})
   else
     btn_newt(btn, "Anti-Void: [OFF]")
-	btn_newtc(btn, {0, 0, 0})
+	btn_newtc(btn, {1, 1, 1})
   end vars.anti_void_state = not vars.anti_void_state
 end) btn_newtc(vars.btns.anti_void_enabled, {0, 1, 0})
 
-vars.btns.m_mods_label = ui.add_button("Mods", function() print("nil") end)
-vars.btns.m_mods_label.BackgroundColor3 = Color3.new(1, 1, 0)
-vars.btns.m_mods_label.TextColor3 = Color3.new(0, 0, 0)
-vars.btns.m_mods_label.Font = Enum.Font.Arcade
-
-vars.btns.change_base_color = ui.add_button("Base:Re-Color 0, 255, 255", function()
+vars.btns.change_base_color = ui.add_button("Base:Re-Color {244, 194, 90}", function()
   local btn, txture = vars.btns.change_base_color, vars.stand_base_texture
   if btn and txture then
     local r, g, b = math.random(1, 255), math.random(1, 255), math.random(1, 255)
 	txture.Color3 = Color3.fromRGB(r, g, b)
 	btn_newtc_rgb(btn, {r, g, b})
-	btn_newt(btn, "Base:Re-Color "..tostring(r)..", "..tostring(g)..", "..tostring(b))
+	btn_newt(btn, "Base:Re-Color {"..tostring(r)..", "..tostring(g)..", "..tostring(b).."}")
   end
 end)
+
+vars.btns.m_mods_label = ui.add_button(watever"Mods", function() print("nil") end)
+vars.btns.m_mods_label.BackgroundColor3 = Color3.new(1, 1, 0)
+vars.btns.m_mods_label.TextColor3 = Color3.new(0, 0, 0)
+vars.btns.m_mods_label.Font = Enum.Font.Arcade
 
 vars.btns.spawn_model = ui.add_button("Summon Owner", function()
   local a, b, c
@@ -305,9 +323,9 @@ vars.btns.spawn_model = ui.add_button("Summon Owner", function()
     c.Name = "Creator"
 	c.Parent = ws.Live
 	c:PivotTo(hrp.CFrame)
-	c.Humanoid.RigType = Enum.HumanoidRigType.R6
-	task.wait(0.75)
-	c.Humanoid:LoadAnimation(rcv_anim(plr)):Play()
+	--c.Humanoid.RigType = Enum.HumanoidRigType.R6
+	--task.wait(0.75)
+	--c.Humanoid:LoadAnimation(rcv_anim(plr)):Play()
   end
 end)
 
