@@ -24,7 +24,9 @@ vars = {
     ["Samurai-Cutscene"] = {-54, 1636, 25249},
 	["Map-Edge"] = {-281, 440, 478}
   },
-  cons = {}, btns = {}, sorts = {}, tp_btns = {}
+  cons = {}, btns = {}, sorts = {}, tp_btns = {}, copied = {
+	page = false
+  }
 } plr = plrs.LocalPlayer
 
 function btn_newbc(t, n) t.BackgroundColor3 = Color3.new(table.unpack(n)) end
@@ -327,6 +329,19 @@ vars.btns.spawn_model = ui.add_button("Summon Owner", function()
 	--task.wait(0.75)
 	--c.Humanoid:LoadAnimation(rcv_anim(plr)):Play()
   end
+end)
+
+vars.btns.web_page = ui.add_button("Future Projekts", function()
+  local btn = vars.btns.web_page
+  if not vars.copied.page then vars.copied.page = true
+	if setclipboard then setclipboard("https://hoanghienxscripts.github.io/CustomSite/")
+	  btn_newt(btn, "Copied Content")
+	  btn_newtc(btn, {1, 1, 0})
+	else
+	  btn_newt(btn, "Unsupported")
+	  btn_newtc(btn, {1, 0, 0})
+	end task.wait(2) vars.copied.page = false
+  end btn_newt(btn, "Future Projekts") btn_newtc(btn, {1, 1, 1})
 end)
 
 ntfc("TSB-Script v"..vars.version..".")
