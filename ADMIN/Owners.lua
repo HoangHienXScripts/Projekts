@@ -26,6 +26,14 @@ end
 
 function total() return plrs:GetPlayers() end
 function same(t) return t.Name:lower() end
+function fplr(n)
+  local found = nil
+  for _, user in next, total() do
+    if user.Name:lower():sub(1, #n) == n or user.DisplayName:lower():sub(1, #n) == n then
+      found = user
+    end
+  end return found
+end
 
 function rcv_hrp(t)
   return t and t.Character and t.Character:FindFirstChild("HumanoidRootPart")
@@ -67,7 +75,15 @@ add_cmd("prefix", "change cmds prefix", function(nf)
 end)
 
 add_cmd("hp", "change health", function(n, amount)
-
+  local t = fplr(n)
+  if t then
+    if t.Name == plr.Name then
+      local hmoid = rcv_hmoid(plr)
+      if hmoid and t_alive(plr) then
+        hmoid.Health = tonumber(amount)
+      end
+    end
+  end
 end)
 -- Close Commands Section --
 
