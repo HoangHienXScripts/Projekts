@@ -5,12 +5,14 @@ plrs = game:GetService("Players")
 reps = game:GetService("ReplicatedStorage")
 bulls = game:GetService("Lighting")
 
-local plr, anim_inst_object
+local plr, anim_inst_object, better_find
 plr = plrs.LocalPlayer
 
 anim_inst_object = Instance.new("Animation", ws)
 anim_inst_object.Name = "CoolTP:Animation"
 anim_inst_object.AnimationId = "rbxassetid://15957361339"
+
+better_find = loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Projekts/refs/heads/main/TSB/better_find.lua"))()
 
 local vars, ignore_anims = {
   retreat_dist = 35,
@@ -157,7 +159,7 @@ function _dash(p1, p2)
 end
 
 function module.main_init()
-  local target = ws.Live:FindFirstChild(_find_plr().Name)
+  local target = ws.Live:FindFirstChild(better_find().Name) --ws.Live:FindFirstChild(_find_plr().Name)
   local hmoid = plr and plr.Character and plr.Character:FindFirstChild("Humanoid")
   if plr and plr.Character and target and hmoid and hmoid.Health > 0 then
     local mech_on = target:FindFirstChild("Mech")
