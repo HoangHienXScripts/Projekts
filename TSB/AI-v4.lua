@@ -5,14 +5,12 @@ plrs = game:GetService("Players")
 reps = game:GetService("ReplicatedStorage")
 bulls = game:GetService("Lighting")
 
-local plr, anim_inst_object, better_find
+local plr, anim_inst_object
 plr = plrs.LocalPlayer
 
 anim_inst_object = Instance.new("Animation", ws)
 anim_inst_object.Name = "CoolTP:Animation"
 anim_inst_object.AnimationId = "rbxassetid://15957361339"
-
---better_find = loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Projekts/refs/heads/main/TSB/better_find.lua"))()
 
 local vars, ignore_anims = {
   retreat_dist = 35,
