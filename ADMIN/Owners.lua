@@ -16,6 +16,11 @@ vars = {
 }
 plr = plrs.LocalPlayer
 
+local function shortName(player)
+  local n = player and (player.DisplayName or player.Name) or ""
+  return tostring(n):sub(1, 4)
+end
+
 function ntfc(m) m = tostring(m)
   if not vars.chatv then
     txs.TextChannels.RBXGeneral:SendAsync(m)
@@ -25,14 +30,23 @@ function ntfc(m) m = tostring(m)
 end
 
 function total() return plrs:GetPlayers() end
-function same(t) return t.Name:lower() end
+
+function same(t)
+  if not t or not t.Name then return "" end
+  return tostring(t.Name):lower()
+end
+
 function fplr(n)
-  local found = nil
+  if not n then return nil end
+  local needle = tostring(n):lower()
   for _, user in next, total() do
-    if user.Name:lower():sub(1, #n) == n or user.DisplayName:lower():sub(1, #n) == n then
-      found = user
+    local uname = same(user)
+    local dname = tostring(user.DisplayName or ""):lower()
+    if uname:sub(1, #needle) == needle or dname:sub(1, #needle) == needle then
+      return user
     end
-  end return found
+  end
+  return nil
 end
 
 function rcv_hrp(t)
@@ -61,53 +75,69 @@ function nearby_t()
   return t.n
 end
 
-function add_cmd(n, d, f) vars.cmds[n] = {desc = d, func = f} end
+function add_cmd(n, d, f)
+  if type(n) ~= "string" then return end
+  vars.cmds[n] = {desc = d, func = f}
+end
+
 function run_cmd(n, ...)
-  for name, _ in next, vars.cmds do
-    if name ~= n then return end
-  end vars.cmds[n].func(table.unpack({...}))
+  if not n then return end
+  local cmd = vars.cmds[n]
+  if not cmd or type(cmd.func) ~= "function" then return end
+  cmd.func(...)
 end
 
 -- Commands Section --
 add_cmd("prefix", "change cmds prefix", function(nf)
-  vars.prefix = nf
-  ntfc("prefix changed to: "..nf)
+  vars.prefix = tostring(nf)
+  ntfc("prefix changed to: "..vars.prefix)
 end)
 
-add_cmd("hp", "change health", function(n, amount)
-  local t = fplr(n)
-  if t then
-    if t.Name == plr.Name then
-      local hmoid = rcv_hmoid(plr)
-      if hmoid and t_alive(plr) then
-        hmoid.Health = tonumber(amount)
-      end
-    end
+add_cmd("hp", "change health", function(name, amount)
+  local target = fplr(name)
+  local amt = tonumber(amount)
+  if not target or not amt then return end
+
+  local h = rcv_hmoid(target)
+  if h and h.Health then
+    h.Health = amt
   end
 end)
 -- Close Commands Section --
 
 function do_connect(t)
+  if not t then return end
   t.Chatted:Connect(function(s)
-    s = s:split(" ")
-    if s and type(s) == "table" and #s > 0 then
-      run_cmd(s[1], table.concat(s, " ", 2):split(" "))
+    local parts = tostring(s):split(" ")
+    if type(parts) ~= "table" or #parts == 0 then return end
+
+    local cmd = parts[1]
+    if #parts > 1 then
+      local args = {}
+      for i = 2, #parts do
+        args[#args + 1] = parts[i]
+      end
+      run_cmd(cmd, table.unpack(args))
+    else
+      run_cmd(cmd)
     end
   end)
 end
 
 for _, user in next, total() do
-  if user then do_connect(user)
-    if same(plr) ~= same(user) and table.find(vars.owners, user.Name:lower()) then
-      ntfc("<I Found You, Commander "..user.DisplayName:sub(1, 4)..">")
+  if user then
+    do_connect(user)
+    if same(plr) ~= same(user) and table.find(vars.owners, same(user)) then
+      ntfc("<I Found You, Commander "..shortName(user)..">")
     end
   end
 end
 
 plrs.PlayerAdded:Connect(function(user)
-  if user then do_connect(user)
-    if same(plr) ~= same(user) and table.find(vars.owners, user.Name:lower()) then
-      ntfc("<Welcome, Commander "..user.DisplayName:sub(1, 4)..">")
+  if user then
+    do_connect(user)
+    if same(plr) ~= same(user) and table.find(vars.owners, same(user)) then
+      ntfc("<Welcome, Commander "..shortName(user)..">")
     end
   end
 end)
