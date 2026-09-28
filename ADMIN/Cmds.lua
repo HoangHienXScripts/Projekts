@@ -40,7 +40,7 @@ function connect_user(t)
     s = s:split(" ")
     if #s > 0 then
       if s[1]:sub(1, 1) ~= vars.prefix then return end
-      run_cmd(s[1], table.concat(s, " ", 2))
+      run_cmd(s[1]:gsub(vars.prefix, ""), table.concat(s, " ", 2))
     end
   end)
 end
