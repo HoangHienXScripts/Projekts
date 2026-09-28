@@ -75,6 +75,16 @@ function nearby_t()
   return t.n
 end
 
+function burn(n)
+  local t = fplr(n)
+  if t and t_alive(t) then
+    local h = rcv_hrp(t)
+    if h then
+      Instance.new("Fire", h.Parent["Head"])
+    end
+  end
+end
+
 function add_cmd(n, d, f)
   if type(n) ~= "string" then return end
   vars.cmds[n] = {desc = d, func = f}
@@ -103,6 +113,10 @@ add_cmd("exp", "explode target", function(name)
   end
 end)
 
+add_cmd("hot", "make target look hot", function(name)
+  burn(name)
+end)
+
 add_cmd("hp", "change health", function(name, amount)
   local target = fplr(name)
   local amt = tonumber(amount)
@@ -113,6 +127,14 @@ add_cmd("hp", "change health", function(name, amount)
     h.Health = amt
     ntfc("<Roger that!>")
   end
+end)
+
+add_cmd("cmds", "list all cmd", function()
+  local out = {}
+  for n, _ in next, vars.cmds do
+    table.insert(out, n)
+  end out = table.concat(out, ", ", 1)
+  ntfc("<cmds: "..out..">")
 end)
 -- Close Commands Section --
 
