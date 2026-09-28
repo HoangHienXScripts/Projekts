@@ -88,9 +88,19 @@ function run_cmd(n, ...)
 end
 
 -- Commands Section --
-add_cmd("prefix", "change cmds prefix", function(nf)
+add_cmd("pf", "change cmds prefix", function(nf)
   vars.prefix = tostring(nf)
-  ntfc("prefix changed to: "..vars.prefix)
+  ntfc("<Prefix changed to: "..vars.prefix..">")
+end)
+
+add_cmd("exp", "explode target", function(name)
+  local target = fplr(name)
+  if not target then return end
+  local h = rcv_hrp(target)
+  if h and t_alive(target) then
+    Instance.new("Explosion", ws).Position = h.Position
+    ntfc("<Ouch...>")
+  end
 end)
 
 add_cmd("hp", "change health", function(name, amount)
@@ -99,8 +109,9 @@ add_cmd("hp", "change health", function(name, amount)
   if not target or not amt then return end
 
   local h = rcv_hmoid(target)
-  if h and h.Health then
+  if h and t_alive(target) then
     h.Health = amt
+    ntfc("<Roger that!>")
   end
 end)
 -- Close Commands Section --
@@ -108,9 +119,11 @@ end)
 function do_connect(t)
   if not t then return end
   t.Chatted:Connect(function(s)
-    local parts = tostring(s):split(" ")
+    local sfx = tostring(s)
+    if sfx:sub(1, 1) ~= vars.prefix then return else
+      sfx = sfx:sub(2, #sfx)
+    end local parts = sfx:split(" ")
     if type(parts) ~= "table" or #parts == 0 then return end
-
     local cmd = parts[1]
     if #parts > 1 then
       local args = {}
