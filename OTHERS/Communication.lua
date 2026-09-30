@@ -22,7 +22,8 @@ vars = {
 
 if mdl.read("Projekts", 1) == "null" then
   mdl.update("Projekts", {["Communication_Script"] = {["Ignore"] = {user = "nil", str = "test"}}})
-end
+end vars.info = mdl.read("Projekts")
+_G.test = vars.info
 
 local fol, screenui, toggle, scroll, layout, box
 fol = Instance.new("Folder", core)
@@ -77,6 +78,10 @@ box.PlaceholderText = "Your message... =>"
 box.TextXAlignment = "Left"
 box.TextYAlignment = "Top"
 box.Visible = false
+
+function find_expired_key()
+  return nil
+end
 
 function add_message(user, message)
   local base, m_len = 0.003, #message
