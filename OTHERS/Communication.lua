@@ -23,7 +23,7 @@ vars = {
 if mdl.read("Projekts", 1) == "null" then
   mdl.update("Projekts", {["Communication_Script"] = {["Ignore"] = {user = "nil", str = "test"}}})
 end vars.info = mdl.read("Projekts")
-_G.test = vars.info
+_G.test = {mdl, vars.info}
 
 local fol, screenui, toggle, scroll, layout, box
 fol = Instance.new("Folder", core)
@@ -80,14 +80,24 @@ box.TextYAlignment = "Top"
 box.Visible = false
 
 function find_expired_key()
-  return nil
+  local out, sect = {}, vars.info.Communication_Script
+  for idx, data in next, sect do
+    if idx ~= "Ignore" then
+      local slt = tick() - tonumber(idx)
+      if slt >= 18000 then
+        table.insert(out, idx)
+      end
+    end
+  end return out
 end
 
 function add_message(user, message)
-  local base, m_len = 0.003, #message
+  local base, m_len, lb = 0.003, #message, nil
   if m_len > 185 then return end
-  if m_len > 37 then base = 0.006 * (m_len / 37) end
-  local lb = Instance.new("TextLabel", scroll)
+  if m_len > 37 then
+    base = 0.003 + (0.006 * (m_len / 37))
+  end print("[!]: Base size changed to "..tostring(base)..".")
+  lb = Instance.new("TextLabel", scroll)
   lb.Name = "STRF:"..user:sub(1, 4):upper().."-"..vars.radnum()
   lb.BackgroundTransparency = 0.5
   lb.BackgroundColor3 = Color3.new(0, 0, 0)
