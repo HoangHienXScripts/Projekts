@@ -54,8 +54,8 @@ box = Instance.new("TextBox", screenui)
 box.Name = "BOX:["..vars.radnum().."]"
 box.BackgroundTransparency = 0.5
 box.BackgroundColor3 = Color3.new(0, 0, 0)
-box.Position = UDim2.new()
-box.Size = UDim2.new()
+box.Position = UDim2.new(0.3, 0, 0.625, 0)
+box.Size = UDim2.new(0.4, 0, 0.06, 0)
 box.TextSize = 14
 box.TextScaled = false
 box.TextColor3 = Color3.new(1, 1, 1)
@@ -69,7 +69,7 @@ box.Visible = false
 
 function add_message(user, message)
   local lb = Instance.new("TextLabel", scroll)
-  lb.Name = "STRF:"..str:sub(1, 4):upper().."-"..vars.radnum()
+  lb.Name = "STRF:"..user:sub(1, 4):upper().."-"..vars.radnum()
   lb.BackgroundTransparency = 0.5
   lb.BackgroundColor3 = Color3.new(0, 0, 0)
   lb.BorderColor3 = Color3.new(1, 1, 1)
@@ -92,9 +92,11 @@ end
 toggle.MouseButton1Click:Connect(function()
   if not vars.ui.display then
     scroll.Visible = true
+    box.Visible = true
     toggle.TextColor3 = Color3.new(0, 1, 0)
   else
     scroll.Visible = false
+    box.Visible = false
     toggle.TextColor3 = Color3.new(1, 1, 1)
   end vars.ui.display = not vars.ui.display
 end)
