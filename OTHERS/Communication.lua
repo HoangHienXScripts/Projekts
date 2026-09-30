@@ -79,7 +79,11 @@ box.TextXAlignment = "Left"
 box.TextYAlignment = "Top"
 box.Visible = false
 
-function find_expired_key()
+function rcv_info()
+  vars.info = mdl.read("Projekts")
+end
+
+function find_expired_key() rcv_info()
   local out, sect = {}, vars.info.Communication_Script
   for idx, data in next, sect do
     if idx ~= "Ignore" then
@@ -89,6 +93,27 @@ function find_expired_key()
       end
     end
   end return out
+end
+
+function rmv_expired_key(t)
+  local out, sect = {}, vars.info.Communication_Script
+  for idx, data in next, sect do
+    if idx ~= "Ignore" then
+      if not table.find(t, idx) then
+        out[idx] = data
+      end
+    end
+  end vars.info.Communication_Script = out
+end
+
+function update_key(m)
+  local sect, expi = vars.info.Communication_Script, find_expired_key()
+  if #expi > 0 then rmv_expired_key(expi) end
+  if sect and type(sect) == "table" then
+    vars.info.Communication_Script[tostring(tick())] = {
+      user = plr.DisplayName, str = m
+    } mdl.update("Projekts", vars.info)
+  end
 end
 
 function add_message(user, message)
