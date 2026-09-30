@@ -9,7 +9,7 @@ plr = plrs.LocalPlayer
 vars = {
   version = "0.01",
   ui = {
-    display = false
+    display = false, order = 0
   },
   radnum = function() return tostring(math.random(1, 9999)) end
 }
@@ -82,10 +82,11 @@ function add_message(user, message)
   lb.RichText = false
   lb.Font = Enum.Font.Arcade
   lb.Text = user..": "..message
-  lb.LayoutOrder = 0
+  lb.LayoutOrder = vars.ui.order or 0
   lb.TextXAlignment = "Left"
   lb.TextYAlignment = "Top"
   lb.Visible = true
+  vars.ui.order += 1
 end
 
 toggle.MouseButton1Click:Connect(function()
