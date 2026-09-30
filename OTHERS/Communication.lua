@@ -54,7 +54,8 @@ box = Instance.new("TextBox", screenui)
 box.Name = "BOX:["..vars.radnum().."]"
 box.BackgroundTransparency = 0.5
 box.BackgroundColor3 = Color3.new(0, 0, 0)
-box.Position = UDim2.new(0.3, 0, 0.625, 0)
+box.BorderColor3 = Color3.new(1, 1, 1)
+box.Position = UDim2.new(0.3, 0, 0.6275, 0)
 box.Size = UDim2.new(0.4, 0, 0.06, 0)
 box.TextSize = 14
 box.TextScaled = false
@@ -68,13 +69,16 @@ box.TextYAlignment = "Top"
 box.Visible = false
 
 function add_message(user, message)
+  local base, m_len = 0.003, #message
+  if m_len > 185 then return end
+  if m_len > 37 then base = 0.006 * (m_len / 37) end
   local lb = Instance.new("TextLabel", scroll)
   lb.Name = "STRF:"..user:sub(1, 4):upper().."-"..vars.radnum()
   lb.BackgroundTransparency = 0.5
   lb.BackgroundColor3 = Color3.new(0, 0, 0)
   lb.BorderColor3 = Color3.new(1, 1, 1)
   lb.Position = UDim2.new(0, 0, 0, 0)
-  lb.Size = UDim2.new(1, 0, 0.003, 0)
+  lb.Size = UDim2.new(1, 0, base, 0)
   lb.TextSize = 14
   lb.TextScaled = false
   lb.TextColor3 = Color3.new(1, 1, 1)
@@ -104,5 +108,6 @@ end)
 box.FocusLost:Connect(function(t)
   if t then
     add_message(plr.DisplayName, box.Text)
+    box.Text = ""
   end
 end)
