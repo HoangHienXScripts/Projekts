@@ -1,8 +1,9 @@
 -- Test 1 --
-local ws, plrs, core, htps, mdl
+local ws, plrs, core, rs, htps, mdl
 ws = game:GetService("Workspace")
 plrs = game:GetService("Players")
 core = game:GetService("CoreGui")
+rs = game:GetService("RunService")
 htps = game:GetService("HttpService")
 mdl = loadstring(game:HttpGet("\104\116\116\112\115\058\047\047\114\097\119\046\103\105\116\104\117\098\117\115\101\114\099\111\110\116\101\110\116\046\099\111\109\047\072\111\097\110\103\072\105\101\110\088\083\099\114\105\112\116\115\047\077\111\100\117\108\101\115\047\114\101\102\115\047\104\101\097\100\115\047\097\108\116\047\099\111\110\115\111\108\101\095\108\111\103\046\108\117\097"))("HdcqvBvMCa7sH16g5CeYtytUCSSrT15tSPMVwFeD")
 repeat task.wait() until mdl and type(mdl) == "table"
@@ -12,10 +13,11 @@ plr = plrs.LocalPlayer
 vars = {
   version = "0.01",
   ui = {
-    display = false, order = 0
+    display = false, order = 0, updt = false
   },
   info = {},
   radnum = function() return tostring(math.random(1, 9999)) end,
+  child = function(t) return t:GetChildren() end,
   enc = function(t) return htps:JSONEncode(t) end,
   dec = function(t) return htps:JSONDecode(t) end
 }
@@ -83,7 +85,7 @@ function rcv_info()
   vars.info = mdl.read("Projekts")
 end
 
-function find_expired_key() rcv_info()
+function find_expired_key()
   local out, sect = {}, vars.info.Communication_Script
   for idx, data in next, sect do
     if idx ~= "Ignore" then
@@ -143,6 +145,27 @@ function add_message(user, message)
   vars.ui.order += 1
 end
 
+function clear_scroll()
+  for _, item in next, vars.child(scroll) do
+    if item.ClassName == "TextLabel" then
+      item:Destroy()
+    end
+  end
+end
+
+function update_scroll()
+  local order, sect = {}, vars.info.Communication_Script
+  for idx, _ in next, sect do
+    if idx ~= "Ignore" then
+      table.insert(order, tonumber(idx))
+    end
+  end table.sort(order) clear_scroll()
+  for idx = 1, #order do
+    local data = sect[tostring(order[idx])]
+    add_message(data.user, data.str)
+  end
+end
+
 toggle.MouseButton1Click:Connect(function()
   if not vars.ui.display then
     scroll.Visible = true
@@ -156,8 +179,13 @@ toggle.MouseButton1Click:Connect(function()
 end)
 
 box.FocusLost:Connect(function(t)
-  if t then
-    add_message(plr.DisplayName, box.Text)
-    box.Text = ""
+  if t then update_key(box.Text) end
+end)
+
+rs.RenderStepped:Connect(function(dt)
+  if dt and not vars.ui.updt then vars.ui.updt = true
+    rcv_info() task.wait(1)
+    update_scroll() task.wait(5)
+    vars.ui.updt = false
   end
 end)
