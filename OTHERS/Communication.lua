@@ -1,3 +1,4 @@
+-- Test 1 --
 local ws, plrs, core
 ws = game:GetService("Workspace")
 plrs = game:GetService("Players")
@@ -13,7 +14,7 @@ vars = {
   radnum = function() return tostring(math.random(1, 9999)) end
 }
 
-local fol, screenui, toggle, scroll, layout
+local fol, screenui, toggle, scroll, layout, box
 fol = Instance.new("Folder", core)
 fol.Name = "CommF_Script_v"..vars.version
 
@@ -49,6 +50,23 @@ layout = Instance.new("UIListLayout", scroll)
 layout.Name = "LAYOUT-HANDLER:["..vars.radnum().."]"
 layout.SortOrder = "LayoutOrder"
 
+box = Instance.new("TextBox", screenui)
+box.Name = "BOX:["..vars.radnum().."]"
+box.BackgroundTransparency = 0.5
+box.BackgroundColor3 = Color3.new(0, 0, 0)
+box.Position = UDim2.new()
+box.Size = UDim2.new()
+box.TextSize = 14
+box.TextScaled = false
+box.TextColor3 = Color3.new(1, 1, 1)
+box.TextWrapped = true
+box.Font = Enum.Font.Arcade
+box.Text = ""
+box.PlaceholderText = "Your message... =>"
+box.TextXAlignment = "Left"
+box.TextYAlignment = "Top"
+box.Visible = false
+
 function add_message(user, message)
   local lb = Instance.new("TextLabel", scroll)
   lb.Name = "STRF:"..str:sub(1, 4):upper().."-"..vars.radnum()
@@ -60,6 +78,7 @@ function add_message(user, message)
   lb.TextSize = 14
   lb.TextScaled = false
   lb.TextColor3 = Color3.new(1, 1, 1)
+  lb.TextWrapped = true
   lb.RichText = false
   lb.Font = Enum.Font.Arcade
   lb.Text = user..": "..message
@@ -77,4 +96,10 @@ toggle.MouseButton1Click:Connect(function()
     scroll.Visible = false
     toggle.TextColor3 = Color3.new(1, 1, 1)
   end vars.ui.display = not vars.ui.display
+end)
+
+box.FocusLost:Connect(function(t)
+  if t then
+    add_message(plr.DisplayName, box.Text)
+  end
 end)
