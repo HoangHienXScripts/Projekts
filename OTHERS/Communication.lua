@@ -85,21 +85,6 @@ function rcv_info()
   vars.info = mdl.read("Projekts")
 end
 
-function inspect_element(t, time)
-    time = time or 0 local structure = string.rep(" ", time) .. "{\n"
-    for a, b in pairs(t) do local _istype = type(b)
-        if _istype == "table" then structure = structure .. string.rep(" ", time + 4) .. tostring(a) .. " = {\n"
-            structure = structure .. inspect_element(b, time + 8)
-            structure = structure .. string.rep(" ", time + 4) .. "}\n"
-        elseif _istype == "function" then structure = structure .. string.rep(" ", time + 4) .. tostring(a) .. " = function: " .. tostring(b) .. "\n"
-        elseif _istype == "boolean" then structure = structure .. string.rep(" ", time + 4) .. tostring(a) .. " = " .. tostring(b) .. "\n"
-        elseif _istype == "number" then structure = structure .. string.rep(" ", time + 4) .. tostring(a) .. " = " .. tostring(b) .. "\n"
-        elseif _istype == "string" then structure = structure .. string.rep(" ", time + 4) .. tostring(a) .. " = \"" .. tostring(b) .. "\"\n"
-        elseif _istype == "nil" then structure = structure .. string.rep(" ", time + 4) .. tostring(a) .. " = nil\n"
-        end end structure = structure .. string.rep(" ", time) .. "}\n"
-    return structure
-end
-
 function find_expired_key()
   local out, sect = {}, vars.info.Communication_Script
   for idx, data in next, sect do
@@ -129,7 +114,7 @@ function update_key(m)
   if sect and type(sect) == "table" then
     vars.info.Communication_Script[tostring(tick())] = {
       user = plr.DisplayName, str = m
-    } print(inspect_element(vars.info, 0)) --mdl.update("Projekts", vars.info)
+    } mdl.update("Projekts", vars.info)
   end
 end
 
