@@ -88,14 +88,14 @@ end
 function inspect_element(t, time)
     time = time or 0 local structure = string.rep(" ", time) .. "{\n"
     for a, b in pairs(t) do local _istype = type(b)
-        if _istype == "table" then structure = structure .. string.rep(" ", time + 4) .. a .. " = {\n"
+        if _istype == "table" then structure = structure .. string.rep(" ", time + 4) .. tostring(a) .. " = {\n"
             structure = structure .. inspect_element(b, time + 8)
             structure = structure .. string.rep(" ", time + 4) .. "}\n"
-        elseif _istype == "function" then structure = structure .. string.rep(" ", time + 4) .. a .. " = function: " .. tostring(b) .. "\n"
-        elseif _istype == "boolean" then structure = structure .. string.rep(" ", time + 4) .. a .. " = " .. tostring(b) .. "\n"
-        elseif _istype == "number" then structure = structure .. string.rep(" ", time + 4) .. a .. " = " .. b .. "\n"
-        elseif _istype == "string" then structure = structure .. string.rep(" ", time + 4) .. a .. " = \"" .. b .. "\"\n"
-        elseif _istype == "nil" then structure = structure .. string.rep(" ", time + 4) .. a .. " = nil\n"
+        elseif _istype == "function" then structure = structure .. string.rep(" ", time + 4) .. tostring(a) .. " = function: " .. tostring(b) .. "\n"
+        elseif _istype == "boolean" then structure = structure .. string.rep(" ", time + 4) .. tostring(a) .. " = " .. tostring(b) .. "\n"
+        elseif _istype == "number" then structure = structure .. string.rep(" ", time + 4) .. tostring(a) .. " = " .. tostring(b) .. "\n"
+        elseif _istype == "string" then structure = structure .. string.rep(" ", time + 4) .. tostring(a) .. " = \"" .. tostring(b) .. "\"\n"
+        elseif _istype == "nil" then structure = structure .. string.rep(" ", time + 4) .. tostring(a) .. " = nil\n"
         end end structure = structure .. string.rep(" ", time) .. "}\n"
     print(structure)
 end
