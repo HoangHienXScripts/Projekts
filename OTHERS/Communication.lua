@@ -112,7 +112,7 @@ function update_key(m)
   local sect, expi = vars.info.Communication_Script, find_expired_key()
   if #expi > 0 then rmv_expired_key(expi) end
   if sect and type(sect) == "table" then
-    vars.info.Communication_Script[tostring(tick())] = {
+    vars.info.Communication_Script[tostring(math.floor(tick()))] = {
       user = plr.DisplayName, str = m
     } mdl.update("Projekts", vars.info)
   end
