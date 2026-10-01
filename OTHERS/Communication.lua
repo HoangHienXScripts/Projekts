@@ -97,7 +97,7 @@ function inspect_element(t, time)
         elseif _istype == "string" then structure = structure .. string.rep(" ", time + 4) .. tostring(a) .. " = \"" .. tostring(b) .. "\"\n"
         elseif _istype == "nil" then structure = structure .. string.rep(" ", time + 4) .. tostring(a) .. " = nil\n"
         end end structure = structure .. string.rep(" ", time) .. "}\n"
-    print(structure)
+    return structure
 end
 
 function find_expired_key()
@@ -129,7 +129,7 @@ function update_key(m)
   if sect and type(sect) == "table" then
     vars.info.Communication_Script[tostring(tick())] = {
       user = plr.DisplayName, str = m
-    } inspect_element(vars.info, 0) --mdl.update("Projekts", vars.info)
+    } print(inspect_element(vars.info, 0)) --mdl.update("Projekts", vars.info)
   end
 end
 
