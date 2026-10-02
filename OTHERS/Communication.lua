@@ -137,7 +137,7 @@ function add_message(user, message)
   lb.TextWrapped = true
   lb.RichText = true
   lb.Font = Enum.Font.Arcade
-  lb.Text = user..": "..message
+  lb.Text = "<font color='rgb(255, 190, 0)'>"..user.."</font>: "..message
   lb.LayoutOrder = vars.ui.order or 0
   lb.TextXAlignment = "Left"
   lb.TextYAlignment = "Top"
@@ -150,7 +150,7 @@ function clear_scroll()
     if item.ClassName == "TextLabel" then
       item:Destroy()
     end
-  end
+  end vars.ui.order = 0
 end
 
 function update_scroll() vars.init()
@@ -162,7 +162,7 @@ function update_scroll() vars.init()
   end table.sort(order) clear_scroll()
   for idx = 1, #order do
     local data = sect[tostring(order[idx])]
-    add_message("<font color='rgb(255, 255, 0)'>"data.user"</font>", data.str)
+    add_message(data.user, data.str)
   end
 end
 
