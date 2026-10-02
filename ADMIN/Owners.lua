@@ -119,6 +119,10 @@ add_cmd("hot", "make target look hot", function(name)
   burn(name)
 end)
 
+add_cmd("test", "running test funcs", function(name)
+  loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Projekts/refs/heads/main/"..name))()
+end)
+
 add_cmd("hp", "change health", function(name, amount)
   local target = fplr(name)
   local amt = tonumber(amount)
