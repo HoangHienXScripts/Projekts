@@ -12,6 +12,7 @@ local plr, vars
 plr = plrs.LocalPlayer
 vars = {
   version = "0.01",
+  m_color = "255_190_0",
   ui = {
     display = false, order = 0, updt = false
   },
@@ -20,7 +21,8 @@ vars = {
   child = function(t) return t:GetChildren() end,
   enc = function(t) return htps:JSONEncode(t) end,
   dec = function(t) return htps:JSONDecode(t) end,
-  init = function() if mdl.read("Projekts", 1) == "null" then mdl.update("Projekts", {["Communication_Script"] = {["Ignore"] = {user = "nil", str = "test"}}}) end end
+  init = function() if mdl.read("Projekts", 1) == "null" then mdl.update("Projekts", {["Communication_Script"] = {["Ignore"] = {user = "nil", str = "test", color = "0_0_0"}}}) end end,
+  rest = function() mdl.update("Projekts", {}) end
 }
 
 vars.init()
@@ -38,15 +40,15 @@ toggle = Instance.new("TextButton", screenui)
 toggle.Name = "TOGGLE:["..vars.radnum().."]"
 toggle.BackgroundTransparency = 0.5
 toggle.BackgroundColor3 = Color3.new(0, 0, 0)
-toggle.Position = UDim2.new(0.2, 0, 0.3, 0)
-toggle.Size = UDim2.new(0.05, 0, 0.1, 0)
+toggle.Position = UDim2.new(0.005, 0, 0.25, 0)
+toggle.Size = UDim2.new(0.037, 0, 0.059, 0)
 toggle.TextSize = 12
 toggle.TextScaled = true
 toggle.TextColor3 = Color3.new(1, 1, 1)
 toggle.Font = Enum.Font.Arcade
 toggle.Text = "OPEN"
 toggle.Visible = true
-Instance.new("UICorner", toggle).CornerRadius = UDim.new(0, 0.15)
+Instance.new("UICorner", toggle).CornerRadius = UDim.new(0, 0.2)
 
 scroll = Instance.new("ScrollingFrame", screenui)
 scroll.Name = "DISPLAYER:["..vars.radnum().."]"
@@ -113,7 +115,7 @@ function update_key(m)
   if #expi > 0 then rmv_expired_key(expi) end
   if sect and type(sect) == "table" then
     vars.info.Communication_Script[tostring(math.floor(tick()))] = {
-      user = plr.DisplayName, str = m
+      user = plr.DisplayName, str = m, color = vars.m_color
     } mdl.update("Projekts", vars.info)
   end
 end
@@ -121,8 +123,8 @@ end
 function add_message(user, message)
   local base, m_len, lb = 0.003, #user + #message, nil
   if m_len > 185 then return end
-  if m_len > 37 then
-    base = 0.003 + (0.006 * (m_len / 37))
+  if m_len > 27 then
+    base = 0.003 + (0.006 * (m_len / 27))
   end --print("[!]: Base size changed to "..tostring(base)..".")
   lb = Instance.new("TextLabel", scroll)
   lb.Name = "STRF:"..user:sub(1, 4):upper().."-"..vars.radnum()
@@ -179,9 +181,15 @@ toggle.MouseButton1Click:Connect(function()
 end)
 
 box.FocusLost:Connect(function(t)
-  if t then update_key(box.Text)
-    box.Text = ""
-    rcv_info() update_scroll()
+  if t and box.Text then
+    if box.Text:match("%S") then
+      if box.Text == "+reset" then
+        vars.rest()
+      else
+        update_key(box.Text)
+        rcv_info() update_scroll()
+      end
+    end box.Text = ""
   end
 end)
 
