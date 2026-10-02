@@ -1,4 +1,4 @@
--- Test 1 --
+-- Test 2 --
 local ws, plrs, core, rs, htps, mdl
 ws = game:GetService("Workspace")
 plrs = game:GetService("Players")
@@ -135,7 +135,7 @@ function add_message(user, message)
   lb.TextScaled = false
   lb.TextColor3 = Color3.new(1, 1, 1)
   lb.TextWrapped = true
-  lb.RichText = false
+  lb.RichText = true
   lb.Font = Enum.Font.Arcade
   lb.Text = user..": "..message
   lb.LayoutOrder = vars.ui.order or 0
@@ -162,7 +162,7 @@ function update_scroll() vars.init()
   end table.sort(order) clear_scroll()
   for idx = 1, #order do
     local data = sect[tostring(order[idx])]
-    add_message(data.user, data.str)
+    add_message("<font color='rgb(255, 255, 0)'>"data.user"</font>", data.str)
   end
 end
 
@@ -179,13 +179,15 @@ toggle.MouseButton1Click:Connect(function()
 end)
 
 box.FocusLost:Connect(function(t)
-  if t then update_key(box.Text) end
+  if t then update_key(box.Text)
+    box.Text = ""
+    rcv_info() update_scroll()
+  end
 end)
 
 rs.RenderStepped:Connect(function(dt)
   if dt and not vars.ui.updt then vars.ui.updt = true
-    rcv_info() task.wait(1)
-    update_scroll() task.wait(5)
-    vars.ui.updt = false
+    rcv_info() update_scroll()
+    task.wait(5) vars.ui.updt = false
   end
 end)
