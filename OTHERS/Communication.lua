@@ -19,12 +19,12 @@ vars = {
   radnum = function() return tostring(math.random(1, 9999)) end,
   child = function(t) return t:GetChildren() end,
   enc = function(t) return htps:JSONEncode(t) end,
-  dec = function(t) return htps:JSONDecode(t) end
+  dec = function(t) return htps:JSONDecode(t) end,
+  init = function() if mdl.read("Projekts", 1) == "null" then mdl.update("Projekts", {["Communication_Script"] = {["Ignore"] = {user = "nil", str = "test"}}}) end end
 }
 
-if mdl.read("Projekts", 1) == "null" then
-  mdl.update("Projekts", {["Communication_Script"] = {["Ignore"] = {user = "nil", str = "test"}}})
-end vars.info = mdl.read("Projekts")
+vars.init()
+vars.info = mdl.read("Projekts")
 _G.test = {mdl, vars.info}
 
 local fol, screenui, toggle, scroll, layout, box
@@ -119,11 +119,11 @@ function update_key(m)
 end
 
 function add_message(user, message)
-  local base, m_len, lb = 0.003, #message, nil
+  local base, m_len, lb = 0.003, #user + #message, nil
   if m_len > 185 then return end
   if m_len > 37 then
     base = 0.003 + (0.006 * (m_len / 37))
-  end print("[!]: Base size changed to "..tostring(base)..".")
+  end --print("[!]: Base size changed to "..tostring(base)..".")
   lb = Instance.new("TextLabel", scroll)
   lb.Name = "STRF:"..user:sub(1, 4):upper().."-"..vars.radnum()
   lb.BackgroundTransparency = 0.5
@@ -153,7 +153,7 @@ function clear_scroll()
   end
 end
 
-function update_scroll()
+function update_scroll() vars.init()
   local order, sect = {}, vars.info.Communication_Script
   for idx, _ in next, sect do
     if idx ~= "Ignore" then
