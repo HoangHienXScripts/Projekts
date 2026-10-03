@@ -194,7 +194,7 @@ box.FocusLost:Connect(function(t)
 end)
 
 rs.RenderStepped:Connect(function(dt)
-  if dt and not vars.ui.updt then vars.ui.updt = true
+  if dt and vars.ui.display and not vars.ui.updt then vars.ui.updt = true
     rcv_info() update_scroll()
     task.wait(5) vars.ui.updt = false
   end
