@@ -22,7 +22,7 @@ vars = {
   enc = function(t) return htps:JSONEncode(t) end,
   dec = function(t) return htps:JSONDecode(t) end,
   init = function() if mdl.read("Projekts", 1) == "null" then mdl.update("Projekts", {["Communication_Script"] = {["Ignore"] = {user = "nil", str = "test", color = "0_0_0"}}}) end end,
-  rest = function() mdl.update("Projekts", {}) end
+  rest = function() mdl.update("Projekts", {["Communication_Script"] = {["Ignore"] = {user = "nil", str = "test", color = "0_0_0"}}}) end
 }
 
 vars.init()
