@@ -76,7 +76,7 @@ box.TextSize = 14
 box.TextScaled = false
 box.TextColor3 = Color3.new(1, 1, 1)
 box.TextWrapped = true
-box.Font = Enum.Font.Arcade
+box.Font = Enum.Font.PatrickHand or Enum.Font.Code
 box.Text = ""
 box.PlaceholderText = "Your message... =>"
 box.TextXAlignment = "Left"
@@ -138,8 +138,8 @@ function add_message(user, message, at_tick)
   lb.TextColor3 = Color3.new(1, 1, 1)
   lb.TextWrapped = true
   lb.RichText = true
-  lb.Font = Enum.Font.Arcade
-  lb.Text = "<font color='rgb(255, 190, 0)'>"..user.."</font>: "..message
+  lb.Font = Enum.Font.PatrickHand or Enum.Font.Code
+  lb.Text = "<font color='rgb("..table.concat(vars.m_color:split("_"), ", ", 1)..")'>"..user.."</font>: "..message
   lb.LayoutOrder = vars.ui.order or 0
   lb.TextXAlignment = "Left"
   lb.TextYAlignment = "Top"
@@ -165,6 +165,7 @@ function update_scroll() vars.init()
   end table.sort(order) clear_scroll()
   for idx = 1, #order do
     local data = sect[tostring(order[idx])]
+    vars.m_color = data.color
     add_message(data.user, data.str, order[idx])
   end
 end
@@ -186,6 +187,8 @@ box.FocusLost:Connect(function(t)
     if box.Text:match("%S") then
       if box.Text == "+reset" then
         vars.rest()
+      elseif box.Text == "+rcolor" then
+        vars.m_color = tostring(math.random(1, 255)).."_"..tostring(math.random(1, 255)).."_"..tostring(math.random(1, 255))
       else
         update_key(box.Text)
         rcv_info() update_scroll()
