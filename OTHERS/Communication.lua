@@ -120,7 +120,7 @@ function update_key(m)
   end
 end
 
-function add_message(user, message)
+function add_message(user, message, at_tick)
   local base, m_len, lb = 0.003, #user + #message, nil
   if m_len > 185 then return end
   if m_len > 27 then
@@ -144,6 +144,7 @@ function add_message(user, message)
   lb.TextXAlignment = "Left"
   lb.TextYAlignment = "Top"
   lb.Visible = true
+  lb:SetAttribute("AT_TIME", at_tick)
   vars.ui.order += 1
 end
 
@@ -164,7 +165,7 @@ function update_scroll() vars.init()
   end table.sort(order) clear_scroll()
   for idx = 1, #order do
     local data = sect[tostring(order[idx])]
-    add_message(data.user, data.str)
+    add_message(data.user, data.str, order[idx])
   end
 end
 
