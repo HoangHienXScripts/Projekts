@@ -37,14 +37,9 @@ local characters, skill_check, module = {
   ["Quick Slice"] = false, ["Atmos Cleave"] = true, ["Pinpoint Cut"] = false, ["Split Second Counter"] = true, ["Sunset"] = false, ["Solar Cleave"] = false, ["Sunrise"] = false, ["Atomic Slash"] = true
 }, {}
 
-function _has_dc(t)
-  if not t then return false end
-  local x = t.Backpack:FindFirstChild("Death Counter") or t.Backpack:FindFirstChild("Death Blow")
-  if x then return true end return false
-end
-
 function _tp_farthest()
   local dts, s_dts, hrp = {}, {}, plr and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
+  if #plrs:GetPlayers() == 1 then return end
   if hrp then local target = plr.Name
     for _, usr in pairs(plrs:GetPlayers()) do
       if usr and usr ~= plr and usr.Character and plr.Character then
@@ -59,6 +54,12 @@ function _tp_farthest()
       end
     end hrp.CFrame = CFrame.new(ws.Live[target]:GetBoundingBox().Position + Vector3.new(0, 10, 0))
   end
+end
+
+function _has_dc(t)
+  if not t then return false end
+  local x = t.Backpack:FindFirstChild("Death Counter") or t.Backpack:FindFirstChild("Death Blow")
+  if x then _tp_farthest() return true end return false
 end
 
 function _find_plr()
@@ -244,4 +245,4 @@ function module.fix_lags()
   end
 end
 
-return module, "v0.4"
+return module, "v0.45"
