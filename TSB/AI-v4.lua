@@ -43,6 +43,24 @@ function _has_dc(t)
   if x then return true end return false
 end
 
+function _tp_farthest()
+  local dts, s_dts, hrp = {}, {}, plr and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
+  if hrp then local target = plr.Name
+    for _, usr in pairs(plrs:GetPlayers()) do
+      if usr and usr ~= plr and usr.Character and plr.Character then
+        dts[usr.Name] = (usr.Character:GetBoundingBox().Position - plr.Character:GetBoundingBox().Position).magnitude
+      end
+    end for _, dist in next, dts do
+      table.insert(s_dts, math.floor(dist))
+    end table.sort(s_dts)
+    for nme, dist in next, dts do
+      if math.floor(dist) == s_dts[#s_dts] then
+        target = nme
+      end
+    end hrp.CFrame = CFrame.new(ws.Live[target]:GetBoundingBox().Position + Vector3.new(0, 10, 0))
+  end
+end
+
 function _find_plr()
   local t = {n = nil, m = math.huge, r = nil, b = math.huge}
   for _, usr in pairs(plrs:GetPlayers()) do
