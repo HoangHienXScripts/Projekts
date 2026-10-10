@@ -41,7 +41,9 @@ local characters, skill_check, module = {
   ["Bullet Barrage"] = true, ["Vanishing Kick"] = false, ["Whirlwind Drop"] = true, ["Head First"] = true, ["Grand Fissure"] = false, ["Twin Fangs"] = true, ["Earth Splitting Strike"] = false, ["Last Breath"] = false,
   ["Homerun"] = true, ["Beatdown"] = false, ["Grand Slam"] = false, ["Foul Ball"] = true, ["Savage Tornado"] = true, ["Brutal Beatdown"] = false, ["Strength Difference"] = false, ["Death Blow"] = true,
   ["Crushing Pull"] = false, ["Windstorm Fury"] = false, ["Stone Coffin"] = false, ["Expulsive Push"] = false, ["Cosmic Strike"] = true, ["Psychic Ricochet"] = true, ["Terrible Tornado"] = false, ["Sky Snatcher"] = false,
-  ["Quick Slice"] = false, ["Atmos Cleave"] = true, ["Pinpoint Cut"] = false, ["Split Second Counter"] = true, ["Sunset"] = false, ["Solar Cleave"] = false, ["Sunrise"] = false, ["Atomic Slash"] = true
+  ["Quick Slice"] = false, ["Atmos Cleave"] = true, ["Pinpoint Cut"] = false, ["Split Second Counter"] = true, ["Sunset"] = false, ["Solar Cleave"] = false, ["Sunrise"] = false, ["Atomic Slash"] = true,
+  ["Weboom"] = true, ["Plasma Cannon"] = false, ["Trinity Tear"] = true, ["Twin Burst"] = true, ["Railgun"] = false, ["Tactical Storm"] = true, ["Photon Edge"] = true, ["Photon Dive"] = true, ["Conquest"] = false, ["Missiles"] = false,
+  ["Ravage"] = true, ["Swift Sweep"] = true, ["Collateral Ruin"] = true, ["Spiraling Storm"] = false, ["Stoic Bomb"] = true, ["20-20-20 Dropkick"] = false, ["Five Seasons"] = false, ["Unlimited Flex Works"] = true
 }, {}
 
 function _tp_farthest()
@@ -252,4 +254,4 @@ function module.fix_lags()
   end
 end
 
-return module, "v0.45"
+return module, "v0.5"
