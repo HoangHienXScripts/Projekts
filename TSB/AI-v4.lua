@@ -33,6 +33,9 @@ local characters, skill_check, module = {
   ["Tech"] = {"Weboom", "Plasma Cannon", "Trinity Tear", "Twin Burst", "Railgun", "Tactical Storm", "Photon Edge", "Photon Dive", "Conquest", "Missiles"},
   ["KJ"] = {"Ravage", "Swift Sweep", "Collateral Ruin", "Spiraling Storm", "Stoic Bomb", "20-20-20 Dropkick", "Five Seasons", "Unlimited Flex Works"}
 }, {
+  ["Normal Punch"] = true, ["Consecutive Punches"] = true, ["Shove"] = true, ["Uppercut"] = true, ["Death Counter"] = false, ["Table Flip"] = false, ["Serious Punch"] = false, ["Omni Directional Punch"] = true,
+  ["Flowing Water"] = true, ["Lethal Whirlwind Stream"] = true, ["Hunter's Grasp"] = true, ["Prey's Peril"] = false, ["Crushed Rock"] = true, ["The Final Hunt"] = true, ["Rock Splitting Fist"] = true, ["Water Stream Cutting Fist"] = false,
+  ["Doom Dive"] = false, ["Crowd Buster"] = false, ["Hammer Heel"] = true, ["Binding Cloth"] = true, ["Hunter's Mark"] = false, ["Great Fajin"] = false, ["God Slayer"] = true, ["Sky Ripping Fist"] = false, ["Nuclear Fission"] = true, ["Singularity"] = false, ["Gamma Ray Burst"] = false,
   ["Flash Strike"] = false, ["Whirlwind Kick"] = false, ["Scatter"] = true, ["Explosive Shuriken"] = false, ["Twinblade Rush"] = true, ["Straight On"] = false, ["Carnage"] = false, ["Fourfold Flashstrike"] = true,
   ["Machine Gun Blows"] = true, ["Ignition Burst"] = false, ["Blitz Shot"] = false, ["Jet Dive"] = false, ["Incinerate"] = true, ["Speedblitz Dropkick"] = true, ["Thunder Kick"] = true, ["Flamewave Cannon"] = false,
   ["Bullet Barrage"] = true, ["Vanishing Kick"] = false, ["Whirlwind Drop"] = true, ["Head First"] = true, ["Grand Fissure"] = false, ["Twin Fangs"] = true, ["Earth Splitting Strike"] = false, ["Last Breath"] = false,
