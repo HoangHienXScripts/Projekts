@@ -62,7 +62,7 @@ end
 
 function _has_dc(t)
   if not t then return false end
-  local x = t.Backpack:FindFirstChild("Death Counter") or t.Backpack:FindFirstChild("Death Blow")
+  local x = t.Backpack:FindFirstChild("Death Counter") or t.Backpack:FindFirstChild("Death Blow") or t.Character:FindFirstChild("Counter") or t.Character:FindFirstChild("DeathblowCounter")
   if x then _tp_farthest() return true end return false
 end
 
