@@ -1,5 +1,6 @@
 -- Reworks --
 local ui = loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Modules/refs/heads/main/btns_list.lua"))()
+local vsn = loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Modules/refs/heads/main/esp.lua"))()
 local ai, ai_version_info = loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Projekts/refs/heads/main/TSB/AI-v4.lua"))()
 local ws, plrs, reps, rs, txs
 ws = game:GetService("Workspace")
@@ -11,9 +12,10 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Pro
 
 local vars, plr
 vars = {
-  version = "0.45".." [TESTING]",
+  version = "0.5".." [TESTING]",
   map_optimized = false,
   rem_debris_enabled = false,
+  esp_enabled = false,
   anti_void_state = true,
   last_pos = nil, stand_base_texture = nil, last_pos_called = false,
   chatv = txs.ChatVersion == Enum.ChatVersion.LegacyChatService,
@@ -171,6 +173,17 @@ vars.btns.autof = ui.add_button("Auto Farm [OFF]", function()
     btn_newt(btn, "Auto Farm [OFF]")
 	btn_newtc(btn, {1, 1, 1})
   end vars.autof.frm = not vars.autof.frm
+end)
+
+vars.btns.esp = ui.add_button("Esp [OFF]", function()
+  local btn = vars.btns.esp
+  if not vars.esp_enabled then vsn.esp("enable")
+    btn_newt(btn, "Esp [ON]")
+	btn_newtc(btn, {0, 1, 0})
+  else vsn.esp("disable")
+    btn_newt(btn, "Esp [OFF]")
+	btn_newtc(btn, {1, 1, 1})
+  end vars.esp_enabled = not vars.esp_enabled
 end)
 
 vars.btns.mod_map_label = ui.add_button(watever"Teleport", function() print("nil") end)
@@ -345,3 +358,4 @@ vars.btns.web_page = ui.add_button("Future Projekts", function()
 end)
 
 ntfc("TSB-Script v"..vars.version..".")
+ntfc("By HHxScripts.")
