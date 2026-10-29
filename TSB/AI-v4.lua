@@ -1,4 +1,4 @@
--- built by HHxScripts --
+--[[ AI: Automatic Fights by HHxScripts ]]--
 local ws, plrs, reps, bulls
 ws = game:GetService("Workspace")
 plrs = game:GetService("Players")
@@ -200,7 +200,7 @@ function module.main_init()
     if mech_on then
       mech_on:Destroy()
     end
-  if hmoid and hmoid.Health < 35 and hmoid.Health > 0 then
+  if hmoid and hmoid.Health < 10 and hmoid.Health > 0 then
     local char = plr and plr.Character or nil
     if not vars.is_low_health then vars.is_low_health = true
       if char ~= nil then
@@ -229,6 +229,8 @@ function module.main_init()
       else
         if distance < vars.retreat_dist and table.find(ignore_anims, anim) and _is_moving(target_hrp) then
           _walkto(retreat_pos)
+        elseif distance > 10 then
+          _walkto(target_hrp.Position)
         end
         if distance < 20 then
           _tpto(target, target_hrp.Position + (target_hrp.CFrame.LookVector * -vars.escape_dist))
@@ -262,4 +264,4 @@ function module.fix_lags()
   end
 end
 
-return module, "v0.55"
+return module, "v0.6"
