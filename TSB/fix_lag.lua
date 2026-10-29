@@ -17,8 +17,10 @@ vars = {
   rem_debris_enabled = false,
   esp_enabled = false,
   anti_void_state = true,
+  cam_focus = false,
   last_pos = nil, stand_base_texture = nil, last_pos_called = false,
   chatv = txs.ChatVersion == Enum.ChatVersion.LegacyChatService,
+  camera = ws.CurrentCamera,
   autof = {
     direction = "customize", offset = "X", afk = false, frm = false, under_pos_rcvd = false, x = 0, y = 0, z = 3.5, under_pos = 0
   },
@@ -153,9 +155,11 @@ vars.btns.autof = ui.add_button("Auto Farm [OFF]", function()
     new_cnt("autof", rs.Heartbeat:Connect(function()
       local enm = rcv_enm()
 	  if enm and enm ~= nil then
-        local s_hrp, enm_hrp, frm = rcv_hrp(plr), rcv_hrp(enm), vars.autof
+        local s_hrp, enm_hrp, enm_hmoid, frm = rcv_hrp(plr), rcv_hrp(enm), rcv_hmoid(enm), vars.autof
 	    if s_hrp and enm_hrp then
-		  if not vars.autof.under_pos_rcvd then vars.autof.under_pos_rcvd = true
+		  if vars.cam_focus and enm_hmoid and t_alive(enm) then
+			vars.camera.CameraSubject = enm_hmoid
+		  end if not vars.autof.under_pos_rcvd then vars.autof.under_pos_rcvd = true
             vars.autof.under_pos = s_hrp.Position.Y - 6
 		  end if vars.autof.direction == "customize" then
 		    s_hrp.CFrame = enm_hrp.CFrame * CFrame.new(frm.x, frm.y, frm.z)
@@ -315,6 +319,17 @@ vars.btns.anti_void_enabled = ui.add_button("Anti-Void: [ON]", function()
   end vars.anti_void_state = not vars.anti_void_state
 end) btn_newtc(vars.btns.anti_void_enabled, {0, 1, 0})
 
+vars.btns.cam_focus_target = ui.add_button("View-Target: [OFF]", function()
+  local btn = vars.btns.cam_focus_target
+  if not vars.cam_focus then
+    btn_newt(btn, "View-Target: [ON]")
+	btn_newtc(btn, {0, 1, 0})
+  else
+	btn_newt(btn, "View-Target: [OFF]")
+	btn_newtc(btn, {1, 1, 1})
+  end vars.cam_focus = not vars.cam_focus
+end)
+
 vars.btns.change_base_color = ui.add_button("Base:Re-Color {244, 194, 90}", function()
   local btn, txture = vars.btns.change_base_color, vars.stand_base_texture
   if btn and txture then
@@ -338,9 +353,6 @@ vars.btns.spawn_model = ui.add_button("Summon Owner", function()
     c.Name = "Creator"
 	c.Parent = ws.Live
 	c:PivotTo(hrp.CFrame)
-	--c.Humanoid.RigType = Enum.HumanoidRigType.R6
-	--task.wait(0.75)
-	--c.Humanoid:LoadAnimation(rcv_anim(plr)):Play()
   end
 end)
 
