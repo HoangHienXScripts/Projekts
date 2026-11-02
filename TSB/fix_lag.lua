@@ -21,6 +21,7 @@ vars = {
   last_pos = nil, stand_base_texture = nil, last_pos_called = false,
   chatv = txs.ChatVersion == Enum.ChatVersion.LegacyChatService,
   camera = ws.CurrentCamera,
+  has_event = math.floor(tick()) <= 1794702554,
   autof = {
     direction = "customize", offset = "X", afk = false, frm = false, under_pos_rcvd = false, x = 0, y = 0, z = 3.5, under_pos = 0
   },
@@ -189,6 +190,27 @@ vars.btns.esp = ui.add_button("Esp [OFF]", function()
 	btn_newtc(btn, {1, 1, 1})
   end vars.esp_enabled = not vars.esp_enabled
 end)
+
+if vars.has_event then
+  vars.at_frm_candies = false
+  vars.btns.auto_candies = ui.add_button("Auto Candies [OFF]", function()
+    local btn = vars.btns.auto_candies
+	if not vars.at_frm_candies then
+	  new_cnt("auto_candies", rs.Heartbeat:Connect(function()
+        local candy, cans = ws.HalloweenCandy:GetChildren(), ws.Map.Trash:GetChildren()
+		local comm = plr and plr.Character and plr.Character:FindFirstChild("Communicate")
+		local is_hold = plr and plr.Character and plr.Character:GetAttribute("HoldingM1") == false
+		if #candy > 0 then
+          
+		end
+	  end)) btn_newt(btn, "Auto Candies [ON]")
+	  btn_newtc(btn, {0, 1, 0})
+	else
+      btn_newt(btn, "Auto Candies [OFF]")
+	  btn_newtc(btn, {1, 1, 1})
+	end vars.at_frm_candies = not vars.at_frm_candies
+  end)
+end
 
 vars.btns.mod_map_label = ui.add_button(watever"Teleport", function() print("nil") end)
 vars.btns.mod_map_label.BackgroundColor3 = Color3.new(1, 1, 0)
