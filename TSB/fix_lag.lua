@@ -199,13 +199,22 @@ if vars.has_event then
 	  new_cnt("auto_candies", rs.Heartbeat:Connect(function()
         local candy, cans = ws.HalloweenCandy:GetChildren(), ws.Map.Trash:GetChildren()
 		local comm = plr and plr.Character and plr.Character:FindFirstChild("Communicate")
-		local is_hold = plr and plr.Character and plr.Character:GetAttribute("HoldingM1") == false
-		if #candy > 0 then
-          
+		local is_hold = plr and plr.Character and plr.Character:GetAttribute("Is_HoldingM1") == false
+		local hrp = rcv_hrp(plr)
+		if hrp and #candy > 0 then
+          hrp.CFrame = CFrame.new(candy[1]:GetAttribute("Rest").Position)
+		else
+		  for _, can in pairs(cans) do
+            if can and can:GetAttribute("Broken") ~= true then
+              hrp.CFrame = CFrame.new(can:GetBoundingBox().Position)
+			  break
+			end
+		  end if is_hold then comm:FireServer({Tick = 1, Mobile = true, Goal = "LeftClick", MousePos = Vector3.new(0, 0, 0)}) end
 		end
 	  end)) btn_newt(btn, "Auto Candies [ON]")
 	  btn_newtc(btn, {0, 1, 0})
 	else
+	  exit_cnt("auto_candies")
       btn_newt(btn, "Auto Candies [OFF]")
 	  btn_newtc(btn, {1, 1, 1})
 	end vars.at_frm_candies = not vars.at_frm_candies
