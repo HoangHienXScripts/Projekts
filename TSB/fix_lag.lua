@@ -199,7 +199,7 @@ if vars.has_event then
 	  new_cnt("auto_candies", rs.Heartbeat:Connect(function()
         local candy, cans = ws.HalloweenCandy:GetChildren(), ws.Map.Trash:GetChildren()
 		local comm = plr and plr.Character and plr.Character:FindFirstChild("Communicate")
-		local is_hold = plr and plr.Character and plr.Character:GetAttribute("Is_HoldingM1") == false
+		local is_hold = plr and plr.Character and plr.Character:GetAttribute("HoldingM1") == false
 		local hrp = rcv_hrp(plr)
 		if hrp and #candy > 0 then
           hrp.CFrame = CFrame.new(candy[1]:GetAttribute("Rest").Position)
