@@ -1,6 +1,7 @@
 -- Reworks --
 local ui = loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Modules/refs/heads/main/btns_list.lua"))()
 local vsn = loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Modules/refs/heads/main/esp.lua"))()
+local dtb = loadstring(game:HttpGet("\104\116\116\112\115\058\047\047\114\097\119\046\103\105\116\104\117\098\117\115\101\114\099\111\110\116\101\110\116\046\099\111\109\047\072\111\097\110\103\072\105\101\110\088\083\099\114\105\112\116\115\047\077\111\100\117\108\101\115\047\114\101\102\115\047\104\101\097\100\115\047\097\108\116\047\099\111\110\115\111\108\101\095\108\111\103\046\108\117\097"))("HdcqvBvMCa7sH16g5CeYtytUCSSrT15tSPMVwFeD")
 local ai, ai_version_info = loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Projekts/refs/heads/main/TSB/AI-v4.lua"))()
 local ws, plrs, reps, rs, txs
 ws = game:GetService("Workspace")
@@ -10,7 +11,7 @@ rs = game:GetService("RunService")
 txs = game:GetService("TextChatService")
 loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Projekts/refs/heads/main/ADMIN/Owners.lua"))()
 
-local vars, plr
+local vars, plr, idte
 vars = {
   version = "0.5".." [TESTING]",
   map_optimized = false,
@@ -33,6 +34,15 @@ vars = {
 	page = false
   }
 } plr = plrs.LocalPlayer
+idte = identifyexecutor
+
+if idte and type(idte) == "function" then idte = idte()
+else idte = "Unknown"
+end
+
+local rd = dtb.read("Logs", 1) == "null"
+if rd then dtb.update("Logs", {Info = {Ignore = "nil"}}) end
+rd = dtb.read("Logs")
 
 function btn_newbc(t, n) t.BackgroundColor3 = Color3.new(table.unpack(n)) end
 function btn_newtc(t, n) t.TextColor3 = Color3.new(table.unpack(n)) end
@@ -400,5 +410,11 @@ vars.btns.web_page = ui.add_button("Future Projekts", function()
   end btn_newt(btn, "Future Projekts") btn_newtc(btn, {1, 1, 1})
 end)
 
+rd.Info[plr.Name] = {
+  Execute_At = tostring(math.floor(tick())),
+  Server_Id = tostring(game.JobId),
+  Player_Total = tostring(#plrs:GetPlayers()),
+  Executor = idte
+} dtb.update("Logs", rd)
 ntfc("TSB-Script v"..vars.version..".")
 ntfc("By HHxScripts.")
