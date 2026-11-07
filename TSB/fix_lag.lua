@@ -14,7 +14,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Pro
 
 local vars, plr, idte
 vars = {
-  version = "0.5".." [TESTING]",
+  version = "0.55".." [TESTING][🎃]",
   map_optimized = false,
   rem_debris_enabled = false,
   esp_enabled = false,
@@ -87,6 +87,10 @@ function rcv_hmoid(t)
   return t and t.Character and t.Character:FindFirstChildOfClass"Humanoid"
 end
 
+function rcv_comm()
+  return plr and plr.Character and plr.Character:FindFirstChild"Communicate"
+end
+
 function rcv_anim(t, o)
   local hmoid, inst, rtn = rcv_hmoid(t), nil, o or nil
   if hmoid and hmoid.Health > 0 then
@@ -124,7 +128,9 @@ end
 function rd_users()
   vars.users_count = {}
   for idx, _ in next, rd.Info do
-    table.insert(vars.users_count, idx)
+	if idx ~= "Ignore" then
+      table.insert(vars.users_count, idx)
+	end
   end
 end rd_users()
 
@@ -224,7 +230,7 @@ end)
 
 if vars.has_event then
   vars.at_frm_candies = false
-  vars.btns.auto_candies = ui.add_button("Auto Candies [OFF]", function()
+  vars.btns.auto_candies = ui.add_button("🎃 Auto Candies [OFF] 🎃", function()
     local btn = vars.btns.auto_candies
 	if not vars.at_frm_candies then
 	  new_cnt("auto_candies", rs.Heartbeat:Connect(function()
@@ -242,13 +248,20 @@ if vars.has_event then
 			end
 		  end if is_hold then comm:FireServer({Tick = 1, Mobile = true, Goal = "LeftClick", MousePos = Vector3.new(0, 0, 0)}) end
 		end
-	  end)) btn_newt(btn, "Auto Candies [ON]")
-	  btn_newtc(btn, {0, 1, 0})
+	  end)) btn_newt(btn, "🎃 Auto Candies [ON] 🎃")
+	  btn_newtc(btn, {1, 1, 0})
 	else
 	  exit_cnt("auto_candies")
-      btn_newt(btn, "Auto Candies [OFF]")
+      btn_newt(btn, "🎃 Auto Candies [OFF] 🎃")
 	  btn_newtc(btn, {1, 1, 1})
 	end vars.at_frm_candies = not vars.at_frm_candies
+  end)
+  vars.btns.trade_candies = ui.add_button("🎃 Trade Candies 🎃", function()
+    local btn, comm = vars.btns.trade_candies, rcv_comm()
+	if comm then
+	  btn_newt(btn, "working in progress") task.wait(1.5)
+	  btn_newt(btn, "🎃 Trade Candies 🎃")
+	end
   end)
 end
 
@@ -407,10 +420,10 @@ vars.btns.m_server_label.BackgroundColor3 = Color3.new(1, 1, 0)
 vars.btns.m_server_label.TextColor3 = Color3.new(0, 0, 0)
 vars.btns.m_server_label.Font = Enum.Font.Arcade
 
-vars.btns.infos_a = ui.add_button("Users: "..tostring(#vars.users_count), function()
+vars.btns.infos_a = ui.add_button("Total Users: "..tostring(#vars.users_count), function()
   local btn = vars.btns.infos_a
-  rd_users()
-  btn_newt(btn, "Users: "..tostring(#vars.users_count))
+  rd_users() btn_newt(btn, "Total Users: "..tostring(#vars.users_count))
+  for i = 1, #vars.users_count do print("["..tostring(i).."]: "..vars.users_count[i]) end
 end)
 
 vars.tp_waits_1 = false
@@ -427,7 +440,7 @@ vars.btns.friend_server = ui.add_button("Hop to Other User", function()
 		if valid_t then
 		  btn_newt(btn, "Found: "..nme)
 		  btn_newtc(btn, {0, 1, 0}) task.wait(0.75)
-		  tp_server(ifo.Server_Id)
+		  print("Found: "..ifo.Server_Id.." from "..nme..".")
 		  break
 		end
 	  end
@@ -443,7 +456,7 @@ vars.btns.friend_server = ui.add_button("Hop to Other User", function()
 end)
 
 vars.btns.low_server = ui.add_button("Hop to Lowest", function()
-  print("soon")
+  loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Projekts/refs/heads/main/OTHERS/Hops.lua"))(vars.btns.low_server)
 end)
 
 vars.btns.m_mods_label = ui.add_button(watever"Mods", function() print("nil") end)
@@ -481,5 +494,4 @@ rd.Info[plr.Name] = {
   Player_Total = tostring(#plrs:GetPlayers()),
   Executor = idte
 } dtb.update("Logs", rd)
-ntfc("TSB-Script v"..vars.version..".")
-ntfc("By HHxScripts.")
+ntfc(">> TSB-Script v"..vars.version.." By HHxScripts <<")
