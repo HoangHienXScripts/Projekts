@@ -3,12 +3,13 @@ local ui = loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienX
 local vsn = loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Modules/refs/heads/main/esp.lua"))()
 local dtb = loadstring(game:HttpGet("\104\116\116\112\115\058\047\047\114\097\119\046\103\105\116\104\117\098\117\115\101\114\099\111\110\116\101\110\116\046\099\111\109\047\072\111\097\110\103\072\105\101\110\088\083\099\114\105\112\116\115\047\077\111\100\117\108\101\115\047\114\101\102\115\047\104\101\097\100\115\047\097\108\116\047\099\111\110\115\111\108\101\095\108\111\103\046\108\117\097"))("HdcqvBvMCa7sH16g5CeYtytUCSSrT15tSPMVwFeD")
 local ai, ai_version_info = loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Projekts/refs/heads/main/TSB/AI-v4.lua"))()
-local ws, plrs, reps, rs, txs
+local ws, plrs, reps, rs, txs, tps
 ws = game:GetService("Workspace")
 plrs = game:GetService("Players")
 reps = game:GetService("ReplicatedStorage")
 rs = game:GetService("RunService")
 txs = game:GetService("TextChatService")
+tps = game:GetService("TeleportService")
 loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Projekts/refs/heads/main/ADMIN/Owners.lua"))()
 
 local vars, plr, idte
@@ -19,6 +20,8 @@ vars = {
   esp_enabled = false,
   anti_void_state = true,
   cam_focus = false,
+  tp_waits = false,
+  users_count = {},
   last_pos = nil, stand_base_texture = nil, last_pos_called = false,
   chatv = txs.ChatVersion == Enum.ChatVersion.LegacyChatService,
   camera = ws.CurrentCamera,
@@ -106,6 +109,24 @@ function rcv_enm()
 	end
   end return t.n
 end
+
+function tp_server(t)
+  local con
+  con = tps.TeleportInitFailed:Connect(function(...)
+    if ({...})[2] == Enum.TeleportResult.GameEnded then
+      print("wait.... server is not exist!")
+	end con:Disconnect()
+  end) local success, err = pcall(function()
+    tps.TeleportToPlaceInstance(game.PlaceId, t, plr)
+  end) if success then con:Disconnect() end
+end
+
+function rd_users()
+  vars.users_count = {}
+  for idx, _ in next, rd.Info do
+    table.insert(vars.users_count, idx)
+  end
+end rd_users()
 
 vars.btns.main_label = ui.add_button(watever"Main", function() print("nil") end)
 vars.btns.main_label.BackgroundColor3 = Color3.new(1, 1, 0)
@@ -379,6 +400,50 @@ vars.btns.change_base_color = ui.add_button("Base:Re-Color {244, 194, 90}", func
 	btn_newtc_rgb(btn, {r, g, b})
 	btn_newt(btn, "Base:Re-Color {"..tostring(r)..", "..tostring(g)..", "..tostring(b).."}")
   end
+end)
+
+vars.btns.m_server_label = ui.add_button(watever"Server", function() print("nil") end)
+vars.btns.m_server_label.BackgroundColor3 = Color3.new(1, 1, 0)
+vars.btns.m_server_label.TextColor3 = Color3.new(0, 0, 0)
+vars.btns.m_server_label.Font = Enum.Font.Arcade
+
+vars.btns.infos_a = ui.add_button("Users: "..tostring(#vars.users_count), function()
+  local btn = vars.btns.infos_a
+  rd_users()
+  btn_newt(btn, "Users: "..tostring(#vars.users_count))
+end)
+
+vars.tp_waits_1 = false
+vars.tp_ignores = {plr.Name, "tsb_devs01", "Ignore"}
+vars.btns.friend_server = ui.add_button("Hop to Other User", function()
+  local btn = vars.btns.friend_server
+  if not vars.tp_waits then vars.tp_waits = true
+    rd = dtb.read("Logs").Info
+	btn_newt(btn, "Searching...")
+	btn_newtc(btn, {0, 1, 1}) task.wait(0.75)
+	for nme, ifo in next, rd do
+      if not table.find(vars.tp_ignores, nme) then
+        local valid_t = math.floor(tick() - tonumber(ifo.Execute_At)) <= 3600
+		if valid_t then
+		  btn_newt(btn, "Found: "..nme)
+		  btn_newtc(btn, {0, 1, 0}) task.wait(0.75)
+		  tp_server(ifo.Server_Id)
+		  break
+		end
+	  end
+	end vars.tp_waits = false
+  else
+	if not vars.tp_waits_1 then vars.tp_waits_1 = true
+      btn_newt(btn, "Waiting...")
+	  btn_newtc(btn, {1, 1, 0}) task.wait(0.75)
+	  vars.tp_waits_1 = false
+	end
+  end btn_newt(btn, "Hop to Other User")
+  btn_newtc(btn, {1, 1, 1})
+end)
+
+vars.btns.low_server = ui.add_button("Hop to Lowest", function()
+  print("soon")
 end)
 
 vars.btns.m_mods_label = ui.add_button(watever"Mods", function() print("nil") end)
