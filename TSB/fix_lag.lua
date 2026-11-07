@@ -21,6 +21,7 @@ vars = {
   anti_void_state = true,
   cam_focus = false,
   tp_waits = false,
+  tp_result = nil,
   users_count = {},
   last_pos = nil, stand_base_texture = nil, last_pos_called = false,
   chatv = txs.ChatVersion == Enum.ChatVersion.LegacyChatService,
@@ -31,7 +32,9 @@ vars = {
   },
   locations = {
     ["Samurai-Cutscene"] = {-54, 1636, 25249},
-	["Map-Edge"] = {-281, 440, 478}
+	["Map-Edge"] = {-281, 440, 478},
+    ["Fang-Top"] = {589, 939, 29},
+	["Map-Middle"] = {155, 440, 34}
   },
   cons = {}, btns = {}, sorts = {}, tp_btns = {}, copied = {
 	page = false
@@ -114,17 +117,7 @@ function rcv_enm()
   end return t.n
 end
 
-function tp_server(t)
-  local con
-  con = tps.TeleportInitFailed:Connect(function(...)
-    if ({...})[2] == Enum.TeleportResult.GameEnded then
-      print("wait.... server is not exist!")
-	end con:Disconnect()
-  end) local success, err = pcall(function()
-    tps.TeleportToPlaceInstance(game.PlaceId, t, plr)
-  end) if success then con:Disconnect() end
-end
-
+function tp_server(t) tps:TeleportToPlaceInstance(game.PlaceId, t, plr) end
 function rd_users()
   vars.users_count = {}
   for idx, _ in next, rd.Info do
@@ -259,9 +252,9 @@ if vars.has_event then
   vars.btns.trade_candies = ui.add_button("🎃 Trade Candies 🎃", function()
     local btn, comm = vars.btns.trade_candies, rcv_comm()
 	if comm then
-	  btn_newt(btn, "working in progress") task.wait(1.5)
-	  btn_newt(btn, "🎃 Trade Candies 🎃")
-	end
+	  comm:FireServer({Count = 1, Goal = "CandyShop", Item = "Halloween"})
+	  btn_newt(btn, "🎃 In Progress 🎃") task.wait(2)
+	end btn_newt(btn, "🎃 Trade Candies 🎃")
   end)
 end
 
@@ -433,14 +426,17 @@ vars.btns.friend_server = ui.add_button("Hop to Other User", function()
   if not vars.tp_waits then vars.tp_waits = true
     rd = dtb.read("Logs").Info
 	btn_newt(btn, "Searching...")
-	btn_newtc(btn, {0, 1, 1}) task.wait(0.75)
+	btn_newtc(btn, {1, 1, 0}) task.wait(0.75)
 	for nme, ifo in next, rd do
       if not table.find(vars.tp_ignores, nme) then
         local valid_t = math.floor(tick() - tonumber(ifo.Execute_At)) <= 3600
 		if valid_t then
 		  btn_newt(btn, "Found: "..nme)
-		  btn_newtc(btn, {0, 1, 0}) task.wait(0.75)
-		  print("Found: "..ifo.Server_Id.." from "..nme..".")
+		  btn_newtc(btn, {1, 1, 1}) task.wait(0.75)
+		  tp_server(ifo.Server_Id:gsub(" ", "")) task.wait(0.75)
+		  if vars.tp_result == Enum.TeleportResult.GameEnded then
+            print(nme.." server has ended.")
+		  end
 		  break
 		end
 	  end
@@ -494,4 +490,6 @@ rd.Info[plr.Name] = {
   Player_Total = tostring(#plrs:GetPlayers()),
   Executor = idte
 } dtb.update("Logs", rd)
+
+tps.TeleportInitFailed:Connect(function(...) vars.tp_result = ({...})[2] end)
 ntfc(">> TSB-Script v"..vars.version.." By HHxScripts <<")
