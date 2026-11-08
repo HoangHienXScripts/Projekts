@@ -455,6 +455,14 @@ vars.btns.low_server = ui.add_button("Hop to Lowest", function()
   loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Projekts/refs/heads/main/OTHERS/Hops.lua"))(vars.btns.low_server)
 end)
 
+vars.btns.ps_server = ui.add_button("Hop to Private", function()
+  local btn, csh = vars.btns.ps_server, reps.Ranked:FindFirstChild"CustomServerHandler"
+  if csh then local ars = {Action = "CreateServer", Tags = {}, FriendsOnly = false, IsListed = true, ServerName = plr.Name:sub(1, 2).."_"..tostring(math.floor(tick())).."_CSH"}
+	btn_newt(btn, "Created: "..ars.ServerName) task.wait(2.75)
+	csh:InvokeServer(ars)
+  end
+end)
+
 vars.btns.m_mods_label = ui.add_button(watever"Mods", function() print("nil") end)
 vars.btns.m_mods_label.BackgroundColor3 = Color3.new(1, 1, 0)
 vars.btns.m_mods_label.TextColor3 = Color3.new(0, 0, 0)
@@ -492,4 +500,4 @@ rd.Info[plr.Name] = {
 } dtb.update("Logs", rd)
 
 tps.TeleportInitFailed:Connect(function(...) vars.tp_result = ({...})[2] end)
-ntfc(">> TSB-Script v"..vars.version.." By HHxScripts <<")
+ntfc("[TSB-Script v"..vars.version.." By HHxScripts]")
