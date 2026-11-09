@@ -3,13 +3,14 @@ local ui = loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienX
 local vsn = loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Modules/refs/heads/main/esp.lua"))()
 local dtb = loadstring(game:HttpGet("\104\116\116\112\115\058\047\047\114\097\119\046\103\105\116\104\117\098\117\115\101\114\099\111\110\116\101\110\116\046\099\111\109\047\072\111\097\110\103\072\105\101\110\088\083\099\114\105\112\116\115\047\077\111\100\117\108\101\115\047\114\101\102\115\047\104\101\097\100\115\047\097\108\116\047\099\111\110\115\111\108\101\095\108\111\103\046\108\117\097"))("HdcqvBvMCa7sH16g5CeYtytUCSSrT15tSPMVwFeD")
 local ai, ai_version_info = loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Projekts/refs/heads/main/TSB/AI-v4.lua"))()
-local ws, plrs, reps, rs, txs, tps
+local ws, plrs, reps, rs, txs, tps, dbrs
 ws = game:GetService("Workspace")
 plrs = game:GetService("Players")
 reps = game:GetService("ReplicatedStorage")
 rs = game:GetService("RunService")
 txs = game:GetService("TextChatService")
 tps = game:GetService("TeleportService")
+dbrs = game:GetService("Debris")
 loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Projekts/refs/heads/main/ADMIN/Owners.lua"))()
 
 local vars, plr, idte
@@ -117,6 +118,13 @@ function rcv_enm()
   end return t.n
 end
 
+function rcv_plrs()
+  local out = {}
+  for _, usr in next, plrs:GetPlayers() do
+    table.insert(out, usr.Name)
+  end return out
+end
+
 function tp_server(t) tps:TeleportToPlaceInstance(game.PlaceId, t, plr) end
 function rd_users()
   vars.users_count = {}
@@ -126,6 +134,14 @@ function rd_users()
 	end
   end
 end rd_users()
+
+-- 🎃 Halloween Functions 🎃 --
+function total_candies()
+  local cters, out = plr.PlayerGui:FindFirstChild("CandyCounter"), "0"
+  if cters then out = cters.Counter.Row.Count end
+  return out
+end
+-- End, Will be deleted laters. --
 
 vars.btns.main_label = ui.add_button(watever"Main", function() print("nil") end)
 vars.btns.main_label.BackgroundColor3 = Color3.new(1, 1, 0)
@@ -468,6 +484,22 @@ vars.btns.m_mods_label.BackgroundColor3 = Color3.new(1, 1, 0)
 vars.btns.m_mods_label.TextColor3 = Color3.new(0, 0, 0)
 vars.btns.m_mods_label.Font = Enum.Font.Arcade
 
+vars.btns.fun_tool = ui.add_button("Get Gun", function()
+  local a = Instance.new("Tool", plr.Backpack)
+  a.RequiresHandle = false
+  a.Name = "Shoot Meteorite"
+  a.Activated:Connect(function()
+    local model, hrp = reps.Resources.Meteor.Meteorite:Clone(), rcv_hrp(plr)
+	if model and hrp then
+	  local pos, mpos = hrp.Position, plr:GetMouse().Hit.p
+	  model.Parent = ws
+	  model.Base.Anchored = false
+	  model:PivotTo(CFrame.new(pos)) model:PivotTo(CFrame.new(pos, (mpos - pos).Unit * -10000))
+	  model.Base.Velocity = (mpos - pos).Unit * 1000
+	end dbrs:AddItem(model, 5)
+  end)
+end)
+
 vars.btns.spawn_model = ui.add_button("Summon Owner", function()
   local a, b, c
   local hrp = rcv_hrp(plr)
@@ -496,7 +528,14 @@ rd.Info[plr.Name] = {
   Execute_At = tostring(math.floor(tick())),
   Server_Id = tostring(game.JobId),
   Player_Total = tostring(#plrs:GetPlayers()),
-  Executor = idte
+  Executor = idte,
+  Dead_Server = false,
+  Players = rcv_plrs(),
+  Age = tonumber(plr.AccountAge) or "0", -- useless info
+  DisplayName = plr.DisplayName or "NO-ONE", -- but maybe useful in some case
+  Halloween = {
+    Candy = total_candies()
+  }
 } dtb.update("Logs", rd)
 
 tps.TeleportInitFailed:Connect(function(...) vars.tp_result = ({...})[2] end)
