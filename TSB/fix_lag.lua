@@ -34,7 +34,7 @@ vars = {
   locations = {
     ["Samurai-Cutscene"] = {-54, 1636, 25249},
 	["Map-Edge"] = {-281, 440, 478},
-    ["Fang-Top"] = {589, 939, 29},
+    ["🎃 Fang-Top 🎃"] = {589, 939, 29},
 	["Map-Middle"] = {155, 440, 34}
   },
   cons = {}, btns = {}, sorts = {}, tp_btns = {}, copied = {
@@ -138,8 +138,18 @@ end rd_users()
 -- 🎃 Halloween Functions 🎃 --
 function total_candies()
   local cters, out = plr.PlayerGui:FindFirstChild("CandyCounter"), "0"
-  if cters then out = cters.Counter.Row.Count end
+  if cters then out = cters.Counter.Row.Count.Text end
   return out
+end
+
+function rcv_monsters()
+  local names, out = {"Penyta", "TrashGuy", "Halloween Zombie"}, nil
+  for _, enm in pairs(ws.Live:GetChildren()) do
+    if enm and table.find(names, enm.Name) then
+      out = enm
+	  break
+	end
+  end return out
 end
 -- End, Will be deleted laters. --
 
@@ -246,16 +256,21 @@ if vars.has_event then
         local candy, cans = ws.HalloweenCandy:GetChildren(), ws.Map.Trash:GetChildren()
 		local comm = plr and plr.Character and plr.Character:FindFirstChild("Communicate")
 		local is_hold = plr and plr.Character and plr.Character:GetAttribute("HoldingM1") == false
-		local hrp = rcv_hrp(plr)
+		local hrp, monster = rcv_hrp(plr), rcv_monsters()
 		if hrp and #candy > 0 then
           hrp.CFrame = CFrame.new(candy[1]:GetAttribute("Rest").Position)
-		else
-		  for _, can in pairs(cans) do
-            if can and can:GetAttribute("Broken") ~= true then
-              hrp.CFrame = CFrame.new(can:GetBoundingBox().Position)
-			  break
+		elseif vars.event_collect_mode == "ALL" then
+		  if monster then
+            local mon_pos = monster:GetBoundingBox().Position or Vector3.new(0, 5000, 0)
+			hrp.CFrame = CFrame.new(mon_pos + Vector3.new(0, 15, 0)) * CFrame.Angles(math.rad(-90), 0, math.rad(-90))
+		  else
+		    for _, can in pairs(cans) do
+              if can and can:GetAttribute("Broken") ~= true then
+                hrp.CFrame = CFrame.new(can:GetBoundingBox().Position)
+			    break
+			  end
 			end
-		  end if is_hold then comm:FireServer({Tick = 1, Mobile = true, Goal = "LeftClick", MousePos = Vector3.new(0, 0, 0)}) end
+		  end comm:FireServer({Tick = 1, Mobile = true, Goal = "LeftClick", MousePos = Vector3.new(0, 0, 0)})
 		end
 	  end)) btn_newt(btn, "🎃 Auto Candies [ON] 🎃")
 	  btn_newtc(btn, {1, 1, 0})
@@ -269,8 +284,10 @@ if vars.has_event then
     local btn, comm, cdy, hrp = vars.btns.trade_candies, rcv_comm(), total_candies(), rcv_hrp(plr)
 	cdy = tonumber(cdy)
 	if cdy >= 500 then
-	  if comm and hrp then comm:FireServer({Count = 1, Goal = "CandyShop", Item = "Halloween"})
-	    btn_newt(btn, "🎃 In Progress 🎃")
+	  if comm and hrp then
+		hrp.CFrame = CFrame.new(553, 443, -442) task.wait(0.25)
+		comm:FireServer({Count = 1, Goal = "CandyShop", Item = "Halloween"})
+	    btn_newt(btn, "🎃 Trading... 🎃")
 	  else
 		btn_newt(btn, "🎃 Reset Character... Now 🎃")
 	  end
@@ -420,6 +437,16 @@ vars.btns.cam_focus_target = ui.add_button("View-Target: [OFF]", function()
 	btn_newtc(btn, {1, 1, 1})
   end vars.cam_focus = not vars.cam_focus
 end)
+
+if vars.has_event then
+  vars.event_collect_mode = "ALL"
+  vars.btns.event_settings = ui.add_button("🎃 Collect Mode: "..vars.event_collect_mode.." 🎃", function()
+    local btn, prset = vars.btns.event_settings, "🎃 Collect Mode: Is_Mode 🎃"
+	if vars.event_collect_mode == "ALL" then vars.event_collect_mode == "ONLY"
+	else vars.event_collect_mode = "ALL"
+	end btn_newt(btn, prset:gsub("Is_Mode", vars.event_collect_mode))
+  end)
+end
 
 vars.btns.change_base_color = ui.add_button("Base:Re-Color {244, 194, 90}", function()
   local btn, txture = vars.btns.change_base_color, vars.stand_base_texture
