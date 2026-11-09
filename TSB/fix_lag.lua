@@ -15,7 +15,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Pro
 
 local vars, plr, idte
 vars = {
-  version = "0.55".." [TESTING][🎃]",
+  version = "0.6".." [TESTING][🎃]",
   map_optimized = false,
   rem_debris_enabled = false,
   esp_enabled = false,
@@ -266,11 +266,18 @@ if vars.has_event then
 	end vars.at_frm_candies = not vars.at_frm_candies
   end)
   vars.btns.trade_candies = ui.add_button("🎃 Trade Candies 🎃", function()
-    local btn, comm = vars.btns.trade_candies, rcv_comm()
-	if comm then
-	  comm:FireServer({Count = 1, Goal = "CandyShop", Item = "Halloween"})
-	  btn_newt(btn, "🎃 In Progress 🎃") task.wait(2)
-	end btn_newt(btn, "🎃 Trade Candies 🎃")
+    local btn, comm, cdy, hrp = vars.btns.trade_candies, rcv_comm(), total_candies(), rcv_hrp(plr)
+	cdy = tonumber(cdy)
+	if cdy >= 500 then
+	  if comm and hrp then comm:FireServer({Count = 1, Goal = "CandyShop", Item = "Halloween"})
+	    btn_newt(btn, "🎃 In Progress 🎃")
+	  else
+		btn_newt(btn, "🎃 Reset Character... Now 🎃")
+	  end
+	else
+	  btn_newt(btn, "🎃 Missing: "..tostring(500 - cdy).." Candy 🎃")
+	end task.wait(0.75)
+	btn_newt(btn, "🎃 Trade Candies 🎃")
   end)
 end
 
