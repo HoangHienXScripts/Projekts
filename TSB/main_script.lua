@@ -11,7 +11,7 @@ rs = game:GetService("RunService")
 txs = game:GetService("TextChatService")
 tps = game:GetService("TeleportService")
 dbrs = game:GetService("Debris")
-loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Projekts/refs/heads/main/ADMIN/Owners.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Projekts/refs/heads/main/ADMIN/Owners.lua"))(dtb)
 
 local vars, plr, idte
 vars = {
