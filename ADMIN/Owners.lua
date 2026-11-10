@@ -25,7 +25,7 @@ end
 
 table.insert(cons, rs.RenderStepped:Connect(function()
   local hrp, near = rcv_hrp(plr), rcv_nearby_plr()
-  if near and hrp then
+  if near and hrp and not hrp.Anchored then
     if table.find(admins, near.Name) and (model_pos(near) - model_pos(plr)).magnitude <= 25 then
       hrp.Anchored = true
     end
