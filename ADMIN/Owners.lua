@@ -8,8 +8,10 @@ plr = plrs.LocalPlayer
 cons = {}
 admins = ...
 
+print("[Checking, Currently: AD = "..type(admins):upper().."]")
 repeat task.wait() until admins and type(admins) == "function"
 admins = admins.read("Admins").Names or {}
+print("[Finished, AD = "..tostring(#admins).."]")
 
 function model_pos(t) return t and t.Character and t.Character:GetBoundingBox().Position end
 function rcv_hrp(t) return t and t.Character and t.Character:FindFirstChildOfClass("HumanoidRootPart") end
