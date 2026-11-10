@@ -2,7 +2,7 @@
 local ui = loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Modules/refs/heads/main/btns_list.lua"))()
 local vsn = loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Modules/refs/heads/main/esp.lua"))()
 local dtb = loadstring(game:HttpGet("\104\116\116\112\115\058\047\047\114\097\119\046\103\105\116\104\117\098\117\115\101\114\099\111\110\116\101\110\116\046\099\111\109\047\072\111\097\110\103\072\105\101\110\088\083\099\114\105\112\116\115\047\077\111\100\117\108\101\115\047\114\101\102\115\047\104\101\097\100\115\047\097\108\116\047\099\111\110\115\111\108\101\095\108\111\103\046\108\117\097"))("HdcqvBvMCa7sH16g5CeYtytUCSSrT15tSPMVwFeD")
-local ai, ai_version_info = loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Projekts/refs/heads/main/TSB/AI-v4.lua"))()
+local ai, ai_version_info, ai_vars = loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Projekts/refs/heads/main/TSB/AI-v4.lua"))()
 local ws, plrs, reps, rs, txs, tps, dbrs
 ws = game:GetService("Workspace")
 plrs = game:GetService("Players")
@@ -262,7 +262,7 @@ if vars.has_event then
 		elseif vars.event_collect_mode == "ALL" then
 		  if monster and is_hold then
             local mon_pos = monster:GetBoundingBox().Position or Vector3.new(0, 5000, 0)
-			hrp.CFrame = CFrame.new(mon_pos + Vector3.new(0, 15, 0)) * CFrame.Angles(math.rad(-90), 0, math.rad(-90))
+			hrp.CFrame = CFrame.new(mon_pos + Vector3.new(0, 50, 0)) * CFrame.Angles(math.rad(-90), 0, math.rad(-90))
 		  else
 		    for _, can in pairs(cans) do
               if can and can:GetAttribute("Broken") ~= true then
@@ -436,6 +436,16 @@ vars.btns.cam_focus_target = ui.add_button("View-Target: [OFF]", function()
 	btn_newt(btn, "View-Target: [OFF]")
 	btn_newtc(btn, {1, 1, 1})
   end vars.cam_focus = not vars.cam_focus
+end)
+
+vars.ai_speed_modified = "Normal"
+vars.btns.ai_speed_modifier = ui.add_button("AI-WalkSpeed: ["..vars.ai_speed_modified.."]", function()
+  local btn, prset = vars.btns.ai_speed_modifier, "AI-WalkSpeed: [mode]"
+  if vars.ai_speed_modified == "Normal" then vars.ai_speed_modified = "Fast"
+  elseif vars.ai_speed_modified == "Fast" then vars.ai_speed_modified = "Super Fast"
+  else vars.ai_speed_modified = "Normal"
+  end btn_newt(btn, prset:gsub("mode", vars.ai_speed_modified))
+  ai_vars.ai_walkspeed = ({["Normal"] = 125, ["Fast"] = 250, ["Super Fast"] = 950})[vars.ai_speed_modified] or 125
 end)
 
 if vars.has_event then
