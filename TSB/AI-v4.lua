@@ -264,4 +264,4 @@ function module.fix_lags()
   end
 end
 
-return module, "v0.6"
+return module, "v0.6", vars
