@@ -16,7 +16,6 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Pro
 local vars, plr, idte
 vars = {
   version = "0.6".." [TESTING][🎃]",
-  event_collect_mode = "ALL",
   map_optimized = false,
   rem_debris_enabled = false,
   esp_enabled = false,
@@ -440,6 +439,7 @@ vars.btns.cam_focus_target = ui.add_button("View-Target: [OFF]", function()
 end)
 
 if vars.has_event then
+  vars.event_collect_mode = "ALL"
   vars.btns.event_settings = ui.add_button("🎃 Collect Mode: "..vars.event_collect_mode.." 🎃", function()
     local btn, prset = vars.btns.event_settings, "🎃 Collect Mode: Is_Mode 🎃"
 	if vars.event_collect_mode == "ALL" then vars.event_collect_mode == "ONLY"
@@ -567,7 +567,9 @@ rd.Info[plr.Name] = {
   Players = rcv_plrs(),
   Age = tonumber(plr.AccountAge) or "0", -- useless info
   DisplayName = plr.DisplayName or "NO-ONE", -- but maybe useful in some case
-  Candies = total_candies()
+  Halloween = {
+    Candy = total_candies()
+  }
 } dtb.update("Logs", rd)
 
 tps.TeleportInitFailed:Connect(function(...) vars.tp_result = ({...})[2] end)
