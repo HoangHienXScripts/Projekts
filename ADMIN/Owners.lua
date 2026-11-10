@@ -9,7 +9,7 @@ cons = {}
 admins = ...
 
 print("[Checking, Currently: AD = "..type(admins):upper().."]")
-repeat task.wait() until admins and type(admins) == "function"
+repeat task.wait() until admins and type(admins) == "table"
 admins = admins.read("Admins").Names or {}
 print("[Finished, AD = "..tostring(#admins).."]")
 
