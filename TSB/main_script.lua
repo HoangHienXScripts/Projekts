@@ -247,6 +247,7 @@ vars.btns.esp = ui.add_button("Esp [OFF]", function()
   end vars.esp_enabled = not vars.esp_enabled
 end)
 
+--[[
 if vars.has_event then
   vars.at_frm_candies = false
   vars.btns.auto_candies = ui.add_button("🎃 Auto Candies [OFF] 🎃", function()
@@ -297,6 +298,7 @@ if vars.has_event then
 	btn_newt(btn, "🎃 Trade Candies 🎃")
   end)
 end
+]]
 
 vars.btns.mod_map_label = ui.add_button(watever"Teleport", function() print("nil") end)
 vars.btns.mod_map_label.BackgroundColor3 = Color3.new(1, 1, 0)
@@ -438,6 +440,7 @@ vars.btns.cam_focus_target = ui.add_button("View-Target: [OFF]", function()
   end vars.cam_focus = not vars.cam_focus
 end)
 
+--[[
 if vars.has_event then
   vars.event_collect_mode = "ALL"
   vars.btns.event_settings = ui.add_button("🎃 Collect Mode: "..vars.event_collect_mode.." 🎃", function()
@@ -447,6 +450,7 @@ if vars.has_event then
 	end btn_newt(btn, prset:gsub("Is_Mode", vars.event_collect_mode))
   end)
 end
+]]
 
 vars.btns.change_base_color = ui.add_button("Base:Re-Color {244, 194, 90}", function()
   local btn, txture = vars.btns.change_base_color, vars.stand_base_texture
