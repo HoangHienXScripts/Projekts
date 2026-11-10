@@ -247,7 +247,6 @@ vars.btns.esp = ui.add_button("Esp [OFF]", function()
   end vars.esp_enabled = not vars.esp_enabled
 end)
 
---[[
 if vars.has_event then
   vars.at_frm_candies = false
   vars.btns.auto_candies = ui.add_button("🎃 Auto Candies [OFF] 🎃", function()
@@ -256,12 +255,12 @@ if vars.has_event then
 	  new_cnt("auto_candies", rs.Heartbeat:Connect(function()
         local candy, cans = ws.HalloweenCandy:GetChildren(), ws.Map.Trash:GetChildren()
 		local comm = plr and plr.Character and plr.Character:FindFirstChild("Communicate")
-		local is_hold = plr and plr.Character and plr.Character:GetAttribute("HoldingM1") == false
+		local is_hold = plr and plr.Character and plr.Character:FindFirstChild("Trash Can")
 		local hrp, monster = rcv_hrp(plr), rcv_monsters()
 		if hrp and #candy > 0 then
           hrp.CFrame = CFrame.new(candy[1]:GetAttribute("Rest").Position)
-		elseif vars.event_collect_mode == "ALL" then
-		  if monster then
+		else
+		  if monster and is_hold then
             local mon_pos = monster:GetBoundingBox().Position or Vector3.new(0, 5000, 0)
 			hrp.CFrame = CFrame.new(mon_pos + Vector3.new(0, 15, 0)) * CFrame.Angles(math.rad(-90), 0, math.rad(-90))
 		  else
@@ -298,7 +297,6 @@ if vars.has_event then
 	btn_newt(btn, "🎃 Trade Candies 🎃")
   end)
 end
-]]
 
 vars.btns.mod_map_label = ui.add_button(watever"Teleport", function() print("nil") end)
 vars.btns.mod_map_label.BackgroundColor3 = Color3.new(1, 1, 0)
