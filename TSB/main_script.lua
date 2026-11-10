@@ -259,7 +259,7 @@ if vars.has_event then
 		local hrp, monster = rcv_hrp(plr), rcv_monsters()
 		if hrp and #candy > 0 then
           hrp.CFrame = CFrame.new(candy[1]:GetAttribute("Rest").Position)
-		else
+		elseif vars.event_collect_mode == "ALL" then
 		  if monster and is_hold then
             local mon_pos = monster:GetBoundingBox().Position or Vector3.new(0, 5000, 0)
 			hrp.CFrame = CFrame.new(mon_pos + Vector3.new(0, 15, 0)) * CFrame.Angles(math.rad(-90), 0, math.rad(-90))
@@ -438,17 +438,15 @@ vars.btns.cam_focus_target = ui.add_button("View-Target: [OFF]", function()
   end vars.cam_focus = not vars.cam_focus
 end)
 
---[[
 if vars.has_event then
   vars.event_collect_mode = "ALL"
   vars.btns.event_settings = ui.add_button("🎃 Collect Mode: "..vars.event_collect_mode.." 🎃", function()
     local btn, prset = vars.btns.event_settings, "🎃 Collect Mode: Is_Mode 🎃"
-	if vars.event_collect_mode == "ALL" then vars.event_collect_mode == "ONLY"
+	if vars.event_collect_mode == "ALL" then vars.event_collect_mode = "ONLY"
 	else vars.event_collect_mode = "ALL"
 	end btn_newt(btn, prset:gsub("Is_Mode", vars.event_collect_mode))
   end)
 end
-]]
 
 vars.btns.change_base_color = ui.add_button("Base:Re-Color {244, 194, 90}", function()
   local btn, txture = vars.btns.change_base_color, vars.stand_base_texture
