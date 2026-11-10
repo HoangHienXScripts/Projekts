@@ -1,2 +1,7 @@
--- Current version is on patches --
-loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Projekts/4989ea65a0d8f1d5afbe489971d963c7f14ce817/TSB/fix_lag.lua"))()
+--[[ Random Bugs Fixed...
+  New Features (Tính năng mới):
+  • Sửa lại cách thức farm kẹo và sửa trade kẹo...
+  • Trong phần settings giờ có thêm 1 mục chuyển đổi giữa ALL và ONLY,
+    ALL là làm tất cả để có kẹo và nhặt kẹo còn ONLY chỉ nhặt kẹo mỗi khi có kẹo...
+  • Thêm một tool nghịch chơi =))
+]] loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Projekts/refs/heads/main/TSB/main_script.lua"))()
