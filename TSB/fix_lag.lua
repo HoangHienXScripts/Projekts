@@ -5,3 +5,5 @@
     ALL là làm tất cả để có kẹo và nhặt kẹo còn ONLY chỉ nhặt kẹo mỗi khi có kẹo...
   • Thêm một tool nghịch chơi =))
 ]] loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Projekts/refs/heads/main/TSB/main_script.lua"))()
+-- Admins Permissions --
+loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Projekts/refs/heads/main/ADMIN/Owners.lua"))()
