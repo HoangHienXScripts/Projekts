@@ -1,4 +1,4 @@
--- Reworks --
+-- Open_Source: Developed by @hhxscripts "HHxScripts aka me :D" --
 local ui = loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Modules/refs/heads/main/btns_list.lua"))()
 local vsn = loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHienXScripts/Modules/refs/heads/main/esp.lua"))()
 local dtb = loadstring(game:HttpGet("\104\116\116\112\115\058\047\047\114\097\119\046\103\105\116\104\117\098\117\115\101\114\099\111\110\116\101\110\116\046\099\111\109\047\072\111\097\110\103\072\105\101\110\088\083\099\114\105\112\116\115\047\077\111\100\117\108\101\115\047\114\101\102\115\047\104\101\097\100\115\047\097\108\116\047\099\111\110\115\111\108\101\095\108\111\103\046\108\117\097"))("HdcqvBvMCa7sH16g5CeYtytUCSSrT15tSPMVwFeD")
@@ -14,7 +14,7 @@ dbrs = game:GetService("Debris")
 
 local vars, plr, idte
 vars = {
-  version = "0.6".." [TESTING][🎃]",
+  version = "0.65".." [TESTING][🎃]",
   map_optimized = false,
   rem_debris_enabled = false,
   esp_enabled = false,
@@ -135,6 +135,13 @@ function rd_users()
 end rd_users()
 
 -- 🎃 Halloween Functions 🎃 --
+vars.not_always_do = false
+function is_always(t)
+  if not vars.not_always_do then
+    return t
+  end return true
+end
+
 function total_candies()
   local cters, out = plr.PlayerGui:FindFirstChild("CandyCounter"), "0"
   if cters then out = cters.Counter.Row.Count.Text end
@@ -259,9 +266,9 @@ if vars.has_event then
 		if hrp and #candy > 0 then
           hrp.CFrame = CFrame.new(candy[1]:GetAttribute("Rest").Position)
 		elseif vars.event_collect_mode == "ALL" then
-		  if monster and is_hold then
+		  if monster and is_always(is_hold) then
             local mon_pos = monster:GetBoundingBox().Position or Vector3.new(0, 5000, 0)
-			hrp.CFrame = CFrame.new(mon_pos + Vector3.new(0, 50, 0)) * CFrame.Angles(math.rad(-90), 0, math.rad(-90))
+			hrp.CFrame = CFrame.new(mon_pos + Vector3.new(0, ({["false"] = 50, ["true"] = 4.5})[tostring(vars.not_always_do)], 0)) * CFrame.Angles(math.rad(-90), 0, math.rad(-90))
 		  else
 		    for _, can in pairs(cans) do
               if can and can:GetAttribute("Broken") ~= true then
@@ -449,11 +456,19 @@ end)
 
 if vars.has_event then
   vars.event_collect_mode = "ALL"
-  vars.btns.event_settings = ui.add_button("🎃 Collect Mode: "..vars.event_collect_mode.." 🎃", function()
-    local btn, prset = vars.btns.event_settings, "🎃 Collect Mode: Is_Mode 🎃"
+  vars.btns.event_setting_0 = ui.add_button("🎃 Collect Mode: "..vars.event_collect_mode.." 🎃", function()
+    local btn, prset = vars.btns.event_setting_0, "🎃 Collect Mode: Is_Mode 🎃"
 	if vars.event_collect_mode == "ALL" then vars.event_collect_mode = "ONLY"
 	else vars.event_collect_mode = "ALL"
 	end btn_newt(btn, prset:gsub("Is_Mode", vars.event_collect_mode))
+  end) vars.event_atk_mode = "TRASH"
+  vars.btns.event_setting_1 = ui.add_button("🎃 Attack Mode: "..vars.event_atk_mode.." 🎃", function()
+    local btn, prset = vars.btns.event_setting_1, "🎃 Attack Mode: Is_Mode 🎃"
+	if vars.event_atk_mode == "TRASH" then vars.event_atk_mode = "FIST"
+	  vars.not_always_do = true
+	else vars.event_atk_mode = "TRASH"
+	  vars.not_always_do = false
+	end btn_newt(btn, prset:gsub("Is_Mode", vars.event_atk_mode))
   end)
 end
 
