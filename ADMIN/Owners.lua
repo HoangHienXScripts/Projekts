@@ -13,8 +13,8 @@ vars = {
   chatv = txs.ChatVersion == Enum.ChatVersion.LegacyChatService,
   s_cal = false, prefix = "/",
   frz = false,
-  cmds = {},
-  owners = {"bloxfruits_devs09"}
+  cmds = {}, let_add = nil,
+  owners = cnst.read("Admins").Names or {}
 }
 plr = plrs.LocalPlayer
 
@@ -103,6 +103,26 @@ end
 add_cmd("pf", "change cmds prefix", function(nf)
   vars.prefix = tostring(nf)
   ntfc("<Prefix changed to: "..vars.prefix..">")
+end)
+
+add_cmd("adm", "make someone become an admin", function(name)
+  vars.let_add = cnst.read("Admins", 1) == "null"
+  if vars.let_add then cnst.update("Admins", {Names = {"ignore_name"}})
+  else vars.let_add = cnst.read("Admins") or {Names = {"ignore_name"}}
+    table.insert(vars.let_add.Names, name)
+    vars.owners = vars.let_add.Names
+    cnst.update("Admins", vars.let_add)
+  end
+end)
+
+add_cmd("freeze", "freeze target", function(name, bool)
+  local target = fplr(name)
+  if not target then return end
+  local h = rcv_hrp(target)
+  if h and t_alive(target) then
+    h.Anchored = ({["false"] = false, ["true"] = true})[bool]
+    ntfc("<So Cold...>")
+  end
 end)
 
 add_cmd("exp", "explode target", function(name)
