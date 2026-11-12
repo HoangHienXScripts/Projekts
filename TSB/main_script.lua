@@ -134,6 +134,22 @@ function rd_users()
   end
 end rd_users()
 
+function format_time(s, nd, nh, nm, ns)
+  local format_text = {
+    day = nd or "ngày", minute = nm or "phút",
+    hour = nh or "giờ", second = ns or "giây nữa"
+  } if s < 0 then return "nil" end
+  local d = math.floor(s / 86400) s = s % 86400
+  local h = math.floor(s / 3600) s = s % 3600
+  local m = math.floor(s / 60) s = s % 60
+  if d > 0 then return string.format("%d "..format_text.day..", %02d "..format_text.hour..", %02d "..format_text.minute..", %02d "..format_text.second..".", d, h, m, s)
+  elseif d <= 0 and h > 0 then return string.format("%02d "..format_text.hour..", %02d "..format_text.minute..", %02d "..format_text.second..".", h, m, s)
+  elseif d <= 0 and h <= 0 and m > 0 then return string.format("%02d "..format_text.minute..", %02d "..format_text.second..".", m, s)
+  elseif d <= 0 and h <= 0 and m <= 0 and s > 0 then return string.format("%02d "..format_text.second..".", s)
+  else return "nil"
+  end
+end
+
 -- 🎃 Halloween Functions 🎃 --
 vars.not_always_do = false
 function is_always(t)
@@ -548,7 +564,17 @@ vars.btns.its_best_executor = ui.add_button(({
   ["Xeno"] = "Is this a PC executor ?",
   ["Real"] = "I don't know abt Real tho..."
 })[idte] or "Only supported mobile, Delta!", function() print("[Executor: "..idte.." ]") end)
-vars.btns.event_time_left = ui.add_button("Event end in: "..tostring(1795559925 - math.floor(tick())).."s.", function() print("[Nothing...]") end)
+vars.start_event_timer = false
+vars.btns.event_time_left = ui.add_button("Event-Timer: [Hide]", function()
+  local btn = vars.btns.event_time_left
+  if not vars.start_event_timer then
+    new_cnt("evt_timer", rs.Heartbeat:Connect(function()
+      btn_newt(btn, "🎃 "..format_time(1795559925 - math.floor(tick()), "d", "h", "m", "s").." 🎃")
+	end))
+  else exit_cnt("evt_timer")
+	btn_newt(btn, "Event-Timer: [Hide]")
+  end vars.start_event_timer = not vars.start_event_timer
+end)
 
 vars.btns.m_mods_label = ui.add_button(watever"Mods", function() print("nil") end)
 vars.btns.m_mods_label.BackgroundColor3 = Color3.new(1, 1, 0)
