@@ -537,6 +537,19 @@ vars.btns.ps_server = ui.add_button("Hop to Private", function()
   end
 end)
 
+vars.btns.usr_info = ui.add_button(watever"Info", function() print("nil") end)
+vars.btns.usr_info.BackgroundColor3 = Color3.new(1, 1, 0)
+vars.btns.usr_info.TextColor3 = Color3.new(0, 0, 0)
+vars.btns.usr_info.Font = Enum.Font.Arcade
+
+vars.btns.executor_info = ui.add_button("Executor: "..idte, function() print("[Executor: "..idte.." ]") end)
+vars.btns.its_best_executor = ui.add_button(({
+  ["Delta"] = "Best executor for this",
+  ["Xeno"] = "Is this a PC executor ?",
+  ["Real"] = "I don't know abt Real tho..."
+})[idte] or "Only supported mobile, Delta!", function() print("[Executor: "..idte.." ]") end)
+vars.btns.event_time_left = ui.add_button("Event end in: "..tostring(1795559925 - math.floor(tick())).."s.", function() print("[Nothing...]") end)
+
 vars.btns.m_mods_label = ui.add_button(watever"Mods", function() print("nil") end)
 vars.btns.m_mods_label.BackgroundColor3 = Color3.new(1, 1, 0)
 vars.btns.m_mods_label.TextColor3 = Color3.new(0, 0, 0)
