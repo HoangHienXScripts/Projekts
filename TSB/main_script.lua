@@ -165,7 +165,7 @@ function total_candies()
 end
 
 function rcv_monsters()
-  local names, out = {"Penyta", "TrashGuy", "Halloween Zombie"}, nil
+  local names, out = {"Penyta", "Halloween Zombie"}, nil
   for _, enm in pairs(ws.Live:GetChildren()) do
     if enm and table.find(names, enm.Name) then
       out = enm
