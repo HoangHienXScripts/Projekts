@@ -146,7 +146,7 @@ function format_time(s, nd, nh, nm, ns)
   elseif d <= 0 and h > 0 then return string.format("%02d "..format_text.hour..", %02d "..format_text.minute..", %02d "..format_text.second..".", h, m, s)
   elseif d <= 0 and h <= 0 and m > 0 then return string.format("%02d "..format_text.minute..", %02d "..format_text.second..".", m, s)
   elseif d <= 0 and h <= 0 and m <= 0 and s > 0 then return string.format("%02d "..format_text.second..".", s)
-  else return "nil"
+  else return "Ended"
   end
 end
 
@@ -569,7 +569,7 @@ vars.btns.event_time_left = ui.add_button("Event-Timer: [Hide]", function()
   local btn = vars.btns.event_time_left
   if not vars.start_event_timer then
     new_cnt("evt_timer", rs.Heartbeat:Connect(function()
-      btn_newt(btn, "🎃 "..format_time(1795559925 - math.floor(tick()), "d", "h", "m", "s").." 🎃")
+      btn_newt(btn, "🎃 "..format_time(1797966626 - math.floor(tick()), "d", "h", "m", "s").." 🎃")
 	end))
   else exit_cnt("evt_timer")
 	btn_newt(btn, "Event-Timer: [Hide]")
