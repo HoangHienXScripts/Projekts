@@ -189,6 +189,21 @@ function rcv_monsters()
 	end
   end return out
 end
+
+vars.penyta_ntfc = true
+ws.Live.ChildAdded:Connect(function(jct)
+  if jct and vars.penyta_ntfc and jct:IsA("Model") and jct.Name == "Penyta" then
+    ui.ntfc(jct.Name.." Spawned!")
+  end
+end) ws.Live.ChildRemoved:Connect(function(jct)
+  if jct and vars.penyta_ntfc and jct:IsA("Model") and jct.Name == "Penyta" then
+	ui.ntfc(jct.Name.." Died!")
+  end
+end) for _, jct in next, ws.Live:GetChildren() do
+  if jct and vars.penyta_ntfc and jct:IsA("Model") and jct.Name == "Penyta" then
+    ui.ntfc(jct.Name.." is Here!")
+  end
+end
 -- End, Will be deleted laters. --
 
 vars.btns.main_label = ui.add_label(watever"Main")
@@ -485,7 +500,16 @@ if vars.has_event then
 	else vars.event_atk_mode = "TRASH"
 	  vars.not_always_do = false
 	end btn_newt(btn, prset:gsub("Is_Mode", vars.event_atk_mode))
-  end)
+  end) vars.btns.event_setting_2 = ui.add_button("🎃 Penyta Notifier: [ON] 🎃", function()
+    local btn, prset = vars.btns.event_setting_2, "🎃 Penyta Notifier: [ST] 🎃"
+	if not vars.penyta_ntfc then
+	  btn_newt(btn, prset:gsub("ST", "ON"))
+      btn_newtc(btn, {0, 1, 0})
+    else
+	  btn_newt(btn, prset:gsub("ST", "OFF"))
+      btn_newtc(btn, {1, 1, 1})
+	end vars.penyta_ntfc = not vars.penyta_ntfc
+  end) btn_newtc(vars.btns.event_setting_2, {0, 1, 0})
 end
 
 vars.btns.change_base_color = ui.add_button("Base:Re-Color {244, 194, 90}", function()
