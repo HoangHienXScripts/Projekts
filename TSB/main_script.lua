@@ -14,7 +14,7 @@ dbrs = game:GetService("Debris")
 
 local vars, plr, idte
 vars = {
-  version = "0.65".." [TESTING][🎃]",
+  version = "0.75".." [TESTING][🎃]",
   map_optimized = false,
   rem_debris_enabled = false,
   esp_enabled = false,
@@ -175,11 +175,7 @@ function rcv_monsters()
 end
 -- End, Will be deleted laters. --
 
-vars.btns.main_label = ui.add_button(watever"Main", function() print("nil") end)
-vars.btns.main_label.BackgroundColor3 = Color3.new(1, 1, 0)
-vars.btns.main_label.TextColor3 = Color3.new(0, 0, 0)
-vars.btns.main_label.Font = Enum.Font.Arcade
-
+vars.btns.main_label = ui.add_label(watever"Main")
 vars.btns.autof_offset_display = ui.add_button(tostring(vars.autof.offset).." >> {"..tostring(vars.autof.x)..", "..tostring(vars.autof.y)..", "..tostring(vars.autof.z).."}", function()
   local btn, frm = vars.btns.autof_offset_display, vars.autof
   local newt = " >> {"..tostring(frm.x)..", "..tostring(frm.y)..", "..tostring(frm.z).."}"
@@ -320,11 +316,7 @@ if vars.has_event then
   end)
 end
 
-vars.btns.mod_map_label = ui.add_button(watever"Teleport", function() print("nil") end)
-vars.btns.mod_map_label.BackgroundColor3 = Color3.new(1, 1, 0)
-vars.btns.mod_map_label.TextColor3 = Color3.new(0, 0, 0)
-vars.btns.mod_map_label.Font = Enum.Font.Arcade
-
+vars.btns.mod_map_label = ui.add_label(watever"Teleport")
 for lc_name, lc_pos in next, vars.locations do
   table.insert(vars.tp_btns, ui.add_button("🔒: "..lc_name, function()
     local m_hrp = rcv_hrp(plr)
@@ -349,11 +341,7 @@ for lc_name, lc_pos in next, vars.locations do
 end
 
 --MainPart size y = 2, pos y = 436.5
-vars.btns.optimize_label = ui.add_button(watever"Optimizations", function() print("nil") end)
-vars.btns.optimize_label.BackgroundColor3 = Color3.new(1, 1, 0)
-vars.btns.optimize_label.TextColor3 = Color3.new(0, 0, 0)
-vars.btns.optimize_label.Font = Enum.Font.Arcade
-
+vars.btns.optimize_label = ui.add_label(watever"Optimizations")
 vars.btns.optimize_map = ui.add_button("Rebuilt-Map", function()
   local btn, map = vars.btns.optimize_map, ws:FindFirstChild("Map")
   if vars.map_optimized then btn_newt(btn, "ALREADY OPTIMIZED")
@@ -416,11 +404,7 @@ vars.btns.optimize_map = ui.add_button("Rebuilt-Map", function()
   btn_newt(btn, "Rebuilt-Map")
 end)
 
-vars.btns.sc_settings_label = ui.add_button(watever"Settings", function() print("nil") end)
-vars.btns.sc_settings_label.BackgroundColor3 = Color3.new(1, 1, 0)
-vars.btns.sc_settings_label.TextColor3 = Color3.new(0, 0, 0)
-vars.btns.sc_settings_label.Font = Enum.Font.Arcade
-
+vars.btns.sc_settings_label = ui.add_label(watever"Settings")
 vars.btns.rem_debris = ui.add_button("Clear-Debris: [OFF]", function()
   local btn = vars.btns.rem_debris
   if not vars.rem_debris_enabled then
@@ -498,11 +482,7 @@ vars.btns.change_base_color = ui.add_button("Base:Re-Color {244, 194, 90}", func
   end
 end)
 
-vars.btns.m_server_label = ui.add_button(watever"Server", function() print("nil") end)
-vars.btns.m_server_label.BackgroundColor3 = Color3.new(1, 1, 0)
-vars.btns.m_server_label.TextColor3 = Color3.new(0, 0, 0)
-vars.btns.m_server_label.Font = Enum.Font.Arcade
-
+vars.btns.m_server_label = ui.add_label(watever"Server")
 vars.btns.infos_a = ui.add_button("Total Users: "..tostring(#vars.users_count), function()
   local btn = vars.btns.infos_a
   rd_users() btn_newt(btn, "Total Users: "..tostring(#vars.users_count))
@@ -553,11 +533,7 @@ vars.btns.ps_server = ui.add_button("Hop to Private", function()
   end
 end)
 
-vars.btns.usr_info = ui.add_button(watever"Info", function() print("nil") end)
-vars.btns.usr_info.BackgroundColor3 = Color3.new(1, 1, 0)
-vars.btns.usr_info.TextColor3 = Color3.new(0, 0, 0)
-vars.btns.usr_info.Font = Enum.Font.Arcade
-
+vars.btns.usr_info = ui.add_label(watever"Info")
 vars.btns.executor_info = ui.add_button("Executor: "..idte, function() print("[Executor: "..idte.." ]") end)
 vars.btns.its_best_executor = ui.add_button(({
   ["Delta"] = "Best executor for this",
@@ -576,11 +552,7 @@ vars.btns.event_time_left = ui.add_button("Event-Timer: [Hide]", function()
   end vars.start_event_timer = not vars.start_event_timer
 end)
 
-vars.btns.m_mods_label = ui.add_button(watever"Mods", function() print("nil") end)
-vars.btns.m_mods_label.BackgroundColor3 = Color3.new(1, 1, 0)
-vars.btns.m_mods_label.TextColor3 = Color3.new(0, 0, 0)
-vars.btns.m_mods_label.Font = Enum.Font.Arcade
-
+vars.btns.m_mods_label = ui.add_label(watever"Mods")
 vars.btns.fun_tool = ui.add_button("Get Gun", function()
   local a = Instance.new("Tool", plr.Backpack)
   a.RequiresHandle = false
