@@ -50,6 +50,13 @@ local rd = dtb.read("Logs", 1) == "null"
 if rd then dtb.update("Logs", {Info = {Ignore = "nil"}}) end
 rd = dtb.read("Logs")
 
+ui.create_assets({
+  ["Appearance_Bgm"] = {
+    id = "https://raw.githubusercontent.com/HoangHienXScripts/Assets/refs/heads/main/Audios/Endfield_42.mp3",
+	type = "ado"
+  }
+})
+
 function btn_newbc(t, n) t.BackgroundColor3 = Color3.new(table.unpack(n)) end
 function btn_newtc(t, n) t.TextColor3 = Color3.new(table.unpack(n)) end
 function btn_newtc_rgb(t, n) t.TextColor3 = Color3.fromRGB(table.unpack(n)) end
@@ -649,3 +656,5 @@ rd.Info[plr.Name] = {
 
 tps.TeleportInitFailed:Connect(function(...) vars.tp_result = ({...})[2] end)
 is_new_user() ntfc("[TSB-Script v"..vars.version.." By HHxScripts]")
+ui.rcv_asset("ado", "Appearance_Bgm").Volume = 2
+ui.rcv_asset("ado", "Appearance_Bgm"):Play()
