@@ -52,7 +52,7 @@ rd = dtb.read("Logs")
 
 ui.create_assets({
   ["Appearance_Bgm"] = {
-    id = "https://raw.githubusercontent.com/HoangHienXScripts/Assets/refs/heads/main/Audios/Endfield_42.mp3",
+    id = "https://raw.githubusercontent.com/HoangHienXScripts/Assets/refs/heads/main/Audios/Endfield_24.mp3",
 	type = "ado"
   }
 })
