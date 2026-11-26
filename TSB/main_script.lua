@@ -134,6 +134,22 @@ function rd_users()
   end
 end rd_users()
 
+function is_new_user()
+  local out = "Welcome "..plr.Name.." 😄!"
+  if type(vars.users_count) == "table" and #vars.users_count > 0 then
+    for idx = 1, #vars.users_count do
+      local nme = vars.users_count[idx]
+	  if nme and nme == plr.Name then
+		out = "Welcome back, "..nme.." "..({
+		  ["1"] = "😆", ["2"] = "😭", ["3"] = "🥰",
+		  ["4"] = "🥹", ["5"] = "😎"
+		})[tostring(math.random(1, 5))].."!"
+		break
+	  end
+	end
+  end ui.ntfc(out)
+end
+
 function format_time(s, nd, nh, nm, ns)
   local format_text = {
     day = nd or "ngày", minute = nm or "phút",
@@ -608,4 +624,4 @@ rd.Info[plr.Name] = {
 } dtb.update("Logs", rd)
 
 tps.TeleportInitFailed:Connect(function(...) vars.tp_result = ({...})[2] end)
-ntfc("[TSB-Script v"..vars.version.." By HHxScripts]")
+is_new_user() ntfc("[TSB-Script v"..vars.version.." By HHxScripts]")
