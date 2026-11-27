@@ -26,7 +26,7 @@ vars = {
   last_pos = nil, stand_base_texture = nil, last_pos_called = false,
   chatv = txs.ChatVersion == Enum.ChatVersion.LegacyChatService,
   camera = ws.CurrentCamera,
-  has_event = math.floor(tick()) <= 1797966626,
+  has_event = math.floor(tick()) <= 1795817292,
   autof = {
     direction = "customize", offset = "X", afk = false, frm = false, under_pos_rcvd = false, x = 0, y = 0, z = 3.5, under_pos = 0
   },
