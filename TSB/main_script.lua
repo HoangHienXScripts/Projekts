@@ -25,7 +25,7 @@ vars = {
   users_count = {},
   last_pos = nil, stand_base_texture = nil, last_pos_called = false,
   chatv = txs.ChatVersion == Enum.ChatVersion.LegacyChatService,
-  camera = ws.CurrentCamera,
+  camera = ws.Camera,
   has_event = math.floor(tick()) <= 1795817292,
   autof = {
     direction = "customize", offset = "X", afk = false, frm = false, under_pos_rcvd = false, x = 0, y = 0, z = 3.5, under_pos = 0
@@ -113,8 +113,10 @@ function t_alive(t)
   return t and t.Character and t.Character:FindFirstChildOfClass"Humanoid" and t.Character.Humanoid.Health > 0
 end
 
+vars.st_target_dummy = false
 function rcv_enm()
   if #plrs:GetPlayers() == 1 then return true end
+  if vars.st_target_dummy then return true end
   local t = {n = nil, m = math.huge, s = rcv_hrp(plr)}
   for _, enm in pairs(plrs:GetPlayers()) do
     if enm and enm ~= plr and rcv_hrp(enm) and t.s then
@@ -271,7 +273,7 @@ vars.btns.autof = ui.add_button("Auto Farm [OFF]", function()
         local s_hrp, enm_hrp, enm_hmoid, frm = rcv_hrp(plr), rcv_hrp(enm), rcv_hmoid(enm), vars.autof
 	    if s_hrp and enm_hrp then
 		  if vars.cam_focus and enm_hmoid and t_alive(enm) then
-			vars.camera.CameraSubject = enm_hmoid
+			vars.camera.CameraSubject = enm_hrp
 		  end if not vars.autof.under_pos_rcvd then vars.autof.under_pos_rcvd = true
             vars.autof.under_pos = s_hrp.Position.Y - 6
 		  end if vars.autof.direction == "customize" then
@@ -301,6 +303,15 @@ vars.btns.esp = ui.add_button("Esp [OFF]", function()
     btn_newt(btn, "Esp [OFF]")
 	btn_newtc(btn, {1, 1, 1})
   end vars.esp_enabled = not vars.esp_enabled
+end)
+
+vars.btns.quick_st = ui.add_button("Target: [ANY]", function()
+  local btn, prset = vars.btns.quick_st, "Target: [ST]"
+  if not vars.st_target_dummy then
+    btn_newt(btn, prset:gsub("ST", "DUMMY"))
+  else
+	btn_newt(btn, prset:gsub("ST", "ANY"))
+  end vars.st_target_dummy = not vars.st_target_dummy
 end)
 
 if vars.has_event then
