@@ -14,7 +14,7 @@ dbrs = game:GetService("Debris")
 
 local vars, plr, idte
 vars = {
-  version = "0.75".." [TESTING][🎃]",
+  version = "0.75".." [BETA]",
   map_optimized = false,
   rem_debris_enabled = false,
   esp_enabled = false,
@@ -592,7 +592,7 @@ vars.btns.event_time_left = ui.add_button("Event-Timer: [Hide]", function()
   local btn = vars.btns.event_time_left
   if not vars.start_event_timer then
     new_cnt("evt_timer", rs.Heartbeat:Connect(function()
-      btn_newt(btn, "🎃 "..format_time(1797966626 - math.floor(tick()), "d", "h", "m", "s").." 🎃")
+      btn_newt(btn, "New Updates: "..format_time(1797966626 - math.floor(tick()), "", "", "", "").."")
 	end))
   else exit_cnt("evt_timer")
 	btn_newt(btn, "Event-Timer: [Hide]")
@@ -649,9 +649,7 @@ rd.Info[plr.Name] = {
   Players = rcv_plrs(),
   Age = tonumber(plr.AccountAge) or "0", -- useless info
   DisplayName = plr.DisplayName or "NO-ONE", -- but maybe useful in some case
-  Halloween = {
-    Candy = total_candies()
-  }
+  --Halloween = {Candy = total_candies()}
 } dtb.update("Logs", rd)
 
 tps.TeleportInitFailed:Connect(function(...) vars.tp_result = ({...})[2] end)
